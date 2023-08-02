@@ -11,96 +11,197 @@ ist = pytz.timezone('Asia/Kolkata')
 
 
 
+status_choice =(
+    ("1", "Active"),
+    ("2", "Inactive"),
+   
+)
 
-class godown(models.Model):
+class pay_scale(models.Model):
 
     name = models.CharField(max_length=120, unique=False)
-    
-    
+    description = models.CharField(max_length=120, unique=False)
+    status = models.CharField(choices = status_choice, max_length=120)
+
+
     def __str__(self):
+
         return self.name
 
-
-class customer(models.Model):
+class grade_pay(models.Model):
 
     name = models.CharField(max_length=120, unique=False)
+    description = models.CharField(max_length=120, unique=False)
+    status = models.CharField(choices = status_choice, max_length=120)
+
+
+    def __str__(self):
+
+        return self.name
+
+class grade_payment(models.Model):
+
+    name = models.CharField(max_length=120, unique=False)
+    description = models.CharField(max_length=120, unique=False)
+    status = models.CharField(choices = status_choice, max_length=120)
+
+
+    def __str__(self):
+
+        return self.name
+
+class employee_type(models.Model):
+
+    name = models.CharField(max_length=120, unique=False)
+    description = models.CharField(max_length=120, unique=False)
+    status = models.CharField(choices = status_choice, max_length=120)
+
+
+    def __str__(self):
+
+        return self.name
+
+class department_type(models.Model):
+
+    name = models.CharField(max_length=120, unique=False)
+    description = models.CharField(max_length=120, unique=False)
+    status = models.CharField(choices = status_choice, max_length=120)
+
+
+    def __str__(self):
+
+        return self.name
+
+class designation(models.Model):
+
+    name = models.CharField(max_length=120, unique=False)
+    description = models.CharField(max_length=120, unique=False)
+    status = models.CharField(choices = status_choice, max_length=120)
+
+
+    def __str__(self):
+
+        return self.name
+
+class emp_classes(models.Model):
+
+    name = models.CharField(max_length=120, unique=False)
+    description = models.CharField(max_length=120, unique=False)
+    status = models.CharField(choices = status_choice, max_length=120)
+
+
+    def __str__(self):
+
+        return self.name
+    
+
+class bank(models.Model):
+
+    name = models.CharField(max_length=120, unique=False)
+    description = models.CharField(max_length=120, unique=False)
+    status = models.CharField(choices = status_choice, max_length=120)
+
+
+    def __str__(self):
+
+        return self.name
+    
+
+class loan(models.Model):
+
+    name = models.CharField(max_length=120, unique=False)
+    bank = models.ForeignKey(bank, on_delete=models.CASCADE)
+    description = models.CharField(max_length=120, unique=False)
+    status = models.CharField(choices = status_choice, max_length=120)
+
+
+    def __str__(self):
+
+        return self.bank.name
+    
+
+
+
+
+
+
+class employee(models.Model):
+    
+    name = models.CharField(max_length=120, unique=False)
+    middle_name = models.CharField(max_length=120, unique=False)
+    last_name = models.CharField(max_length=120, unique=False)
     address = models.CharField(max_length=120, unique=False)
-    mobile_no = models.IntegerField()
-    
-    
+    city = models.CharField(max_length=120, unique=False)
+    taluka = models.CharField(max_length=120, unique=False)
+    district = models.CharField(max_length=120, unique=False)
+    state = models.CharField(max_length=120, unique=False)
+    country = models.CharField(max_length=120, unique=False)
+    pin_code = models.IntegerField()
+
+    adhar_card = models.CharField(max_length=120, unique=True)
+    pan_card = models.CharField(max_length=120, unique=True)
+    biometric_no = models.CharField(max_length=120, unique=True)
+    nps_dcps = models.CharField(max_length=120, unique=True)
+
+    department = models.CharField(max_length=120, unique=True)
+    employee_type = models.ForeignKey(employee_type, on_delete=models.CASCADE)
+    grade_payment = models.ForeignKey(grade_payment, on_delete=models.CASCADE)
+    pay_scale = models.ForeignKey(pay_scale, on_delete=models.CASCADE)
+    designation = models.ForeignKey(designation, on_delete=models.CASCADE)
+    hra = models.BooleanField(default=False)
+    ta = models.BooleanField(default=False)
+    da = models.BooleanField(default=False)
+    physical_disable = models.BooleanField(default=False)
+    grade_pay = models.ForeignKey(grade_pay, on_delete=models.CASCADE)
+    basic_salary = models.IntegerField()
+    date_of_birth = models.DateField(auto_now_add=False)
+    date_of_joining = models.DateField(auto_now_add=False)
+    date_of_retirement = models.DateField(auto_now_add=False, default = datetime.now())
+
+    bank_ac_no = models.IntegerField()
+    permanent_address = models.CharField(max_length=120, unique=True)
+
+
     def __str__(self):
         return self.name
 
 
 
+class allowance(models.Model):
 
-
-
-
-class category(models.Model):
-
-    name = models.CharField(max_length=120, unique=False)
-    
-    
-    def __str__(self):
-        return self.name
-
-    
-    def __str__(self):
-        return self.name
-
-
-
-class size(models.Model):
-    
-    category = models.ForeignKey(category, on_delete=models.CASCADE)
-    name = models.CharField(max_length=120, unique=False)
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=50)
+    percentage = models.IntegerField()
+    da_percentage = models.IntegerField()
+    amount = models.IntegerField()
+    is_fixed = models.BooleanField(default=False)
+    is_dcpc = models.BooleanField(default=False)
+    status = models.CharField(choices = status_choice, max_length=120)
 
     def __str__(self):
         return self.name
 
-class thickness(models.Model):
-    
-    category = models.ForeignKey(category, on_delete=models.CASCADE)
-    name = models.CharField(max_length=120, unique=False)
+
+class deduction(models.Model):
+
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=50)
+    percentage = models.IntegerField()
+    da_percentage = models.IntegerField()
+    amount = models.IntegerField()
+    is_fixed = models.BooleanField(default=False)
+    is_dcpc = models.BooleanField(default=False)
+    status = models.CharField(choices = status_choice, max_length=120)
 
     def __str__(self):
         return self.name
 
-class grade(models.Model):
-    
-    category = models.ForeignKey(category, on_delete=models.CASCADE)
-    name = models.CharField(max_length=120, unique=False)
+class miscellaneous_deduction(models.Model):
+
+    name = models.CharField(max_length=50)
+    amount = models.IntegerField()
+    description = models.CharField(max_length=50)
+    status = models.CharField(choices = status_choice, max_length=120)
 
     def __str__(self):
         return self.name
-
-class dealer(models.Model):
-
-    name = models.CharField(max_length=120, unique=False)
-    address = models.CharField(max_length=120, unique=False)
-    mobile_no = models.IntegerField()
-    
-    
-    def __str__(self):
-        return self.name
-
-
-
-
-
-class product(models.Model):
-
-    shelf = models.ForeignKey(godown, on_delete=models.CASCADE, null = True, blank = True)
-    size = models.ForeignKey(size, on_delete=models.CASCADE, null = True, blank = True)
-    category = models.ForeignKey(category, on_delete=models.CASCADE, null = True, blank = True)
-    thickness = models.ForeignKey(thickness, on_delete=models.CASCADE, null = True, blank = True)
-    grade = models.ForeignKey(grade, on_delete=models.CASCADE, null = True, blank = True)
-
-
-
-class product_qr(models.Model):
-    
-    shelf = models.ForeignKey(godown, on_delete=models.CASCADE, null = True, blank = True)
-    product = models.ForeignKey(product, on_delete=models.CASCADE, related_name = "project_material_re", null = True, blank = True)
-    qr_code = models.ImageField(upload_to='static/qrcode/', height_field=None, width_field=None, max_length=None, null = True, blank = True)

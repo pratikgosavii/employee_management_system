@@ -1,0 +1,591 @@
+{% extends 'base/base.html' %}
+
+
+
+{% block title %}Create Product{% endblock title %}
+
+{% block head %}
+
+<style>
+
+    .form-group {
+        display: flex;
+       
+    }
+
+    label{
+        margin : 0px 10px;
+    }
+  
+
+    
+.menu {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .menu-icon {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .dot {
+    width: 4px;
+    height: 4px;
+    background-color: #000;
+    border-radius: 50%;
+    margin: 1px;
+  }
+  
+  .menu-options {
+    display: none;
+    position: absolute;
+    top: 25px;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 5px;
+    list-style: none;
+  }
+  
+  .menu-options li {
+    padding: 5px;
+  }
+  
+  .menu-options li:hover {
+    background-color: #f0f0f0;
+  }
+
+  hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 1px solid black;
+}
+
+</style>
+
+{% endblock head %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <strong class="card-title">Add Employee Type</strong>
+            </div>
+            <div class="card-body">
+                <!-- Credit Card -->
+                <div id="pay-invoice">
+                    <div class="card-body">
+                        <form action="#" method="post" >
+                            {% csrf_token %}
+
+                           
+                        
+                            <div class="form-group">
+                                <label for="name" class="control-label mb-1">Name</label>
+                                {{ form.name }}
+
+                                <label for="name" class="control-label mb-1">Middle Name</label>
+                                {{ form.middle_name }}
+
+                                <label for="name" class="control-label mb-1">Last Name</label>
+                                {{ form.last_name }}
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for="name" class="control-label mb-1">Department</label>
+                                {{ form.department }}
+
+                                <label for="name" class="control-label mb-1">Designation</label>
+                                {{ form.designation }}
+
+                                <label for="name" class="control-label mb-1">Employee Type</label>
+                                {{ form.employee_type }}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="name" class="control-label mb-1">pay Scale</label>
+                                {{ form.pay_scale }}
+                                <label for="name" class="control-label mb-1">Basic Salary</label>
+                                {{ form.basic_salary }}
+                                
+                            </div>
+
+<hr>
+
+    <p style="font-weight: bold;"> Allowance List </p>
+
+    <table id="my-table">
+
+    <tr>
+        <td> # </td>
+        <td> Allowances </td>
+        <td> Amount </td>
+        <td> Description </td>
+        <td> Status </td>
+        <td> Action  <button type="button" class="btn btn-success add-textbox" data-toggle="modal" data-target="#exampleModal" data-modal-type="allowance"> <i class="fa fa-plus" aria-hidden="true"></i></button>  </td>
+    </tr>
+
+    {% for i in allowance_data %}
+
+    <tr>
+        <td> {{ forloop.counter }} </td>
+        <td> <input type="text" class="form-control" value="{{ i.allowance.name }}" readonly> </td>
+        <td> <input type="text" class="form-control" value="{{ i.amount }}" readonly> </td>
+        <td> <input type="text" class="form-control" value="{{ i.description }}" readonly> </td>
+        <td> <input type="text" class="form-control" value="{{ i.status }}" readonly> </td>
+        <td> <td class="menu-cell">
+            <div class="menu">
+              <div class="menu-icon">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+              </div>
+              <ul class="menu-options">
+                <li><a href=""> Update </a> </li>
+                <li><a href=""> Delete </a> </li>
+              </ul>
+            </div>
+          </td>
+        </td>
+    </tr>
+
+    {% endfor %}
+
+    <tbody>
+    </tbody>
+
+</table>  
+
+
+<hr>
+
+    <p style="font-weight: bold;"> Deduction List </p>
+
+    <table id="my-table2">
+
+    <tr>
+        <td> # </td>
+        <td> Deduction </td>
+        <td> Amount </td>
+        <td> Description </td>
+        <td> Status </td>
+        <td> Action  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#deduction_model" data-modal-type="deduction"> <i class="fa fa-plus" aria-hidden="true"></i></button>  </td>
+    </tr>
+
+    {% for i in deduction_data %}
+
+    <tr>
+        <td> {{ forloop.counter }} </td>
+        <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.name }}" readonly> </td>
+        <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.amount }}" readonly> </td>
+        <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.description }}" readonly> </td>
+        <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.status }}" readonly> </td>
+        <td> <td class="menu-cell">
+            <div class="menu">
+              <div class="menu-icon">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+              </div>
+              <ul class="menu-options">
+                <li><a href=""> Update </a> </li>
+                <li><a href=""> Delete </a> </li>
+              </ul>
+            </div>
+          </td>
+        </td>
+    </tr>
+
+    {% endfor %}
+
+    <tbody>
+    </tbody>
+
+</table>  
+
+
+<hr>
+
+    <p style="font-weight: bold;"> Loan List </p>
+
+    <table id="my-table3">
+
+    <tr>
+        <td> # </td>
+        <td> Loan Type </td>
+        <td> Total Loan Amount </td>
+        <td> Loan Percentage </td>
+        <td> Year </td>
+        <td> EMI </td>
+        <td> Description </td>
+        <td> Status </td>
+        <td> Action  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#loanModal" data-modal-type="loan"> <i class="fa fa-plus" aria-hidden="true"></i></button>  </td>
+    </tr>
+
+    {% for i in loan_data %}
+
+    <tr>
+        <td> {{ forloop.counter }} </td>
+        <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.name }}" readonly> </td>
+        <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.loan }}" readonly> </td>
+        <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.total_loan_amount }}" readonly> </td>
+        <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.loan_percentage }}" readonly> </td>
+        <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.loan_year }}" readonly> </td>
+        <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.emi }}" readonly> </td>
+        <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.description }}" readonly> </td>
+        <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.status }}" readonly> </td>
+        <td> <td class="menu-cell">
+            <div class="menu">
+              <div class="menu-icon">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+              </div>
+              <ul class="menu-options">
+                <li><a href=""> Update </a> </li>
+                <li><a href=""> Delete </a> </li>
+              </ul>
+            </div>
+          </td>
+        </td>
+    </tr>
+
+    {% endfor %}
+
+    <tbody>
+    </tbody>
+
+</table>  
+                         
+
+<hr>
+
+    <p style="font-weight: bold;"> Miscellaneous Deduction List </p>
+
+    <table id="my-table4">
+
+    <tr>
+        <td> # </td>
+        <td> Miscellaneous </td>
+        <td> Amount </td>
+        <td> Description </td>
+        <td> Status </td>
+        <td> Action  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#miscDeductionModal" data-modal-type="miscDeduction"> <i class="fa fa-plus" aria-hidden="true"></i></button>  </td>
+    </tr>
+
+    {% for i in miscellaneous_deduction_data %}
+
+    <tr>
+        <td> {{ forloop.counter }} </td>
+        <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.miscellaneous }}" readonly> </td>
+        <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.amount }}" readonly> </td>
+        <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.description }}" readonly> </td>
+        <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.status }}" readonly> </td>
+        <td> <td class="menu-cell">
+            <div class="menu">
+              <div class="menu-icon">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+              </div>
+              <ul class="menu-options">
+                <li><a href=""> Update </a> </li>
+                <li><a href=""> Delete </a> </li>
+              </ul>
+            </div>
+          </td>
+        </td>
+    </tr>
+
+    {% endfor %}
+
+    <tbody>
+    </tbody>
+
+</table>  
+                         
+
+                            <div>
+                                <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
+                                    <span id="payment-button-amount">Add Employee</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div> <!-- .card -->
+
+    </div><!--/.col-->
+</div>
+
+
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Allowance</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'employee_add_allowance' %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" value="{{ employee_id }}" name="employee_id">
+
+          <div class="form-group">
+            <label for="name" class="control-label mb-1">Allowance Type</label>
+            {{ form_employee_allowance.allowance }}
+          </div>
+
+          <div class="form-group">
+            <label for="name" class="control-label mb-1">Amount</label>
+            {{ form_employee_allowance.amount }}
+          </div>
+
+          <div class="form-group">
+            <label for="name" class="control-label mb-1">Description</label>
+            {{ form_employee_allowance.description }}
+          </div>
+
+          <div class="form-group">
+            <label for="name" class="control-label mb-1">Status</label>
+            {{ form_employee_allowance.status }}
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="deduction_model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Deduction</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'employee_add_deduction' %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" value="{{ employee_id }}" name="employee_id">
+
+          <div class="form-group">
+            <label for="name" class="control-label mb-1">Deduction Type</label>
+            {{ form_employee_deduction.deduction }}
+          </div>
+
+          <div class="form-group">
+            <label for="name" class="control-label mb-1">Amount</label>
+            {{ form_employee_deduction.amount }}
+          </div>
+
+          <div class="form-group">
+            <label for="name" class="control-label mb-1">Description</label>
+            {{ form_employee_deduction.description }}
+          </div>
+
+          <div class="form-group">
+            <label for="name" class="control-label mb-1">Status</label>
+            {{ form_employee_deduction.status }}
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="loanModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Loan</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'employee_add_loan' %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" value="{{ employee_id }}" name="employee_id">
+
+          <div class="form-group">
+            <label for="name" class="control-label mb-1">Loan Type</label>
+            {{ form_employee_loan.loan }}
+          </div>
+
+          <div class="form-group">
+            <label for="name" class="control-label mb-1">Loan Amount</label>
+            {{ form_employee_loan.total_loan_amount }}
+          </div>
+
+          <div class="form-group">
+            <label for="name" class="control-label mb-1">Interest Percentage</label>
+            {{ form_employee_loan.loan_percentage }}
+          </div>
+
+          <div class="form-group">
+            <label for="name" class="control-label mb-1">Year</label>
+            {{ form_employee_loan.year }}
+          </div>
+
+       
+          <div class="form-group">
+            <label for="name" class="control-label mb-1">Loan Emi</label>
+            {{ form_employee_loan.emi }}
+          </div>
+
+          <div class="form-group">
+            <label for="name" class="control-label mb-1">Description</label>
+            {{ form_employee_loan.description }}
+          </div>
+
+          <div class="form-group">
+            <label for="name" class="control-label mb-1">Status</label>
+            {{ form_employee_loan.status }}
+          </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="modal fade" id="miscDeductionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Miscellaneous Deduction</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'employee_add_miscellaneous_deduction' %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" value="{{ employee_id }}" name="employee_id">
+
+          <div class="form-group">
+            <label for="name" class="control-label mb-1">Miscellaneous Type</label>
+            {{ form_employee_miscellaneous_deduction.miscellaneous }}
+          </div>
+
+          <div class="form-group">
+            <label for="name" class="control-label mb-1">Amount</label>
+            {{ form_employee_miscellaneous_deduction.amount }}
+          </div>
+
+          <div class="form-group">
+            <label for="name" class="control-label mb-1">Description</label>
+            {{ form_employee_miscellaneous_deduction.description }}
+          </div>
+
+          <div class="form-group">
+            <label for="name" class="control-label mb-1">Status</label>
+            {{ form_employee_miscellaneous_deduction.status }}
+          </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+    {% block js %}
+
+        <script>
+
+            $('.cal').keyup(function(){
+                var textone;
+                var texttwo;
+            textone = parseFloat($('#bag_size').val());
+            texttwo = parseFloat($('#total_bag').val());
+            var result = textone * texttwo;
+            $('#total_pck').val(result.toFixed(2));
+        });
+
+
+
+
+
+
+
+
+
+
+  
+  document.addEventListener("DOMContentLoaded", function () {
+    const menuIcons = document.querySelectorAll(".menu-icon");
+    const menuOptions = document.querySelectorAll(".menu-options");
+  
+    // Show/hide menu options when the menu icon is clicked
+    menuIcons.forEach(function (menuIcon) {
+      menuIcon.addEventListener("click", function (event) {
+        event.stopPropagation();
+        const menuOptions = menuIcon.nextElementSibling;
+        menuOptions.style.display = menuOptions.style.display === "block" ? "none" : "block";
+      });
+    });
+  
+    // Hide menu options when the user clicks somewhere else on the page
+    document.addEventListener("click", function () {
+      menuOptions.forEach(function (menuOption) {
+        menuOption.style.display = "none";
+      });
+    });
+  
+    // Prevent the menu options from being hidden when clicking inside the menu itself
+    menuOptions.forEach(function (menuOption) {
+      menuOption.addEventListener("click", function (event) {
+        event.stopPropagation();
+      });
+    });
+  });
+
+
+
+        </script>
+
+    {% endblock js %}
+{% endblock content %}

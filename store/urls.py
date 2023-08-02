@@ -5,59 +5,82 @@ from store import views
 
 urlpatterns = [
 
-    path('get-company_goods-ajax/', get_company_goods_ajax, name="get_company_goods_ajax"),
-    path('get-goods_company-ajax/', get_goods_company_ajax, name="get_goods_company_ajax"),
-    path('get-agent_company-ajax/', get_agent_company_ajax, name="get_agent_company_ajax"),
-
-    path('get-category_ajax-ajax/', get_category_ajax, name="get_category_ajax"),
-
-    path('add-godown/', add_godown, name='add_godown'),
-    path('update-godown/<godown_id>', update_godown, name='update_godown'),
-    path('delete-godown/<godown_id>', delete_godown, name='delete_godown'),
-    path('list-godown/', list_godown, name='list_godown'),
-    
-    path('add-customer/', add_customer, name='add_customer'),
-    path('update-customer/<customer_id>', update_customer, name='update_customer'),
-    path('delete-customer/<customer_id>', delete_customer, name='delete_customer'),
-    path('list-customer/', list_customer, name='list_customer'),
-
-    path('add-dealer/', add_dealer, name='add_dealer'),
-    path('update-dealer/<dealer_id>', update_dealer, name='update_dealer'),
-    path('delete-dealer/<dealer_id>', delete_dealer, name='delete_dealer'),
-    path('list-dealer/', list_dealer, name='list_dealer'),
-
-    path('add-category/', add_category, name='add_category'),
-    path('update-category/<category_id>', update_category, name='update_category'),
-    path('delete-category/<category_id>', delete_category, name='delete_category'),
-    path('list-category/', list_category, name='list_category'),
-
-    
-    path('add-grade/', add_grade, name='add_grade'),
-    path('update-grade/<grade_id>', update_grade, name='update_grade'),
-    path('delete-grade/<grade_id>', delete_grade, name='delete_grade'),
-    path('list-grade/', list_grade, name='list_grade'),
-    
-    path('add-thickness/', add_thickness, name='add_thickness'),
-    path('update-thickness/<thickness_id>', update_thickness, name='update_thickness'),
-    path('delete-thickness/<thickness_id>', delete_thickness, name='delete_thickness'),
-    path('list-thickness/', list_thickness, name='list_thickness'),
-    
-    path('add-size/', add_size, name='add_size'),
-    path('update-size/<company_goods_id>', update_size, name='update_size'),
-    path('delete-size/<company_goods_id>', delete_size, name='delete_size'),
-    path('list-size/', list_size, name='list_size'),
-
     #delete urls 
 
-    path('list-godown-delete/', list_godown_delete, name='list_company_delete'),
-    path('list-company-goods-delete/', list_company_goods_delete, name='list_company_goods_delete'),
-    path('list-goods-company-delete/', list_goods_company_delete, name='list_goods_company_delete'),
-    path('list-agent-delete/', list_agent_delete, name='list_agent_delete'),
-    path('list-transport-delete/', list_transport_delete, name='list_transport_delete'),
+    path('add-pay-scale/', add_pay_scale, name='add_pay_scale'),
+    path('update-pay-scale/<pay_scale_id>', update_pay_scale, name='update_pay_scale'),
+    path('delete-pay-scale/<pay_scale_id>', delete_pay_scale, name='delete_pay_scale'),
+    path('list-pay-scale/', list_pay_scale, name='list_pay_scale'),
+
+    path('add-grade-pay/', add_grade_pay, name='add_grade_pay'),
+    path('update-grade-pay/<grade_pay_id>', update_grade_pay, name='update_grade_pay'),
+    path('delete-grade-pay/<grade_pay_id>', delete_grade_pay, name='delete_grade_pay'),
+    path('list-grade-pay/', list_grade_pay, name='list_grade_pay'),
+
+    path('add-grade-payment/', add_grade_payment, name='add_grade_payment'),
+    path('update-grade-payment/<grade_payment_id>', update_grade_payment, name='update_grade_payment'),
+    path('delete-grade-payment/<grade_payment_id>', delete_grade_payment, name='delete_grade_payment'),
+    path('list-grade-payment/', list_grade_payment, name='list_grade_payment'),
+
+    path('add-employee-type/', add_employee_type, name='add_employee_type'),
+    path('update-employee-type/<employee_type_id>', update_employee_type, name='update_employee_type'),
+    path('delete-employee-type/<employee_type_id>', delete_employee_type, name='delete_employee_type'),
+    path('list-employee-type/', list_employee_type, name='list_employee_type'),
+
+    path('add-department-type/', add_department_type, name='add_department_type'),
+    path('update-department-type/<department_type_type_id>', update_department_type, name='update_department_type'),
+    path('delete-department-type/<department_type_type_id>', delete_department_type, name='delete_department_type'),
+    path('list-department-type/', list_department_type, name='list_department_type'),
+
+    path('add-designation/', add_designation, name='add_designation'),
+    path('update-designation/<designation_type_id>', update_designation, name='update_designation'),
+    path('delete-designation/<designation_type_id>', delete_designation, name='delete_designation'),
+    path('list-designation/', list_designation, name='list_designation'),
+
+    path('add-emp_classes/', add_emp_classes, name='add_emp_classes'),
+    path('update-emp_classes/<emp_classes_type_id>', update_emp_classes, name='update_emp_classes'),
+    path('delete-emp_classes/<emp_classes_type_id>', delete_emp_classes, name='delete_emp_classes'),
+    path('list-emp_classes/', list_emp_classes, name='list_emp_classes'),
+
+    path('add-bank/', add_bank, name='add_bank'),
+    path('update-bank/<bank_type_id>', update_bank, name='update_bank'),
+    path('delete-bank/<bank_type_id>', delete_bank, name='delete_bank'),
+    path('list-bank/', list_bank, name='list_bank'),
+
+    path('add-loan/', add_loan, name='add_loan'),
+    path('update-loan/<loan_type_id>', update_loan, name='update_loan'),
+    path('delete-loan/<loan_type_id>', delete_loan, name='delete_loan'),
+    path('list-loan/', list_loan, name='list_loan'),
+
+
+    path('add-employee/', add_employee, name='add_employee'),
+    path('update-employee/<employee_id>', update_employee, name='update_employee'),
+    path('delete-employee/<employee_id>', delete_employee, name='delete_employee'),
+    path('list-employee/', list_employee, name='list_employee'),
+
+    path('add-allowance/', add_allowance, name='add_allowance'),
+    path('update-allowance/<allowance_id>', update_allowance, name='update_allowance'),
+    path('delete-allowance/<allowance_id>', delete_allowance, name='delete_allowance'),
+    path('list-allowance/', list_allowance, name='list_allowance'),
+
+    path('add-deduction/', add_deduction, name='add_deduction'),
+    path('update-deduction/<deduction_id>', update_deduction, name='update_deduction'),
+    path('delete-deduction/<deduction_id>', delete_deduction, name='delete_deduction'),
+    path('list-deduction/', list_deduction, name='list_deduction'),
+
+    path('add-miscellaneous_deduction/', add_miscellaneous_deduction, name='add_miscellaneous_deduction'),
+    path('update-miscellaneous_deduction/<miscellaneous_deduction_id>', update_miscellaneous_deduction, name='update_miscellaneous_deduction'),
+    path('delete-miscellaneous_deduction/<miscellaneous_deduction_id>', delete_miscellaneous_deduction, name='delete_miscellaneous_deduction'),
+    path('list-miscellaneous_deduction/', list_miscellaneous_deduction, name='list_miscellaneous_deduction'),
 
 
 
 
+
+    # path('add-employee/', add_employee, name='add_employee'),
+    # path('update-employee/<employee_id>', update_employee, name='update_employee'),
+    # path('delete-employee/<employee_id>', delete_employee, name='delete_employee'),
+    # path('list-employee/', list_employee, name='list_employee'),
 
 
     # 

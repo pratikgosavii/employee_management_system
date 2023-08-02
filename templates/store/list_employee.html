@@ -1,0 +1,213 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Product List{% endblock title %}
+
+{% block head %}
+
+<style>
+
+   
+.menu-cell {
+    position: relative;
+}
+
+.menu {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+}
+
+
+.ov-h{
+  overflow:inherit !important;
+}
+
+
+.dot {
+    width: 5px;
+    height: 5px;
+    background-color: #000;
+    border-radius: 50%;
+    margin: 2px 0;
+    cursor: pointer;
+}
+
+
+.menu {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .menu-icon {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .dot {
+    width: 4px;
+    height: 4px;
+    background-color: #000;
+    border-radius: 50%;
+    margin: 1px;
+  }
+  
+  .menu-options {
+    display: none;
+    position: absolute;
+    top: 25px;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    padding: 5px;
+    list-style: none;
+  }
+  
+  .menu-options li {
+    padding: 5px;
+  }
+  
+  .menu-options li:hover {
+    background-color: #f0f0f0;
+  }
+
+</style>
+
+
+{% endblock head %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="row m-0">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>Dashboard</h1>
+                    </div>
+                </div>
+            </div>
+            {% comment %} <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                            <li><a href="#">Dashboard</a></li>
+                            <li><a href="#">Product</a></li>
+                            <li class="active">List</li>
+                        </ol>
+                    </div>
+                </div>
+            </div> {% endcomment %}
+        </div>
+    </div>
+</div>
+{% endblock breadcrumbs %}
+
+{% block content %}
+<div class="row">
+    <div class="col-xl-12">
+        <a href="{% url 'add_employee' %}"/> <button style="margin-bottom : 10px;" class="btn btn-success"> Add Employee </button> </a>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="box-title">Employee List </h4>
+            </div>
+            <div class="card-body--">
+                <div class="table-stats order-table ov-h">
+                    <table class="table ">
+                        <thead>
+                            <tr>
+                                <th class="serial">#</th>
+                                <th>Name</th>
+                                <th>Middle Name</th>
+                                <th>Last Name</th> 
+                                <th>Actions</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if data %}
+                            {% for i in data %}
+                            <tr>
+                                <td class="serial">{{ forloop.counter }}</td>
+                                <td>{{ i.name }}</td>
+                                <td>{{ i.middle_name }}</td>
+                                <td>{{ i.last_name }}</td>
+                                <td class="menu-cell">
+                                    <div class="menu">
+                                      <div class="menu-icon">
+                                        <div class="dot"></div>
+                                        <div class="dot"></div>
+                                        <div class="dot"></div>
+                                      </div>
+                                      <ul class="menu-options">
+                                        <li><a href="{% url 'update_employee' i.id %}"> Update </a> </li>
+                                        <li><a href="{% url 'manage_salary' i.id %}"> Manage Salary </a> </li>
+                                        <li><a href="{% url 'update_employee' i.id %}"> No Pay </a> </li>
+                                        <li><a href="{% url 'delete_employee' i.id %}"> Delete </a> </li>
+                                      </ul>
+                                    </div>
+                                  </td>
+                               
+                               
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                                <tr><td>No Product Data</td></tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div> <!-- /.table-stats -->
+            </div>
+        </div> <!-- /.card -->
+    </div>  <!-- /.col-lg-8 -->
+
+    
+</div>
+{% endblock content %}
+
+
+{% block js %}
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const menuIcons = document.querySelectorAll(".menu-icon");
+        const menuOptions = document.querySelectorAll(".menu-options");
+      
+        // Show/hide menu options when the menu icon is clicked
+        menuIcons.forEach(function (menuIcon) {
+          menuIcon.addEventListener("click", function (event) {
+            event.stopPropagation();
+            const menuOptions = menuIcon.nextElementSibling;
+            menuOptions.style.display = menuOptions.style.display === "block" ? "none" : "block";
+          });
+        });
+      
+        // Hide menu options when the user clicks somewhere else on the page
+        document.addEventListener("click", function () {
+          menuOptions.forEach(function (menuOption) {
+            menuOption.style.display = "none";
+          });
+        });
+      
+        // Prevent the menu options from being hidden when clicking inside the menu itself
+        menuOptions.forEach(function (menuOption) {
+          menuOption.addEventListener("click", function (event) {
+            event.stopPropagation();
+          });
+        });
+      });
+
+    
+
+</script>
+
+
+{% endblock js %}

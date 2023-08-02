@@ -5,140 +5,118 @@ from .models import *
 from django.contrib.admin.widgets import  AdminDateWidget, AdminTimeWidget, AdminSplitDateTime
 
 
-class request_material_Form(forms.ModelForm):
+class employee_allowance_Form(forms.ModelForm):
     class Meta:
-        model = request_material
+        model = employee_allowance
         fields = '__all__'
         widgets = {
-            'godown': forms.Select(attrs={
-                'class': 'form-control', 'id': 'godown'
+          
+            'employee': forms.Select(attrs={
+                'class': 'form-control', 'id': 'employee'
             }),
-            'company': forms.Select(attrs={
-                'class': 'form-control', 'id': 'company'
+            'allowance': forms.Select(attrs={
+                'class': 'form-control', 'id': 'allowance'
             }),
-            'company_goods': forms.Select(attrs={
-                'class': 'form-control', 'id': 'company_goods'
+            'amount': forms.NumberInput(attrs={
+                'class': 'form-control', 'id': 'amount'
             }),
-            'goods_company': forms.Select(attrs={
-                'class': 'form-control', 'id': 'category'
-            }),
-            'employee_name': forms.TextInput(attrs={
-                'class': 'form-control', 'id': 'bag_size'
-            }),
-
-            'customer_name': forms.Select(attrs={
-                'class': 'form-control', 'id': 'bag_size'
-            }),
-           
-           
-            'bags': forms.NumberInput(attrs={
-                'class': 'form-control', 'id': 'bag_size'
-            }),
-            'DC_number': forms.TextInput(attrs={
-                'class': 'form-control', 'id': 'total_bag'
-            }),
-
-            'DC_date': DateInput(attrs={ 'class': 'form-control', 'type': 'date'}, format = '%Y-%m-%d'),
-            
-        }
-
-
-
-class project_Form(forms.ModelForm):
-    class Meta:
-        model = project
-        fields = '__all__'
-        widgets = {
-           
-            'employee_name': forms.TextInput(attrs={
-                'class': 'form-control', 'id': 'employee_name'
-            }),
-
-            'customer': forms.Select(attrs={
-                'class': 'form-control', 'id': 'customer'
-            }),
-           
-           
             'description': forms.TextInput(attrs={
                 'class': 'form-control', 'id': 'description'
             }),
+            'status': forms.Select(attrs={
+                'class': 'form-control', 'id': 'status'
+            }),
            
-          
+            
+        }
 
-            'DC_date': DateInput(attrs={ 'class': 'form-control', 'type': 'date'}, format = '%Y-%m-%d'),
+
+
+
+class employee_deduction_Form(forms.ModelForm):
+    class Meta:
+        model = employee_deduction
+        fields = '__all__'
+        widgets = {
+          
+            'employee': forms.Select(attrs={
+                'class': 'form-control', 'id': 'employee'
+            }),
+            'deduction': forms.Select(attrs={
+                'class': 'form-control', 'id': 'deduction'
+            }),
+            'amount': forms.NumberInput(attrs={
+                'class': 'form-control', 'id': 'amount'
+            }),
+            'description': forms.TextInput(attrs={
+                'class': 'form-control', 'id': 'description'
+            }),
+            'status': forms.Select(attrs={
+                'class': 'form-control', 'id': 'status'
+            }),
+           
+            
+        }
+
+class employee_loan_Form(forms.ModelForm):
+    class Meta:
+        model = employee_loan
+        fields = '__all__'
+        widgets = {
+          
+            'employee': forms.Select(attrs={
+                'class': 'form-control', 'id': 'employee'
+            }),
+            'loan': forms.Select(attrs={
+                'class': 'form-control', 'id': 'loan'
+            }),
+            'total_loan_amount': forms.NumberInput(attrs={
+                'class': 'form-control', 'id': 'amount'
+            }),
+            'loan_percentage': forms.NumberInput(attrs={
+                'class': 'form-control', 'id': 'amount'
+            }),
+            'year': forms.NumberInput(attrs={
+                'class': 'form-control', 'id': 'amount'
+            }),
+            'emi': forms.NumberInput(attrs={
+                'class': 'form-control', 'id': 'amount'
+            }),
+            'description': forms.TextInput(attrs={
+                'class': 'form-control', 'id': 'description'
+            }),
+            'status': forms.Select(attrs={
+                'class': 'form-control', 'id': 'status'
+            }),
+           
+            
+        }
+
+class employee_miscellaneous_deduction_Form(forms.ModelForm):
+    class Meta:
+        model = employee_miscellaneous_deduction
+        fields = '__all__'
+        widgets = {
+          
+            'employee': forms.Select(attrs={
+                'class': 'form-control', 'id': 'employee'
+            }),
+            'miscellaneous': forms.Select(attrs={
+                'class': 'form-control', 'id': 'deduction'
+            }),
+            'amount': forms.NumberInput(attrs={
+                'class': 'form-control', 'id': 'amount'
+            }),
+            'description': forms.TextInput(attrs={
+                'class': 'form-control', 'id': 'description'
+            }),
+            'status': forms.Select(attrs={
+                'class': 'form-control', 'id': 'status'
+            }),
+           
             
         }
 
 
 
-class project_matarial_Form(forms.ModelForm):
-    class Meta:
-        model = project_material
-        fields = '__all__'
-        widgets = {
-           
-            'quantity': forms.TextInput(attrs={
-                'class': 'form-control', 'id': 'bag_size'
-            }),
-
-            'product': forms.Select(attrs={
-                'class': 'form-control', 'id': 'bag_size'
-            }),
-
-            'project': forms.Select(attrs={
-                'class': 'form-control', 'id': 'bag_size'
-            }),
-
-        }
-
-
-class product_qr_Form(forms.ModelForm):
-    class Meta:
-        model = product_qr
-        fields = '__all__'
-        widgets = {
-          
-          
-            'category': forms.Select(attrs={
-                'class': 'form-control', 'id': 'categoryyy'
-            }),
-          
-            'size': forms.Select(attrs={
-                'class': 'form-control', 'id': 'sizeyy'
-            }),
-          
-            'thickness': forms.Select(attrs={
-                'class': 'form-control', 'id': 'thicknessyy'
-            }),
-          
-            'grade': forms.Select(attrs={
-                'class': 'form-control', 'id': 'gradeyy'
-            }),
-          
-          
-            
-        }
-
-
-
-
-class goods_company_Form(forms.ModelForm):
-    class Meta:
-        model = stock
-        fields = '__all__'
-        widgets = {
-         
-            'company_goods': forms.Select(attrs={
-                'class': 'form-control', 'id': 'company_goods'
-            }),
-           
-            'goods_company_name': forms.TextInput(attrs={
-                'class': 'form-control', 'id': 'name'
-            }),
-
-            'total_bag': forms.NumberInput(attrs={
-                'class': 'form-control cal', 'id': 'total_bag'
-            }),
-           
-            
-        }
+        

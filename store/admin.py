@@ -10,9 +10,6 @@ class SupplierAdmin(admin.ModelAdmin):
 class BuyerAdmin(admin.ModelAdmin):
     list_display = ['user', 'name', 'address', 'created_date']
 
-admin.site.register(category)
-admin.site.register(size)
-admin.site.register(godown)
-admin.site.register(customer)
-admin.site.register(product_qr)
+
+admin.site.register(employee)
 
