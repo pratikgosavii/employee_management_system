@@ -1,0 +1,90 @@
+{% extends 'base/base.html' %}
+
+
+
+{% block title %}Create Product{% endblock title %}
+
+{% block breadcrumbs %}
+
+{% endblock breadcrumbs %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <strong class="card-title"> Post Vacancy</strong>
+            </div>
+            <div class="card-body">
+                <!-- Credit Card -->
+                <div id="pay-invoice">
+                    <div class="card-body">
+                        <form action="#" method="post" >
+                            {% csrf_token %}
+
+                           
+                        
+                            
+                            <div class="form-group">
+                                <label for="name" class="control-label mb-1">Department</label>
+                                {{ form.department }}
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="name" class="control-label mb-1">Vacancy Post Name</label>
+                                {{ form.name }}
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for="name" class="control-label mb-1">No of Vacancy</label>
+                                {{ form.no_of_vacancy }}
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for="name" class="control-label mb-1">Description</label>
+                                {{ form.description }}
+
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="name" class="control-label mb-1">Status</label>
+                                {{ form.status }}
+
+                            </div>
+
+                            
+
+                            <div>
+                                <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
+                                    <span id="payment-button-amount">Post Vacancy </span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div> <!-- .card -->
+
+    </div><!--/.col-->
+</div>
+
+    {% block js %}
+
+        <script>
+
+            $('.cal').keyup(function(){
+                var textone;
+                var texttwo;
+            textone = parseFloat($('#bag_size').val());
+            texttwo = parseFloat($('#total_bag').val());
+            var result = textone * texttwo;
+            $('#total_pck').val(result.toFixed(2));
+        });
+        </script>
+
+    {% endblock js %}
+{% endblock content %}

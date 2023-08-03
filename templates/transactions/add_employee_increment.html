@@ -1,0 +1,168 @@
+{% extends 'base/base.html' %}
+
+
+
+{% block title %}Create Product{% endblock title %}
+
+{% block head %}
+
+<style>
+
+    .custo{
+        width : 200px !important; 
+    }
+</style>
+
+{% endblock head %}
+
+{% block breadcrumbs %}
+
+{% endblock breadcrumbs %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <strong class="card-title">Employee Salary Increment</strong>
+            </div>
+            <div class="card-body">
+                <!-- Credit Card -->
+                <div id="pay-invoice">
+                    <div class="card-body">
+                        <form action="#" method="post" >
+                            {% csrf_token %}
+
+                           
+                        
+                            
+                            <div class="form-group">
+                                <label for="name" class="control-label mb-1">Department</label>
+                                {{ form.department }}
+                            </div>
+
+                            <div class="form-group">
+                                <label for="name" class="control-label mb-1">Employee</label>
+                                {{ form.employee }}
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="name" class="control-label mb-1">Old Basic Salary</label>
+                                {{ form.old_basic }}
+
+                            </div>
+
+                            <div class="form-group" style="display : flex; gap : 10px">
+
+                                <label for="name" class="control-label mb-1">Percentage</label>
+                                <input type="number" name="percentage" class="form-control custo" id="percentage">
+
+                                <label for="name" class="control-label mb-1">New Basic Salary</label>
+                                {{ form.new_basic }}
+
+                               
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="name" class="control-label mb-1">Increment Date</label>
+                                {{ form.incerement_date }}
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for="name" class="control-label mb-1">Description</label>
+                                {{ form.description }}
+
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="name" class="control-label mb-1">Status</label>
+                                {{ form.status }}
+
+                            </div>
+
+                            
+
+                            <div>
+                                <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
+                                    <span id="payment-button-amount">Transfer Department</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div> <!-- .card -->
+
+    </div><!--/.col-->
+</div>
+
+{% endblock content %}
+
+
+    {% block js %}
+
+        <script>
+
+            $('.cal').keyup(function(){
+                var textone;
+                var texttwo;
+            textone = parseFloat($('#bag_size').val());
+            texttwo = parseFloat($('#total_bag').val());
+            var result = textone * texttwo;
+            $('#total_pck').val(result.toFixed(2));
+        });
+
+
+
+        
+    $("#employee").change(function () {
+        const employeeID = $(this).val();  // get the selected subject ID from the HTML dropdown list 
+        $.ajax({                       // initialize an AJAX request
+            type: "POST",
+            url: '{% url "get_old_basic_ajax" %}',
+            data: {
+                'employee_id': employeeID,       // add the country id to the POST parameters
+                'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+            },
+            success: function (data) {   // `data` is from `get_topics_ajax` view function
+                console.log(data.value)
+                $("#old_basic").val(data.value); // replace the contents of the topic input with the data that came from the server
+            }
+        });
+    });
+
+
+
+
+
+    percentage.addEventListener("input", function (e) {
+
+        
+        const basicSalaryInput = document.getElementById('old_basic');
+        const incrementPercentageInput = document.getElementById('percentage');
+        const new_basic = document.getElementById('totalSalaryResult');
+
+        // Get the values from the input fields
+        const basicSalary = parseFloat(basicSalaryInput.value);
+        const incrementPercentage = parseFloat(incrementPercentageInput.value);
+
+        // Calculate the total salary
+        var totalSalary_increased = (incrementPercentage * (basicSalary / 100));
+        console.log(totalSalary_increased)
+        var totalSalary = totalSalary_increased + basicSalary;
+
+        // Display the result
+        totalSalary = parseFloat(totalSalary).toFixed(2);
+
+        document.getElementById('new_basic').value = totalSalary;
+
+
+    });
+
+
+        </script>
+
+    {% endblock js %}

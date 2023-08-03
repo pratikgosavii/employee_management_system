@@ -375,6 +375,7 @@ def delete_employee_miscellaneous_deduction(request, employee_miscellaneous_dedu
 @login_required(login_url='login')
 def list_employee_miscellaneous_deduction(request):
     
+
      
     data = employee_miscellaneous_deduction.objects.all().order_by('name')
 
@@ -385,3 +386,235 @@ def list_employee_miscellaneous_deduction(request):
 
     return render(request, 'store/list_employee_miscellaneous_deduction.html', context)
 
+
+
+
+@login_required(login_url='login')
+def add_employee_transfer_department(request):
+    
+    if request.method == "POST":
+        
+        forms = employee_increament_Form(request.POST)
+
+        if forms.is_valid():
+
+            forms.save()
+
+            context = {
+                'form' : forms
+            }
+
+            return redirect('list_employee_transfer_department')
+
+        else:
+
+            print(forms.errors)
+
+            context = {
+                'form' : forms
+            }
+
+            return render(request, 'transactions/add_employee_deparment_transfer.html', context)
+
+    else:
+
+
+        forms = employee_department_transfer_Form()
+
+        context = {
+            'form' : forms
+        }
+
+        return render(request, 'transactions/add_employee_deparment_transfer.html', context)
+
+@login_required(login_url='login')
+def list_employee_transfer_department(request):
+    
+
+    data = employee_department_transfer.objects.all()
+
+    print(data) 
+
+    context = {
+        'data' : data
+    }
+
+    return render(request, 'transactions/list_transfer_department.html', context)
+
+
+
+
+
+@login_required(login_url='login')
+def add_employee_increment(request):
+    
+    if request.method == "POST":
+        
+        forms = employee_increament_Form(request.POST)
+
+        if forms.is_valid():
+
+            forms.save()
+
+            context = {
+                'form' : forms
+            }
+
+            return redirect('list_increment')
+
+        else:
+
+            print(forms.errors)
+
+            context = {
+                'form' : forms
+            }
+
+            return render(request, 'transactions/add_employee_increment.html', context)
+
+    else:
+
+
+        forms = employee_increament_Form()
+
+        context = {
+            'form' : forms
+        }
+
+        return render(request, 'transactions/add_employee_increment.html', context)
+
+@login_required(login_url='login')
+def list_increment(request):
+    
+
+    data = employee_increament.objects.all()
+
+    print(data) 
+
+    context = {
+        'data' : data
+    }
+
+    return render(request, 'transactions/list_increment.html', context)
+
+
+
+
+
+
+
+
+@login_required(login_url='login')
+def post_vacancy(request):
+    
+    if request.method == 'POST':
+
+        forms = vacancy_Form(request.POST)
+
+        if forms.is_valid():
+            forms.save()
+            return redirect('list_vacancy')
+        else:
+            print(forms.errors)
+            return redirect('list_vacancy')
+    
+    else:
+
+        forms = vacancy_Form()
+      
+        vacancy_data = vacancy.objects.all()
+
+        
+        context = {
+            'form': forms,
+            'vacancy_data': vacancy_data,
+        }
+
+        return render(request, 'transactions/post_vacancy.html', context)
+
+@login_required(login_url='login')
+def update_vacancy(request, vacancy_id):
+
+    if request.method == 'POST':
+
+        instance = vacancy.objects.get(id=vacancy_id)
+
+        forms = vacancy_Form(request.POST, instance = instance)
+
+        if forms.is_valid():
+            forms.save()
+            return redirect('list_vacancy')
+    
+    else:
+
+        instance = vacancy.objects.get(id=vacancy_id)
+
+        
+
+        forms = vacancy_Form(instance = instance)
+
+        context = {
+            'form': forms,
+        }
+
+        return render(request, 'transactions/post_vacancy.html', context)
+
+
+@login_required(login_url='login')
+def delete_vacancy(request, vacancy_id):
+    
+    vacancy.objects.get(id=vacancy_id).delete()
+
+    return HttpResponseRedirect(reverse('list_vacancy_delete'))
+
+
+@login_required(login_url='login')
+def list_vacancy(request):
+    
+     
+    data = vacancy.objects.all().order_by('name')
+
+    context = {
+            'data': data
+        }
+
+
+    return render(request, 'transactions/list_vacancy.html', context)
+
+
+
+@login_required(login_url='login')
+def get_old_department_ajax(request):
+    
+     
+    employee_id = request.POST.get('employee_id')
+
+    employee_instance = employee.objects.get(id = employee_id)
+
+
+
+    some_data_to_dump = {
+        'value': employee_instance.department.id,
+    }
+
+
+    return JsonResponse((some_data_to_dump), safe = False) 
+
+
+
+@login_required(login_url='login')
+def get_old_basic_ajax(request):
+    
+     
+    employee_id = request.POST.get('employee_id')
+
+    employee_instance = employee.objects.get(id = employee_id)
+
+
+
+    some_data_to_dump = {
+        'value': employee_instance.basic_salary,
+    }
+
+
+    return JsonResponse((some_data_to_dump), safe = False) 

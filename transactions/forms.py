@@ -120,3 +120,105 @@ class employee_miscellaneous_deduction_Form(forms.ModelForm):
 
 
         
+
+class employee_department_transfer_Form(forms.ModelForm):
+    class Meta:
+        model = employee_department_transfer
+        fields = '__all__'
+        widgets = {
+          
+            'employee': forms.Select(attrs={
+                'class': 'form-control', 'id': 'employee'
+            }),
+            'old_deparment': forms.Select(attrs={
+                'class': 'form-control', 'id': 'old_deparment', 'readonly' : 'readonly'
+            }),
+            'new_deparment': forms.Select(attrs={
+                'class': 'form-control', 'id': 'deduction'
+            }),
+            'description': forms.TextInput(attrs={
+                'class': 'form-control', 'id': 'description'
+            }),
+            'status': forms.Select(attrs={
+                'class': 'form-control', 'id': 'status'
+            }),
+
+            'transfer_date': DateInput(attrs={ 'class': 'form-control', 'type': 'date'}, format = '%Y-%m-%d'),
+            
+           
+            
+        }
+
+
+
+        
+        
+
+class vacancy_Form(forms.ModelForm):
+    class Meta:
+        model = vacancy
+        fields = '__all__'
+        widgets = {
+          
+            'department': forms.Select(attrs={
+                'class': 'form-control', 'id': 'employee'
+            }),
+            
+            'name': forms.TextInput(attrs={
+                'class': 'form-control', 'id': 'name'
+            }),
+            
+            'no_of_vacancy': forms.NumberInput(attrs={
+                'class': 'form-control', 'id': 'description'
+            }),
+            
+            'description': forms.TextInput(attrs={
+                'class': 'form-control', 'id': 'description'
+            }),
+            'status': forms.Select(attrs={
+                'class': 'form-control', 'id': 'status'
+            }),
+
+        }
+
+
+
+        
+
+class employee_increament_Form(forms.ModelForm):
+    class Meta:
+        model = employee_increament
+        fields = '__all__'
+        widgets = {
+          
+            'department': forms.Select(attrs={
+                'class': 'form-control', 'id': 'department'
+            }),
+            
+            'employee': forms.Select(attrs={
+                'class': 'form-control', 'id': 'employee'
+            }),
+            
+            'old_basic': forms.NumberInput(attrs={
+                'class': 'form-control', 'id': 'old_basic', 'readonly' : 'readonly'
+            }),
+
+            'new_basic': forms.NumberInput(attrs={
+                'class': 'form-control custo', 'id': 'new_basic'
+            }),
+            
+            'description': forms.TextInput(attrs={
+                'class': 'form-control', 'id': 'description'
+            }),
+            'status': forms.Select(attrs={
+                'class': 'form-control', 'id': 'status'
+            }),
+
+            'incerement_date': DateInput(attrs={ 'class': 'form-control', 'type': 'date'}, format = '%Y-%m-%d'),
+
+
+        }
+
+
+
+        

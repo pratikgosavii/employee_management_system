@@ -71,3 +71,50 @@ class employee_miscellaneous_deduction(models.Model):
 
         return self.employee.name
     
+
+class employee_department_transfer(models.Model):
+
+    employee = models.ForeignKey(employee, on_delete=models.CASCADE, related_name="sdsdss")
+    old_deparment = models.ForeignKey(department_type, on_delete=models.CASCADE, related_name="sdsdsd")
+    new_deparment = models.ForeignKey(department_type, on_delete=models.CASCADE, related_name="dfdfdffs")
+    transfer_date = models.DateField(auto_now_add=False, default = datetime.now(), blank = True, null = True)
+    description = models.CharField(max_length=120, unique=False)
+    status = models.CharField(choices = status_choice, max_length=120)
+
+
+    def __str__(self):
+
+        return self.employee.name
+    
+
+
+
+
+
+class vacancy(models.Model):
+
+    department = models.ForeignKey(department_type, on_delete=models.CASCADE)
+    name = models.CharField(max_length=120, unique=False)
+    no_of_vacancy = models.BigIntegerField()
+    description = models.CharField(max_length=120, unique=False)
+    status = models.CharField(choices = status_choice, max_length=120)
+
+
+    def __str__(self):
+
+        return self.department.name
+
+
+class employee_increament(models.Model):
+
+    department = models.ForeignKey(department_type, on_delete=models.CASCADE)
+    employee = models.ForeignKey(employee, on_delete=models.CASCADE)
+    old_basic = models.BigIntegerField()
+    new_basic = models.BigIntegerField()
+    description = models.CharField(max_length=120, unique=False)
+    status = models.CharField(choices = status_choice, max_length=120)
+    incerement_date = models.DateField(auto_now_add=False, default = datetime.now(), blank = True, null = True)
+
+    def __str__(self):
+
+        return self.department.name

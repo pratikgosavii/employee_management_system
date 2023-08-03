@@ -54,12 +54,12 @@ class employee_Form(forms.ModelForm):
             'biometric_no': forms.TextInput(attrs={
                 'class': 'form-control', 'id': 'name'
             }),
-            'nps_dcps': forms.TextInput(attrs={
+            'nps_dcps': forms.Select(attrs={
                 'class': 'form-control', 'id': 'name'
             }),
         
 
-            'department': forms.TextInput(attrs={
+            'department': forms.Select(attrs={
                 'class': 'form-control', 'id': 'name'
             }),
             'employee_type': forms.Select(attrs={

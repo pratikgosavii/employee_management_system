@@ -17,6 +17,12 @@ status_choice =(
    
 )
 
+nps_dcps_choice =(
+    ("1", "NPS"),
+    ("2", "DCPS"),
+   
+)
+
 class pay_scale(models.Model):
 
     name = models.CharField(max_length=120, unique=False)
@@ -127,39 +133,39 @@ class loan(models.Model):
 
 class employee(models.Model):
     
-    name = models.CharField(max_length=120, unique=False)
-    middle_name = models.CharField(max_length=120, unique=False)
-    last_name = models.CharField(max_length=120, unique=False)
-    address = models.CharField(max_length=120, unique=False)
-    city = models.CharField(max_length=120, unique=False)
-    taluka = models.CharField(max_length=120, unique=False)
-    district = models.CharField(max_length=120, unique=False)
-    state = models.CharField(max_length=120, unique=False)
-    country = models.CharField(max_length=120, unique=False)
-    pin_code = models.IntegerField()
+    name = models.CharField(max_length=120, unique=False, blank = True, null = True)
+    middle_name = models.CharField(max_length=120, unique=False, blank = True, null = True)
+    last_name = models.CharField(max_length=120, unique=False, blank = True, null = True)
+    address = models.CharField(max_length=120, unique=False, blank = True, null = True)
+    city = models.CharField(max_length=120, unique=False, blank = True, null = True)
+    taluka = models.CharField(max_length=120, unique=False, blank = True, null = True)
+    district = models.CharField(max_length=120, unique=False, blank = True, null = True)
+    state = models.CharField(max_length=120, unique=False, blank = True, null = True)
+    country = models.CharField(max_length=120, unique=False, blank = True, null = True)
+    pin_code = models.IntegerField(blank = True, null = True)
 
-    adhar_card = models.CharField(max_length=120, unique=True)
-    pan_card = models.CharField(max_length=120, unique=True)
-    biometric_no = models.CharField(max_length=120, unique=True)
-    nps_dcps = models.CharField(max_length=120, unique=True)
+    adhar_card = models.CharField(max_length=120, unique=True, blank = True, null = True)
+    pan_card = models.CharField(max_length=120, unique=True, blank = True, null = True)
+    biometric_no = models.CharField(max_length=120, unique=True, blank = True, null = True)
+    nps_dcps = models.CharField(choices = nps_dcps_choice, max_length=120, blank = True, null = True)
 
-    department = models.CharField(max_length=120, unique=True)
-    employee_type = models.ForeignKey(employee_type, on_delete=models.CASCADE)
-    grade_payment = models.ForeignKey(grade_payment, on_delete=models.CASCADE)
-    pay_scale = models.ForeignKey(pay_scale, on_delete=models.CASCADE)
-    designation = models.ForeignKey(designation, on_delete=models.CASCADE)
-    hra = models.BooleanField(default=False)
-    ta = models.BooleanField(default=False)
-    da = models.BooleanField(default=False)
-    physical_disable = models.BooleanField(default=False)
-    grade_pay = models.ForeignKey(grade_pay, on_delete=models.CASCADE)
-    basic_salary = models.IntegerField()
-    date_of_birth = models.DateField(auto_now_add=False)
-    date_of_joining = models.DateField(auto_now_add=False)
-    date_of_retirement = models.DateField(auto_now_add=False, default = datetime.now())
+    department = models.ForeignKey(department_type, on_delete=models.CASCADE, blank = True, null = True)
+    employee_type = models.ForeignKey(employee_type, on_delete=models.CASCADE, blank = True, null = True)
+    grade_payment = models.ForeignKey(grade_payment, on_delete=models.CASCADE, blank = True, null = True)
+    pay_scale = models.ForeignKey(pay_scale, on_delete=models.CASCADE, blank = True, null = True)
+    designation = models.ForeignKey(designation, on_delete=models.CASCADE, blank = True, null = True)
+    hra = models.BooleanField(default=False, blank = True, null = True)
+    ta = models.BooleanField(default=False, blank = True, null = True)
+    da = models.BooleanField(default=False, blank = True, null = True)
+    physical_disable = models.BooleanField(default=False, blank = True, null = True)
+    grade_pay = models.ForeignKey(grade_pay, on_delete=models.CASCADE, blank = True, null = True)
+    basic_salary = models.IntegerField(blank = True, null = True)
+    date_of_birth = models.DateField(auto_now_add=False, blank = True, null = True)
+    date_of_joining = models.DateField(auto_now_add=False, blank = True, null = True)
+    date_of_retirement = models.DateField(auto_now_add=False, default = datetime.now(), blank = True, null = True)
 
-    bank_ac_no = models.IntegerField()
-    permanent_address = models.CharField(max_length=120, unique=True)
+    bank_ac_no = models.IntegerField(blank = True, null = True)
+    permanent_address = models.CharField(max_length=120, unique=True, blank = True, null = True)
 
 
     def __str__(self):
