@@ -32,10 +32,10 @@
 {% block content %}
 <div class="row">
     <div class="col-xl-12">
-        <a href="{% url 'post_vacancy' %}"/> <button style="margin-bottom : 10px;" class="btn btn-success"> Vaccant Post </button> </a>
+        <a href="{% url 'add_leaves' %}"/> <button style="margin-bottom : 10px;" class="btn btn-success"> Add Leaves</button> </a>
         <div class="card">
             <div class="card-body">
-                <h4 class="box-title"> Vaccant Post List</h4>
+                <h4 class="box-title">Vacancy List</h4>
             </div>
             <div class="card-body--">
                 <div class="table-stats order-table ov-h">
@@ -43,9 +43,10 @@
                         <thead>
                             <tr>
                                 <th class="serial">#</th>
-                                <th>Department</th>
-                                <th>Vacancy Post Name</th>
-                                <th>No of Vacancy</th>
+                                <th>Employee</th>
+                                <th>Leaves From Date</th>
+                                <th>Leaves From Date</th>
+                                <th>Total Days</th>
                                 <th>Description</th>
                                 <th>Status</th>
                                 <th>Actions</th>
@@ -58,9 +59,10 @@
                             {% for i in data %}
                             <tr>
                                 <td class="serial">{{ forloop.counter }}</td>
-                                <td>{{ i.department.name }}</td>
-                                <td>{{ i.name }}</td>
-                                <td>{{ i.no_of_vacancy }}</td>
+                                <td>{{ i.employee }}</td>
+                                <td>{{ i.date_from }}</td>
+                                <td>{{ i.date_to }}</td>
+                                <td>{{ i.total_days }}</td>
                                 <td>{{ i.description }}</td>
                                 <td>{{ i.status }}</td>
                                

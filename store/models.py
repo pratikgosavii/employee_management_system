@@ -123,7 +123,7 @@ class loan(models.Model):
 
     def __str__(self):
 
-        return self.bank.name
+        return self.name
     
 
 
@@ -159,7 +159,7 @@ class employee(models.Model):
     da = models.BooleanField(default=False, blank = True, null = True)
     physical_disable = models.BooleanField(default=False, blank = True, null = True)
     grade_pay = models.ForeignKey(grade_pay, on_delete=models.CASCADE, blank = True, null = True)
-    basic_salary = models.IntegerField(blank = True, null = True)
+    basic_salary = models.BigIntegerField(blank = True, null = True)
     date_of_birth = models.DateField(auto_now_add=False, blank = True, null = True)
     date_of_joining = models.DateField(auto_now_add=False, blank = True, null = True)
     date_of_retirement = models.DateField(auto_now_add=False, default = datetime.now(), blank = True, null = True)

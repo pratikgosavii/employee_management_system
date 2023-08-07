@@ -42,6 +42,15 @@ urlpatterns = [
     path('delete-vacancy/<vacancy_id>', delete_vacancy, name='delete_vacancy'),
     path('list-vacancy/', list_vacancy, name='list_vacancy'),
 
+    path('add-leaves/', post_leaves, name='add_leaves'),
+    path('update-leaves/<leaves_id>', update_leaves, name='update_leaves'),
+    path('delete-leaves/<leaves_id>', delete_leaves, name='delete_leaves'),
+    path('list-leaves/', list_leaves, name='list_leaves'),
+
+    path('employee-salary/', list_employee_salary, name='employee_salary'),
+    path('generate-employee-salary/<employee_id>/<month>/<year>', generate_employee_salary, name='generate_employee_salary'),
+    path('generate-employee-salary-multiple', generate_employee_salary_multiple, name='generate_employee_salary_multiple'),
+
 
     path('get_old_department_ajaxy/', get_old_department_ajax, name='get_old_department_ajax'),
     path('get_old_basic_ajax/', get_old_basic_ajax, name='get_old_basic_ajax'),

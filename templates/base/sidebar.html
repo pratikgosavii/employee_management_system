@@ -15,7 +15,7 @@
                         <li><i class="fa fa-id-card-o"></i><a href="{% url 'add_employee' %}">Add</a></li>
                         <li><i class="fa fa-th"></i><a href="{% url 'list_employee' %}">View</a></li>
                         <li><i class="fa fa-th"></i><a href="{% url 'list_increment' %}">Employee Increment</a></li>
-                        <li><i class="fa fa-th"></i><a href="{% url 'list_vacancy' %}">Post Vacancy</a></li>
+                        <li><i class="fa fa-th"></i><a href="{% url 'list_vacancy' %}">Vaccant Post</a></li>
                         <li><i class="fa fa-th"></i><a href="{% url 'list_employee_transfer_department' %}">Transfer Department</a></li>
                     </ul>
                 </li>
@@ -23,7 +23,7 @@
                 <li class="menu-item-has-children dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-users"></i>Salary Management</a>
                     <ul class="sub-menu children dropdown-menu">
-                        <li><i class="fa fa-id-card-o"></i><a href="{% url 'add_employee' %}">Add</a></li>
+                        <li><i class="fa fa-id-card-o"></i><a href="{% url 'employee_salary' %}">Employee Salary</a></li>
                         <li><i class="fa fa-th"></i><a href="{% url 'list_employee' %}">View</a></li>
                     </ul>
                 </li>
@@ -54,14 +54,23 @@
                 <li class="menu-item-has-children dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-archive"></i>Leave Management</a>
                     <ul class="sub-menu children dropdown-menu">
-                        <li><i class="fa fa-th"></i><a href="{% url 'list_employee' %}">View</a></li>
+                        <li><i class="fa fa-th"></i><a href="{% url 'list_leaves' %}">View</a></li>
                     </ul>
                 </li>
 
                 <li class="menu-item-has-children dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-archive"></i>Reports</a>
                     <ul class="sub-menu children dropdown-menu">
-                        <li><i class="fa fa-th"></i><a href="{% url 'list_employee' %}">View</a></li>
+                        <li><i class="fa fa-th"></i><a href="{% url 'list_employee' %}">Monthly salary bill</a></li>
+                        <li><i class="fa fa-th"></i><a href="{% url 'list_employee' %}">Bank report</a></li>
+                        <li><i class="fa fa-th"></i><a href="{% url 'list_employee' %}">Monthly DCPS</a></li>
+                        <li><i class="fa fa-th"></i><a href="{% url 'list_employee' %}">Dept wise Report</a></li>
+                        <li><i class="fa fa-th"></i><a href="{% url 'list_employee' %}">Y/M Emp Report</a></li>
+                        <li><i class="fa fa-th"></i><a href="{% url 'list_employee' %}">Allowances / Deduction Report</a></li>
+                        <li><i class="fa fa-th"></i><a href="{% url 'list_employee' %}">Dept Allowances/Deduction</a></li>
+                        <li><i class="fa fa-th"></i><a href="{% url 'list_employee' %}">Monthly DCPS Deduction</a></li>
+                        <li><i class="fa fa-th"></i><a href="{% url 'list_employee' %}">Monthly Employee DCPS</a></li>
+                        <li><i class="fa fa-th"></i><a href="{% url 'list_employee' %}">Bank wise report</a></li>
                     </ul>
                 </li>
 

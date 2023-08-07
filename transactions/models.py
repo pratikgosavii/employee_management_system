@@ -35,7 +35,8 @@ class employee_deduction(models.Model):
     description = models.CharField(max_length=120, unique=False)
     status = models.CharField(choices = status_choice, max_length=120)
 
-
+    date = models.DateField()
+   
     def __str__(self):
 
         return self.employee.name
@@ -118,3 +119,27 @@ class employee_increament(models.Model):
     def __str__(self):
 
         return self.department.name
+
+class leaves(models.Model):
+
+    employee = models.ForeignKey(employee, on_delete=models.CASCADE)
+    date_from =  models.DateField(auto_now_add=False, default = datetime.now(), blank = True, null = True)
+    date_to =  models.DateField(auto_now_add=False, default = datetime.now(), blank = True, null = True)
+    total_days =  models.IntegerField()
+    description = models.CharField(max_length=120, unique=False)
+    status = models.CharField(choices = status_choice, max_length=120)
+
+    def __str__(self):
+
+        return self.employee.name
+    
+
+
+
+class employee_salary(models.Model):
+
+
+    employee = models.ForeignKey(employee, on_delete=models.CASCADE)
+    department = models.ForeignKey(department_type, on_delete=models.CASCADE)
+    is_salary_generated = models.BooleanField()
+    salary_date = models.DateField()

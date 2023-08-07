@@ -3,52 +3,62 @@ from django_filters import DateFilter, CharFilter
 from django.forms.widgets import DateInput
 from django import forms
 
-from .models import *
+from store.models import *
 from .forms import *
 
+from django_filters import FilterSet, ChoiceFilter, NumberFilter
 
 
+class employee_filter(django_filters.FilterSet):
 
-class stock_filter(django_filters.FilterSet):
-
-    company_goods = django_filters.ModelChoiceFilter(
-        queryset=category.objects.all(),
+    department = django_filters.ModelChoiceFilter(
+        queryset=department_type.objects.all(),
         widget=forms.Select(
             attrs={
                 'class' : 'form-control',
-                'id' : 'company'
+                'id' : 'department'
             })
     )
    
-    goods_company = django_filters.ModelChoiceFilter(
-        queryset=size.objects.all(),
-        widget=forms.Select(
-            attrs={
-                'class' : 'form-control',
-                'id' : 'company'
-            })
-    )
-
-    dealer = django_filters.ModelChoiceFilter(
-        queryset=dealer.objects.all(),
-        widget=forms.Select(
-            attrs={
-                'class' : 'form-control',
-                'id' : 'company'
-            })
-    )
-
-    total_bag = django_filters.NumberFilter(
-        widget=forms.Select(
-            attrs={
-                'class' : 'form-control',
-                'id' : 'company'
-            })
-    )
-    
+    year = NumberFilter(field_name='date_field', lookup_expr='year', label='Year', widget=forms.TextInput(attrs={'class': 'form-control'}))
+    month = ChoiceFilter(choices=[(i, i) for i in range(1, 13)], method='filter_by_month', label='Month', widget=forms.Select(attrs={'class': 'form-control'}))
 
     class Meta:
-        model = stock
+        model = employee
+        fields = '__all__'
+       
+   
+
+class employee_salary_filter(django_filters.FilterSet):
+
+    employee = django_filters.ModelChoiceFilter(
+        queryset=employee.objects.all(),
+        widget=forms.Select(
+            attrs={
+                'class' : 'form-control',
+                'id' : 'emplloyee'
+            })
+    )
+   
+    department = django_filters.ModelChoiceFilter(
+        queryset=department_type.objects.all(),
+        widget=forms.Select(
+            attrs={
+                'class' : 'form-control',
+                'id' : 'department'
+            })
+    )
+   
+    salary_date = DateFilter(field_name="DC_date", lookup_expr='gte', widget=forms.DateInput(
+            attrs={
+                'id': 'datepicker1212',
+                'type': 'date',
+                'class' : 'form-control date_css'
+            }
+        ))
+
+    class Meta:
+        model = employee_salary
         fields = '__all__'
        
    

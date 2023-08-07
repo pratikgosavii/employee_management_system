@@ -582,6 +582,194 @@ def list_vacancy(request):
     return render(request, 'transactions/list_vacancy.html', context)
 
 
+@login_required(login_url='login')
+def post_leaves(request):
+    
+    if request.method == 'POST':
+
+        forms = leaves_Form(request.POST)
+
+        if forms.is_valid():
+            forms.save()
+            return redirect('list_leaves')
+        else:
+            print(forms.errors)
+            return redirect('list_leaves')
+    
+    else:
+
+        forms = leaves_Form()
+      
+        leaves_data = leaves.objects.all()
+
+        
+        context = {
+            'form': forms,
+            'leaves_data': leaves_data,
+        }
+
+        return render(request, 'transactions/add_leaves.html', context)
+
+@login_required(login_url='login')
+def update_leaves(request, leaves_id):
+
+    if request.method == 'POST':
+
+        instance = leaves.objects.get(id=leaves_id)
+
+        forms = leaves_Form(request.POST, instance = instance)
+
+        if forms.is_valid():
+            forms.save()
+            return redirect('list_leaves')
+    
+    else:
+
+        instance = leaves.objects.get(id=leaves_id)
+
+        
+
+        forms = leaves_Form(instance = instance)
+
+        context = {
+            'form': forms,
+        }
+
+        return render(request, 'transactions/post_leaves.html', context)
+
+
+@login_required(login_url='login')
+def delete_leaves(request, leaves_id):
+    
+    leaves.objects.get(id=leaves_id).delete()
+
+    return HttpResponseRedirect(reverse('list_leaves_delete'))
+
+
+@login_required(login_url='login')
+def list_leaves(request):
+    
+     
+    data = leaves.objects.all()
+
+    context = {
+            'data': data
+        }
+
+
+    return render(request, 'transactions/list_leaves.html', context)
+
+
+from .filters import *
+import datetime
+
+@login_required(login_url='login')
+def list_employee_salary(request):
+    
+     
+    data = employee_salary.objects.all()
+
+    queryset_data = employee.objects.all()
+
+    builty_filters =  employee_filter(request.GET, queryset=queryset_data)
+
+    date = request.POST.get('date')
+    if date:
+
+        month = date.month
+        year = date.year
+
+    else:
+
+        current_date = datetime.datetime.now()
+        month = current_date.month
+        year = current_date.year
+
+
+
+    context = {
+        'employee_salary_filter' : employee_salary_filter(),
+        'data': builty_filters.qs,
+        'month': month,
+        'year': year,
+        }
+
+
+    return render(request, 'transactions/employee_salary.html', context)
+
+
+from django.db.models import Sum
+
+
+@login_required(login_url='login')
+def generate_employee_salary(request, employee_id, month, year):
+    
+    date = datetime(year,month, 1, tzinfo=ist)
+
+    employee_instancee = employee.objects.get(id = employee_id)
+
+    employe_basic_salary = employee_instancee.basic_salary
+
+    allowance_amount = employee_allowance.objects.filter(employee = employee_instancee).aggregate(Sum('amount'))
+    loan_amount = employee_loan.objects.filter(employee = employee_instancee).aggregate(Sum('emi'))
+    miscellaneous_deduction_amount = employee_miscellaneous_deduction.objects.filter(date = date, employee = employee_instancee).aggregate(Sum('amount'))
+    deduction_amount = employee_deduction.objects.filter(employee = employee_instancee).aggregate(Sum('amount'))
+
+    total_salary = employe_basic_salary + allowance_amount - loan_amount - deduction_amount - miscellaneous_deduction_amount
+    
+    employee_salary.objects.create(employee_id = employee_id, salary_date = date, deduction_amount = deduction_amount, allowance_amount = allowance_amount, loan_amount = loan_amount, miscellaneous_deduction_amount = miscellaneous_deduction_amount, total_salary = total_salary)
+
+    queryset_data = employee.objects.all()
+
+    builty_filters =  employee_filter(request.GET, queryset=queryset_data)
+
+    context = {
+        'employee_salary_filter' : employee_salary_filter(),
+        'data': builty_filters.qs
+        }
+
+
+    return render(request, 'transactions/employee_salary.html', context)
+
+
+@login_required(login_url='login')
+def generate_employee_salary_multiple(request):
+
+    year = request.POST.get('year')
+    month = request.POST.get('month')
+    employee_id = request.POST.getlist('employee_id[]')
+    
+    date = datetime(year,month, 1, tzinfo=ist)
+
+    for i in employee_id:
+
+
+        employee_instancee = employee.objects.get(id = i)
+
+        employe_basic_salary = employee_instancee.basic_salary
+
+        allowance_amount = employee_allowance.objects.filter(employee = employee_instancee).aggregate(Sum('amount'))
+        loan_amount = employee_loan.objects.filter(employee = employee_instancee).aggregate(Sum('emi'))
+        miscellaneous_deduction_amount = employee_miscellaneous_deduction.objects.filter(date = date, employee = employee_instancee).aggregate(Sum('amount'))
+        deduction_amount = employee_deduction.objects.filter(employee = employee_instancee).aggregate(Sum('amount'))
+
+        total_salary = employe_basic_salary + allowance_amount - loan_amount - deduction_amount - miscellaneous_deduction_amount
+        
+        employee_salary.objects.create(employee_id = i, salary_date = date, deduction_amount = deduction_amount, allowance_amount = allowance_amount, loan_amount = loan_amount, miscellaneous_deduction_amount = miscellaneous_deduction_amount, total_salary = total_salary)
+
+    queryset_data = employee.objects.all()
+
+    builty_filters =  employee_filter(request.GET, queryset=queryset_data)
+
+    context = {
+        'employee_salary_filter' : employee_salary_filter(),
+        'data': builty_filters.qs
+        }
+
+
+    return render(request, 'transactions/employee_salary.html', context)
+
+
 
 @login_required(login_url='login')
 def get_old_department_ajax(request):
