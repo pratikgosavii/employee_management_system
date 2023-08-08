@@ -256,13 +256,13 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% if loan_data %}
-                                        {% for i in loan_data %}
+                                        {% if miscellaneous %}
+                                        {% for i in miscellaneous %}
 
                                         <tr>
                                             <td class="serial"> {{ forloop.counter }}</td>
-                                            <td>{{ i.loan.name }}</td>
-                                            <td>{{ i.emi }}</td>
+                                            <td>{{ i.miscellaneous.name }}</td>
+                                            <td>{{ i.miscellaneous.amount }}</td>
                                         
                                         </tr>
 

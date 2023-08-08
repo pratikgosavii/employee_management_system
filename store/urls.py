@@ -28,8 +28,8 @@ urlpatterns = [
     path('list-employee-type/', list_employee_type, name='list_employee_type'),
 
     path('add-department-type/', add_department_type, name='add_department_type'),
-    path('update-department-type/<department_type_type_id>', update_department_type, name='update_department_type'),
-    path('delete-department-type/<department_type_type_id>', delete_department_type, name='delete_department_type'),
+    path('update-department-type/<department_type_id>', update_department_type, name='update_department_type'),
+    path('delete-department-type/<department_type_id>', delete_department_type, name='delete_department_type'),
     path('list-department-type/', list_department_type, name='list_department_type'),
 
     path('add-designation/', add_designation, name='add_designation'),

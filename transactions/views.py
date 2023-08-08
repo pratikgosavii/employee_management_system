@@ -727,8 +727,6 @@ import datetime
 def list_employee_salary(request):
     
      
-    data = employee_salary.objects.all()
-
     queryset_data = employee.objects.all()
 
     builty_filters =  employee_filter(request.GET, queryset=queryset_data)
@@ -794,7 +792,7 @@ def generate_employee_salary(request, employee_id, month, year):
     builty_filters =  employee_filter(request.GET, queryset=queryset_data)
 
     context = {
-        'employee_salary_filter' : employee_salary_filter(),
+        'employee_salary_filter' : builty_filters,
         'data': builty_filters.qs,
         'month' : month,
         'year' : year,
