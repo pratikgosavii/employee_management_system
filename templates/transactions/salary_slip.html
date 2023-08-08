@@ -1,4 +1,4 @@
-{% extends 'base/base.html' %}
+{% extends 'base/base_temp.html' %}
 
 {% block title %}Product List{% endblock title %}
 
@@ -13,39 +13,38 @@
         border-top: 4px solid rgba(0,0,0,.1);
     }
 
+
+
+    @media print {
+        body {
+            font-size: 20px !important; /* Increase font size for printed output */
+        }
+
+        @page {
+            size: auto; /* Use the default paper size */
+            margin: 0mm; /* Adjust the margins */
+            zoom: 100%; /* Adjust the zoom level (e.g., 90% of normal size) */
+        }
+
+        table {
+            font-size: 22px !important;
+        }
+        
+        /* Additional styling for table cells */
+        th, td {
+            padding: 8px;
+            border: 1px solid #000;
+        }
+    }
+
 </style>
 
 {% endblock head %}
 
-{% block breadcrumbs %}
-<div class="breadcrumbs">
-    <div class="breadcrumbs-inner">
-        <div class="row m-0">
-            <div class="col-sm-4">
-                <div class="page-header float-left">
-                    <div class="page-title">
-                        <h1>Dashboard</h1>
-                    </div>
-                </div>
-            </div>
-            {% comment %} <div class="col-sm-8">
-                <div class="page-header float-right">
-                    <div class="page-title">
-                        <ol class="breadcrumb text-right">
-                            <li><a href="#">Dashboard</a></li>
-                            <li><a href="#">Product</a></li>
-                            <li class="active">List</li>
-                        </ol>
-                    </div>
-                </div>
-            </div> {% endcomment %}
-        </div>
-    </div>
-</div>
-{% endblock breadcrumbs %}
-
 {% block content %}
-<div class="row">
+
+
+<div class="row" style="margin: 28px;">
     <div class="col-xl-12">
 
 
@@ -54,7 +53,7 @@
 
         <div class="card">
             <div class="card-body">
-                <h4 class="box-title">{{ data.name }} {{ data.middle_name }} {{ data.last_name }}  </h4>
+                <h4 class="box-title">Salary Slip for {{ data.name }} {{ data.middle_name }} {{ data.last_name }}  </h4>
             </div>
             <div class="card-body--">
                 <div class="table-stats order-table ov-h">
@@ -87,7 +86,6 @@
                               
 
 
-                              
                                
                             </tr>
                             {% else %}
@@ -104,7 +102,7 @@
         </div> <!-- /.card -->
             <hr>
 
-            <div style="display: flex;">
+            <div style="display: flex; max-width: min-content;">
 
                 <div class="col-4">
                     <div class="card">
@@ -237,7 +235,6 @@
                             </div> <!-- /.table-stats -->
                         </div>
                     </div>
-                </div>
                 
             </div> <!-- /.card -->
                 <div class="col-4">
@@ -280,16 +277,27 @@
 
                                 </table>
                             </div> <!-- /.table-stats -->
+
                         </div>
                     </div>
                 </div>
-                
+            </div>
+
             </div> <!-- /.card -->
         </div> <!-- /.card -->
 
         </div>
             
     </div>  <!-- /.col-lg-8 -->
+
+    <div class="card">
+
+        <p style="text-align: right;
+        margin-right: 54px;
+        color: black;
+        font-weight: 600;"> Total Salary (Basic Salary + Allowances - All Deductions - Loan EMIs) :- <span style="font-weight: 1000"> {{ total_salary }} </span> </p>
+
+    </div>
 
 
     
@@ -298,6 +306,13 @@
 {% endblock content %}
 
 {% block js %}
+
+<script>
+    window.addEventListener('load', function() {
+        window.print();
+    });
+    
+
 
 </script>
 

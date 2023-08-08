@@ -51,7 +51,7 @@ urlpatterns = [
     path('generate-employee-salary/<employee_id>/<month>/<year>', generate_employee_salary, name='generate_employee_salary'),
     path('employe_salary_cutof/<employee_id>/<month>/<year>', employe_salary_cutof, name='employe_salary_cutof'),
     path('generate-employee-salary-multiple', generate_employee_salary_multiple, name='generate_employee_salary_multiple'),
-    path('generate-employee-salary-slip', generate_employee_salary_slip, name='generate_employee_salary_slip'),
+    path('generate-employee-salary-slip/<employee_id>/<month>/<year>', generate_employee_salary_slip, name='generate_employee_salary_slip'),
 
 
     path('get_old_department_ajaxy/', get_old_department_ajax, name='get_old_department_ajax'),

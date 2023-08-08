@@ -75,11 +75,11 @@
                                 <th>Working days</th>
                                 <th>Absent days</th>
                                 <th>Basic Salary</th>
-                                {% comment %} <th>Dearness Allowance</th>
+                                <th>Dearness Allowance</th>
                                 <th>House Rent</th>
                                 <th>Travel Allowance</th>
                                 <th>Clothes Washing</th>
-                                <th>NPS DCPS 4%</th> {% endcomment %}
+                                <th>NPS DCPS 4%</th>
                                 <th>Actions</th>
 
                                 
@@ -96,13 +96,19 @@
                                 <td>20</td>
                                 <td>3</td>
                                 <td>{{ i.basic_salary }}</td>
+                                <td>WIP</td>
+                                <td>WIP</td>
+                                <td>WIP</td>
+                                <td>WIP</td>
+                                <td>WIP</td>
                                
                               
 
 
-                                <td>  
+                                <td style="display: flex;
+                                gap: 10px;">  
                                     <a href="{% url 'employe_salary_cutof' i.id month year %}"> <button id="payment-button"  style="background-color: green; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
-                                         <span id="payment-button-amount">View Details</span>
+                                         <span id="payment-button-amount">Details</span>
                                      </button>  </a>
 
                                     <a href="{% url 'generate_employee_salary' i.id month year %}"> <button id="payment-button"  style="background-color: green; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">

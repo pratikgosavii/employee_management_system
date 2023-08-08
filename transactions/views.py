@@ -929,20 +929,70 @@ def render_to_file(path: str, params: dict):
         return file_path
 
 @login_required(login_url='login')
-def generate_employee_salary_slip(request):
+def generate_employee_salary_slip(request, employee_id, month, year):
     
+    date = datetime(int(year), int(month), 1, tzinfo=ist)
 
-    params = {
-        'data': 'data',
-    }
+    employee_instancee = employee.objects.get(id = employee_id)
+    print('---------------------')
+    print(employee_instancee)
+    print('---------------------')
+    employe_basic_salary = employee_instancee.basic_salary
 
-    file = render_to_file('transactions/salary_slip.html', params)
+    allowance_data = employee_allowance.objects.filter(employee = employee_instancee)
+    allowance_amount_sum = allowance_data.aggregate(total_allowance=Sum('allowance__amount'))['total_allowance']
+
+    loan_data = employee_loan.objects.filter(employee = employee_instancee)
+    loan_amount_sum = loan_data.aggregate(total_emi=Sum('emi'))['total_emi']
+
+    miscellaneous_deduction_data = employee_miscellaneous_deduction.objects.filter(date = date, employee = employee_instancee)
+    miscellaneous_deduction_amount_sum = miscellaneous_deduction_data.aggregate(total_mis_deu=Sum('miscellaneous__amount'))['total_mis_deu']
+
+    deduction_data = employee_deduction.objects.filter(employee = employee_instancee)
+    deduction_amount_sum = deduction_data.aggregate(total_dedu=Sum('deduction__amount'))['total_dedu']
+
+    print('------------')
+    print(deduction_data)
+    print('------------')
 
 
-    with open(file, 'rb') as fh:
-        
-        return HttpResponse(fh, content_type='application/pdf')
 
+    if not allowance_data:
+        allowance_amount_sum = 0
+    if not loan_data:
+        loan_amount_sum = 0
+    if not miscellaneous_deduction_data:
+        miscellaneous_deduction_amount_sum = 0
+    if not deduction_data:
+        deduction_amount_sum = 0
+
+    print(allowance_amount_sum)
+    print(loan_amount_sum)
+    print(miscellaneous_deduction_amount_sum)
+    print(deduction_amount_sum)
+    print(employe_basic_salary)
+
+    total_salary = employe_basic_salary + allowance_amount_sum - loan_amount_sum - miscellaneous_deduction_amount_sum - deduction_amount_sum
+
+    context = {
+        'month' : month,
+        'year' : year,
+        'total_salary' : total_salary,
+        'data' : employee_instancee,
+
+        'allowance_data' : allowance_data,
+        'loan_data' : loan_data,
+        'miscellaneous_deduction_data' : miscellaneous_deduction_data,
+        'deduction_data' : deduction_data,
+
+        'allowance_amount_sum' : allowance_amount_sum,
+        'loan_amount_sum' : loan_amount_sum,
+        'miscellaneous_deduction_amount_sum' : miscellaneous_deduction_amount_sum,
+        'deduction_amount_sum' : deduction_amount_sum,
+        }
+
+
+    return render(request, 'transactions/salary_slip.html', context)
 
 @login_required(login_url='login')
 def get_old_department_ajax(request):

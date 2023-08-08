@@ -290,6 +290,10 @@
                         </div>
                     </div>
                 </div>
+
+                <a href="{% url 'generate_employee_salary_slip' data.id month year %}"> <button id="payment-button"  style="background-color: green; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
+                    <span id="payment-button-amount">Salary Slip</span>
+                </button>  </a>
                 
             </div> <!-- /.card -->
         </div> <!-- /.card -->
