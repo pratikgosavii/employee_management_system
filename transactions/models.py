@@ -15,9 +15,8 @@ from store.models import *
 
 class employee_allowance(models.Model):
 
-    employee = models.ForeignKey(employee, on_delete=models.CASCADE)
-    allowance = models.ForeignKey(allowance, on_delete=models.CASCADE)
-    amount = models.BigIntegerField()
+    employee = models.ForeignKey(employee, on_delete=models.CASCADE, related_name = 'employee_allo')
+    allowance = models.ForeignKey(allowance , on_delete=models.CASCADE)
     description = models.CharField(max_length=120, unique=False)
     status = models.CharField(choices = status_choice, max_length=120)
 
@@ -31,11 +30,9 @@ class employee_deduction(models.Model):
 
     employee = models.ForeignKey(employee, on_delete=models.CASCADE)
     deduction = models.ForeignKey(deduction, on_delete=models.CASCADE)
-    amount = models.BigIntegerField()
     description = models.CharField(max_length=120, unique=False)
     status = models.CharField(choices = status_choice, max_length=120)
 
-    date = models.DateField()
    
     def __str__(self):
 
@@ -63,9 +60,9 @@ class employee_miscellaneous_deduction(models.Model):
 
     employee = models.ForeignKey(employee, on_delete=models.CASCADE)
     miscellaneous = models.ForeignKey(miscellaneous_deduction, on_delete=models.CASCADE)
-    amount = models.BigIntegerField()
     description = models.CharField(max_length=120, unique=False)
     status = models.CharField(choices = status_choice, max_length=120)
+    date = models.DateTimeField(auto_now=True)
 
 
     def __str__(self):
@@ -110,8 +107,8 @@ class employee_increament(models.Model):
 
     department = models.ForeignKey(department_type, on_delete=models.CASCADE)
     employee = models.ForeignKey(employee, on_delete=models.CASCADE)
-    old_basic = models.BigIntegerField()
-    new_basic = models.BigIntegerField()
+    old_basic = models.FloatField()
+    new_basic = models.FloatField()
     description = models.CharField(max_length=120, unique=False)
     status = models.CharField(choices = status_choice, max_length=120)
     incerement_date = models.DateField(auto_now_add=False, default = datetime.now(), blank = True, null = True)
@@ -140,6 +137,10 @@ class employee_salary(models.Model):
 
 
     employee = models.ForeignKey(employee, on_delete=models.CASCADE)
-    department = models.ForeignKey(department_type, on_delete=models.CASCADE)
-    is_salary_generated = models.BooleanField()
-    salary_date = models.DateField()
+    is_salary_generated = models.BooleanField(blank = True, null = True)
+    salary_date = models.DateField(blank = True, null = True)
+    deduction_amount = models.FloatField(blank = True, null = True)
+    allowance_amount = models.FloatField(blank = True, null = True)
+    loan_amount = models.FloatField(blank = True, null = True)
+    miscellaneous_deduction_amount = models.FloatField(blank = True, null = True)
+    total_salary = models.FloatField(blank = True, null = True)

@@ -46,9 +46,43 @@ def manage_salary(request, employee_id):
 
     if request.method == 'POST':
 
-        print(request.POST)
+        forms = employee_Form(request.POST, instance = employee_instance)
 
-       
+        if forms.is_valid():
+
+            forms.save()
+
+            return redirect('list_employee')
+
+
+        else:
+            print(forms.errors)
+            allowance_data = employee_allowance.objects.filter(employee = employee_instance)
+            deduction_data = employee_deduction.objects.filter(employee = employee_instance)
+            loan_data = employee_loan.objects.filter(employee = employee_instance)
+            miscellaneous_deduction_data = employee_miscellaneous_deduction.objects.filter(employee = employee_instance)
+
+            form_allowance = allowance_Form()
+            form_employee_allowance = employee_allowance_Form()
+            form_employee_deduction = employee_deduction_Form()
+            form_employee_loan = employee_loan_Form()
+            form_employee_miscellaneous_deduction = employee_miscellaneous_deduction_Form()
+
+        
+            context = {
+                'form': forms,
+                'employee_id' : employee_id,
+                'allowance_data': allowance_data,
+                'deduction_data': deduction_data,
+                'loan_data': loan_data,
+                'miscellaneous_deduction_data': miscellaneous_deduction_data,
+                'form_allowance': form_allowance,
+                'form_employee_allowance': form_employee_allowance,
+                'form_employee_deduction': form_employee_deduction,
+                'form_employee_loan': form_employee_loan,
+                'form_employee_miscellaneous_deduction': form_employee_miscellaneous_deduction,
+            }
+            return render(request, 'transactions/manage_salary.html', context)
 
 
     else:
@@ -400,6 +434,15 @@ def add_employee_transfer_department(request):
 
             forms.save()
 
+            employee = request.POST.get("employee")
+            department_type = request.POST.get("new_deparment")
+
+            employee_instance = employee.objects.get(id = employee)
+
+            employee_instance.department = department_type
+
+            employee_instance.save()
+
             context = {
                 'form' : forms
             }
@@ -455,6 +498,23 @@ def add_employee_increment(request):
         if forms.is_valid():
 
             forms.save()
+
+
+            new_basic = request.POST.get("new_basic")
+            employee_id = request.POST.get("employee")
+
+            print(employee_id)
+
+            employee_id = int(employee_id)
+
+            employee_instance = employee.objects.get(id = employee_id)
+
+            employee_instance.basic_salary = new_basic
+
+            employee_instance.save()
+            
+
+
 
             context = {
                 'form' : forms
@@ -681,7 +741,7 @@ def list_employee_salary(request):
 
     else:
 
-        current_date = datetime.datetime.now()
+        current_date = datetime.now()
         month = current_date.month
         year = current_date.year
 
@@ -700,20 +760,30 @@ def list_employee_salary(request):
 
 from django.db.models import Sum
 
+from datetime import datetime
 
 @login_required(login_url='login')
 def generate_employee_salary(request, employee_id, month, year):
     
-    date = datetime(year,month, 1, tzinfo=ist)
+    date = datetime(int(year), int(month), 1, tzinfo=ist)
 
     employee_instancee = employee.objects.get(id = employee_id)
 
     employe_basic_salary = employee_instancee.basic_salary
 
-    allowance_amount = employee_allowance.objects.filter(employee = employee_instancee).aggregate(Sum('amount'))
-    loan_amount = employee_loan.objects.filter(employee = employee_instancee).aggregate(Sum('emi'))
-    miscellaneous_deduction_amount = employee_miscellaneous_deduction.objects.filter(date = date, employee = employee_instancee).aggregate(Sum('amount'))
-    deduction_amount = employee_deduction.objects.filter(employee = employee_instancee).aggregate(Sum('amount'))
+    allowance_amount = employee_allowance.objects.filter(employee = employee_instancee).aggregate(total_allowance=Sum('allowance__amount'))['total_allowance']
+    loan_amount = employee_loan.objects.filter(employee = employee_instancee).aggregate(total_emi=Sum('emi'))['total_emi']
+    miscellaneous_deduction_amount = employee_miscellaneous_deduction.objects.filter(date = date, employee = employee_instancee).aggregate(total_mis_deu=Sum('miscellaneous__amount'))['total_mis_deu']
+    deduction_amount = employee_deduction.objects.filter(employee = employee_instancee).aggregate(total_dedu=Sum('deduction__amount'))['total_dedu']
+    
+    if allowance_amount == None:
+        allowance_amount = 0
+    if loan_amount == None:
+        loan_amount = 0
+    if miscellaneous_deduction_amount == None:
+        miscellaneous_deduction_amount = 0
+    if deduction_amount == None:
+        deduction_amount = 0
 
     total_salary = employe_basic_salary + allowance_amount - loan_amount - deduction_amount - miscellaneous_deduction_amount
     
@@ -725,11 +795,80 @@ def generate_employee_salary(request, employee_id, month, year):
 
     context = {
         'employee_salary_filter' : employee_salary_filter(),
-        'data': builty_filters.qs
+        'data': builty_filters.qs,
+        'month' : month,
+        'year' : year,
+        }
+
+    return render(request, 'transactions/employee_salary.html', context)
+
+@login_required(login_url='login')
+def employe_salary_cutof(request, employee_id, month, year):
+    
+    date = datetime(int(year), int(month), 1, tzinfo=ist)
+
+    employee_instancee = employee.objects.get(id = employee_id)
+    print('---------------------')
+    print(employee_instancee)
+    print('---------------------')
+    employe_basic_salary = employee_instancee.basic_salary
+
+    allowance_data = employee_allowance.objects.filter(employee = employee_instancee)
+    allowance_amount_sum = allowance_data.aggregate(total_allowance=Sum('allowance__amount'))['total_allowance']
+
+    loan_data = employee_loan.objects.filter(employee = employee_instancee)
+    loan_amount_sum = loan_data.aggregate(total_emi=Sum('emi'))['total_emi']
+
+    miscellaneous_deduction_data = employee_miscellaneous_deduction.objects.filter(date = date, employee = employee_instancee)
+    miscellaneous_deduction_amount_sum = miscellaneous_deduction_data.aggregate(total_mis_deu=Sum('miscellaneous__amount'))['total_mis_deu']
+
+    deduction_data = employee_deduction.objects.filter(employee = employee_instancee)
+    deduction_amount_sum = deduction_data.aggregate(total_dedu=Sum('deduction__amount'))['total_dedu']
+
+    print('------------')
+    print(deduction_data)
+    print('------------')
+
+
+
+    if not allowance_data:
+        allowance_amount_sum = 0
+    if not loan_data:
+        loan_amount_sum = 0
+    if not miscellaneous_deduction_data:
+        miscellaneous_deduction_amount_sum = 0
+    if not deduction_data:
+        deduction_amount_sum = 0
+
+    print(allowance_amount_sum)
+    print(loan_amount_sum)
+    print(miscellaneous_deduction_amount_sum)
+    print(deduction_amount_sum)
+    print(employe_basic_salary)
+
+    total_salary = employe_basic_salary + allowance_amount_sum - loan_amount_sum - miscellaneous_deduction_amount_sum - deduction_amount_sum
+
+    context = {
+        'month' : month,
+        'year' : year,
+        'total_salary' : total_salary,
+        'data' : employee_instancee,
+
+        'allowance_data' : allowance_data,
+        'loan_data' : loan_data,
+        'miscellaneous_deduction_data' : miscellaneous_deduction_data,
+        'deduction_data' : deduction_data,
+
+        'allowance_amount_sum' : allowance_amount_sum,
+        'loan_amount_sum' : loan_amount_sum,
+        'miscellaneous_deduction_amount_sum' : miscellaneous_deduction_amount_sum,
+        'deduction_amount_sum' : deduction_amount_sum,
         }
 
 
-    return render(request, 'transactions/employee_salary.html', context)
+    return render(request, 'transactions/employe_salary_cutof.html', context)
+
+
 
 
 @login_required(login_url='login')
@@ -769,6 +908,40 @@ def generate_employee_salary_multiple(request):
 
     return render(request, 'transactions/employee_salary.html', context)
 
+
+from io import BytesIO
+from django.http import HttpResponse
+from django.template.loader import get_template
+import xhtml2pdf.pisa as pisa
+import os
+from random import randint
+
+
+
+def render_to_file(path: str, params: dict):
+
+    template = get_template(path)
+    html = template.render(params)
+    file_path = os.path.join(BASE_DIR) + 'bill.pdf'
+    
+    with open(file_path, 'wb') as pdf:
+        pisa.pisaDocument(BytesIO(html.encode("UTF-8")), pdf)
+        return file_path
+
+@login_required(login_url='login')
+def generate_employee_salary_slip(request):
+    
+
+    params = {
+        'data': 'data',
+    }
+
+    file = render_to_file('transactions/salary_slip.html', params)
+
+
+    with open(file, 'rb') as fh:
+        
+        return HttpResponse(fh, content_type='application/pdf')
 
 
 @login_required(login_url='login')

@@ -8,6 +8,14 @@
 
 <style>
 
+  table{
+    text-align: center;
+  }
+
+  textbox{
+    text-align: center;
+  }
+
     .form-group {
         display: flex;
        
@@ -123,7 +131,7 @@
 
     <p style="font-weight: bold;"> Allowance List </p>
 
-    <table id="my-table">
+    <table id="my-table" style="text-align: center;">
 
     <tr>
         <td> # </td>
@@ -139,7 +147,7 @@
     <tr>
         <td> {{ forloop.counter }} </td>
         <td> <input type="text" class="form-control" value="{{ i.allowance.name }}" readonly> </td>
-        <td> <input type="text" class="form-control" value="{{ i.amount }}" readonly> </td>
+        <td> <input type="text" class="form-control" value="{{ i.allowance.amount }}" readonly> </td>
         <td> <input type="text" class="form-control" value="{{ i.description }}" readonly> </td>
         <td> <input type="text" class="form-control" value="{{ i.status }}" readonly> </td>
         <td> <td class="menu-cell">
@@ -186,7 +194,7 @@
     <tr>
         <td> {{ forloop.counter }} </td>
         <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.name }}" readonly> </td>
-        <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.amount }}" readonly> </td>
+        <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.deduction.amount }}" readonly> </td>
         <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.description }}" readonly> </td>
         <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.status }}" readonly> </td>
         <td> <td class="menu-cell">
@@ -287,7 +295,7 @@
     <tr>
         <td> {{ forloop.counter }} </td>
         <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.miscellaneous }}" readonly> </td>
-        <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.amount }}" readonly> </td>
+        <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.miscellaneous.amount }}" readonly> </td>
         <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.description }}" readonly> </td>
         <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.status }}" readonly> </td>
         <td> <td class="menu-cell">
@@ -352,11 +360,6 @@
           </div>
 
           <div class="form-group">
-            <label for="name" class="control-label mb-1">Amount</label>
-            {{ form_employee_allowance.amount }}
-          </div>
-
-          <div class="form-group">
             <label for="name" class="control-label mb-1">Description</label>
             {{ form_employee_allowance.description }}
           </div>
@@ -394,11 +397,6 @@
           <div class="form-group">
             <label for="name" class="control-label mb-1">Deduction Type</label>
             {{ form_employee_deduction.deduction }}
-          </div>
-
-          <div class="form-group">
-            <label for="name" class="control-label mb-1">Amount</label>
-            {{ form_employee_deduction.amount }}
           </div>
 
           <div class="form-group">
@@ -502,11 +500,6 @@
           <div class="form-group">
             <label for="name" class="control-label mb-1">Miscellaneous Type</label>
             {{ form_employee_miscellaneous_deduction.miscellaneous }}
-          </div>
-
-          <div class="form-group">
-            <label for="name" class="control-label mb-1">Amount</label>
-            {{ form_employee_miscellaneous_deduction.amount }}
           </div>
 
           <div class="form-group">

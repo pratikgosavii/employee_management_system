@@ -464,11 +464,11 @@ def add_designation(request):
         return render(request, 'store/add_designation.html', context)
 
 @login_required(login_url='login')
-def update_designation(request, designation_id):
+def update_designation(request, designation_type_id):
 
     if request.method == 'POST':
 
-        instance = designation.objects.get(id=designation_id)
+        instance = designation.objects.get(id=designation_type_id)
 
         forms = designation_Form(request.POST, instance = instance)
 
@@ -478,7 +478,7 @@ def update_designation(request, designation_id):
     
     else:
 
-        instance = designation.objects.get(id=designation_id)
+        instance = designation.objects.get(id=designation_type_id)
 
         
 

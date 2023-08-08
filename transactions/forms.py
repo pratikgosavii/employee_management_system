@@ -65,7 +65,6 @@ class employee_deduction_Form(forms.ModelForm):
                 'class': 'form-control', 'id': 'status'
             }),
 
-            'date': DateTimeInput(attrs={'type': 'date', 'class' : 'date_css'}, format = '%Y-%m-%d'),
 
 
             
@@ -104,6 +103,7 @@ class employee_loan_Form(forms.ModelForm):
             'status': forms.Select(attrs={
                 'class': 'form-control', 'id': 'status'
             }),
+            'date': DateTimeInput(attrs={'type': 'date', 'class' : 'date_css'}, format = '%Y-%m-%d'),
            
             
         }
@@ -129,6 +129,7 @@ class employee_miscellaneous_deduction_Form(forms.ModelForm):
             'status': forms.Select(attrs={
                 'class': 'form-control', 'id': 'status'
             }),
+
            
             
         }

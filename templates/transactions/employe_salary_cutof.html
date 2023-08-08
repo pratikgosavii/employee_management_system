@@ -1,0 +1,347 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Product List{% endblock title %}
+
+{% block head %}
+
+<style>
+
+    hr {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        border: 0;
+        border-top: 4px solid rgba(0,0,0,.1);
+    }
+
+</style>
+
+{% endblock head %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="row m-0">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>Dashboard</h1>
+                    </div>
+                </div>
+            </div>
+            {% comment %} <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                            <li><a href="#">Dashboard</a></li>
+                            <li><a href="#">Product</a></li>
+                            <li class="active">List</li>
+                        </ol>
+                    </div>
+                </div>
+            </div> {% endcomment %}
+        </div>
+    </div>
+</div>
+{% endblock breadcrumbs %}
+
+{% block content %}
+<div class="row">
+    <div class="col-xl-12">
+
+
+      
+   
+
+        <div class="card">
+            <div class="card-body">
+                <h4 class="box-title">{{ data.name }} {{ data.middle_name }} {{ data.last_name }}  </h4>
+            </div>
+            <div class="card-body--">
+                <div class="table-stats order-table ov-h">
+                    <table class="table ">
+                        <thead>
+                            <tr>
+                                <th>Department</th>
+                                <th>Designation</th>
+                                <th>Working days</th>
+                                <th>Absent days</th>
+                                <th>Basic Salary</th>
+                                {% comment %} <th>Dearness Allowance</th>
+                                <th>House Rent</th>
+                                <th>Travel Allowance</th>
+                                <th>Clothes Washing</th>
+                                <th>NPS DCPS 4%</th> {% endcomment %}
+                                <th>Actions</th>
+
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if data %}
+                            <tr>
+                                <td>{{ data.department }}</td>
+                                <td>{{ data.designation }}</td>
+                                <td>20</td>
+                                <td>3</td>
+                                <td>{{ data.basic_salary }}</td>
+                               
+                              
+
+
+                                <td>  
+
+                                    <a href="{% url 'generate_employee_salary' data.id month year %}"> <button id="payment-button"  style="background-color: green; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
+                                         <span id="payment-button-amount">Generate Salary</span>
+                                     </button>  </a>
+                                     
+                                 </td>
+                               
+                            </tr>
+                            {% else %}
+                                <tr><td>No Product Data</td></tr>
+                            {% endif %}
+
+
+                        </tbody>
+
+                    </table>
+                </div> <!-- /.table-stats -->
+            </div>
+            
+        </div> <!-- /.card -->
+            <hr>
+
+            <div style="display: flex;">
+
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="box-title">Allowance Summary</h4>
+                        </div>
+                        <div class="card-body--">
+                            <div class="table-stats order-table ov-h">
+                                <table class="table ">
+                                    <thead>
+                                        <tr>
+                                            <th class="serial">#</th>
+                                            <th>Allowance</th>
+                                            <th>Amount</th>
+
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% if allowance_data %}
+                                        {% for i in allowance_data %}
+
+                                        <tr>
+                                            <td class="serial"> {{ forloop.counter }}</td>
+                                            <td>{{ i.allowance.name }}</td>
+                                            <td>{{ i.allowance.amount }}</td>
+                                        
+                                        </tr>
+
+                                        {% endfor %}
+                                        {% else %}
+                                            <tr><td>No Allowance Data</td></tr>
+                                        {% endif %}
+
+
+
+                                    </tbody>
+            
+                                </table>
+                            </div> <!-- /.table-stats -->
+                        </div>
+                        
+                    </div> <!-- /.card -->
+
+                </div>
+
+                <div class="col-4">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="box-title"> Deduction Summary </h4>
+                        </div>
+                        <div class="card-body--">
+                            <div class="table-stats order-table ov-h">
+                                <table class="table ">
+                                    <thead>
+                                        <tr>
+                                            <th class="serial">#</th>
+                                            <th>Deduction</th>
+                                            <th>Amount</th>
+
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% if deduction_data %}
+                                        {% for i in deduction_data %}
+
+                                        <tr>
+                                            <td class="serial"> {{ forloop.counter }}</td>
+                                            <td>{{ i.deduction.name }}</td>
+                                            <td>{{ i.deduction.amount }}</td>
+                                        
+                                        </tr>
+
+                                        {% endfor %}
+                                        {% else %}
+                                            <tr><td>No Allowance Data</td></tr>
+                                        {% endif %}
+
+
+
+                                    </tbody>
+
+                                </table>
+                            </div> <!-- /.table-stats -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-4">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="box-title">Loan Summary</h4>
+                        </div>
+                        <div class="card-body--">
+                            <div class="table-stats order-table ov-h">
+                                <table class="table ">
+                                    <thead>
+                                        <tr>
+                                            <th class="serial">#</th>
+                                            <th>Deduction</th>
+                                            <th>Amount</th>
+
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% if loan_data %}
+                                        {% for i in loan_data %}
+
+                                        <tr>
+                                            <td class="serial"> {{ forloop.counter }}</td>
+                                            <td>{{ i.loan.name }}</td>
+                                            <td>{{ i.emi }}</td>
+                                        
+                                        </tr>
+
+                                        {% endfor %}
+                                        {% else %}
+                                            <tr><td>No Allowance Data</td></tr>
+                                        {% endif %}
+
+
+
+                                    </tbody>
+
+                                </table>
+                            </div> <!-- /.table-stats -->
+                        </div>
+                    </div>
+                </div>
+                
+            </div> <!-- /.card -->
+                <div class="col-4">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="box-title">Miscellaneous Deduction Summary</h4>
+                        </div>
+                        <div class="card-body--">
+                            <div class="table-stats order-table ov-h">
+                                <table class="table ">
+                                    <thead>
+                                        <tr>
+                                            <th class="serial">#</th>
+                                            <th>Deduction</th>
+                                            <th>Amount</th>
+
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% if loan_data %}
+                                        {% for i in loan_data %}
+
+                                        <tr>
+                                            <td class="serial"> {{ forloop.counter }}</td>
+                                            <td>{{ i.loan.name }}</td>
+                                            <td>{{ i.emi }}</td>
+                                        
+                                        </tr>
+
+                                        {% endfor %}
+                                        {% else %}
+                                            <tr><td>No Allowance Data</td></tr>
+                                        {% endif %}
+
+
+
+                                    </tbody>
+
+                                </table>
+                            </div> <!-- /.table-stats -->
+                        </div>
+                    </div>
+                </div>
+                
+            </div> <!-- /.card -->
+        </div> <!-- /.card -->
+
+        </div>
+            
+    </div>  <!-- /.col-lg-8 -->
+
+
+    
+    
+</div>
+{% endblock content %}
+
+{% block js %}
+
+<script>
+
+    function getCheckedCheckboxIDs() {
+        const checkboxes = document.getElementsByName("checkboxes");
+        const checkedIDs = [];
+
+        checkboxes.forEach((checkbox) => {
+            if (checkbox.checked) {
+                checkedIDs.push(checkbox.id);
+            }
+        });
+
+        
+        const employeeID = $(this).val();  // get the selected subject ID from the HTML dropdown list 
+        $.ajax({                       // initialize an AJAX request
+            type: "POST",
+            url: '{% url "generate_employee_salary_multiple" %}',
+            data: {
+                'employee_id': checkedIDs,       // add the country id to the POST parameters
+                'month': month,       // add the country id to the POST parameters
+                'year': year,       // add the country id to the POST parameters
+                'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+            },
+            success: function (data) {   // `data` is from `get_topics_ajax` view function
+                console.log(data.value)
+                $("#old_basic").val(data.value); // replace the contents of the topic input with the data that came from the server
+            }
+        });
+
+
+
+        console.log("Checked IDs:", checkedIDs);
+    }
+
+
+</script>
+
+
+{% endblock js %}

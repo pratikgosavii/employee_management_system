@@ -80,6 +80,8 @@ class employee_Form(forms.ModelForm):
             'basic_salary': forms.NumberInput(attrs={
                 'class': 'form-control', 'id': 'name'
             }),
+           
+            
             'date_of_birth': DateInput(attrs={ 'class': 'form-control', 'type': 'date'}, format = '%Y-%m-%d'),
             'date_of_joining': DateInput(attrs={ 'class': 'form-control', 'type': 'date'}, format = '%Y-%m-%d'),
             'date_of_retirement': DateInput(attrs={ 'class': 'form-control', 'type': 'date'}, format = '%Y-%m-%d'),
