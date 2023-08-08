@@ -142,6 +142,7 @@
                                         </tr>
 
                                         {% endfor %}
+                                        <tr> <td> Total </td> <td> </td> <td> {{ allowance_amount_sum }} </td> </tr>
                                         {% else %}
                                             <tr><td>No Allowance Data</td></tr>
                                         {% endif %}
@@ -188,6 +189,10 @@
                                         </tr>
 
                                         {% endfor %}
+
+                                        <tr> <td> Total </td> <td> </td> <td> {{ deduction_amount_sum }} </td> </tr>
+
+
                                         {% else %}
                                             <tr><td>No Allowance Data</td></tr>
                                         {% endif %}
@@ -232,6 +237,10 @@
                                         </tr>
 
                                         {% endfor %}
+
+                                        <tr> <td> Total </td> <td> </td> <td> {{ loan_amount_sum }} </td> </tr>
+
+
                                         {% else %}
                                             <tr><td>No Allowance Data</td></tr>
                                         {% endif %}
@@ -277,6 +286,10 @@
                                         </tr>
 
                                         {% endfor %}
+
+                                        <tr> <td> Total </td> <td> </td> <td> {{ miscellaneous_deduction_amount_sum }} </td> </tr>
+
+                                        
                                         {% else %}
                                             <tr><td>No Allowance Data</td></tr>
                                         {% endif %}
@@ -290,7 +303,14 @@
                         </div>
                     </div>
                 </div>
+                <div class="card">
 
+                    <p style="text-align: right;
+                    margin-right: 54px;
+                    color: black;
+                    font-weight: 600;margin: 10px 54px 10px 10px;"> Total Salary (Basic Salary + Allowances - All Deductions - Loan EMIs) :- <span style="font-weight: 1000"> {{ total_salary }} </span> </p>
+            
+                </div>
                 <a href="{% url 'generate_employee_salary_slip' data.id month year %}"> <button id="payment-button"  style="background-color: green; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
                     <span id="payment-button-amount">Salary Slip</span>
                 </button>  </a>
@@ -298,7 +318,11 @@
             </div> <!-- /.card -->
         </div> <!-- /.card -->
 
+       
+
         </div>
+        
+    
             
     </div>  <!-- /.col-lg-8 -->
 
