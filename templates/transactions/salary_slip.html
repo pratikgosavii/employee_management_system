@@ -133,6 +133,9 @@
                                         </tr>
 
                                         {% endfor %}
+
+                                        <tr> <td> Total </td>  <td> <span style="font-weight: 1000"> {{ allowance_amount_sum }} </td> </span> </tr>
+
                                         {% else %}
                                             <tr><td>No Allowance Data</td></tr>
                                         {% endif %}
@@ -179,6 +182,9 @@
                                         </tr>
 
                                         {% endfor %}
+
+                                        <tr> <td> Total </td>  <td> <span style="font-weight: 1000"> {{ deduction_amount_sum }} </span> </td> </tr>
+
                                         {% else %}
                                             <tr><td>No Allowance Data</td></tr>
                                         {% endif %}
@@ -223,6 +229,10 @@
                                         </tr>
 
                                         {% endfor %}
+
+                                        <tr> <td> Total </td>  <td> <span style="font-weight: 1000"> {{ loan_amount_sum }} </span> </td> </tr>
+
+
                                         {% else %}
                                             <tr><td>No Allowance Data</td></tr>
                                         {% endif %}
@@ -267,6 +277,10 @@
                                         </tr>
 
                                         {% endfor %}
+
+                                        <tr> <td> Total </td>  <td> <span style="font-weight: 1000"> {{ miscellaneous_deduction_amount_sum }} </span> </td> </tr>
+
+
                                         {% else %}
                                             <tr><td>No Allowance Data</td></tr>
                                         {% endif %}

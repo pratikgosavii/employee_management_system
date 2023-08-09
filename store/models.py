@@ -23,6 +23,15 @@ nps_dcps_choice =(
    
 )
 
+courtesy_titles =(
+    ("Mr", "Mr"),
+    ("Mrs", "Mrs"),
+    ("Miss", "Mrs"),
+    ("Ms", "Ms"),
+    ("Dr", "Dr"),
+   
+)
+
 class pay_scale(models.Model):
 
     name = models.CharField(max_length=120, unique=False)
@@ -133,10 +142,11 @@ class loan(models.Model):
 
 class employee(models.Model):
     
+    courtesy_titles = models.CharField(choices = courtesy_titles, max_length=120, blank = True, null = True)
     name = models.CharField(max_length=120, unique=False, blank = True, null = True)
     middle_name = models.CharField(max_length=120, unique=False, blank = True, null = True)
     last_name = models.CharField(max_length=120, unique=False, blank = True, null = True)
-    address = models.CharField(max_length=120, unique=False, blank = True, null = True)
+    address = models.TextField(max_length=120, unique=False, blank = True, null = True)
     city = models.CharField(max_length=120, unique=False, blank = True, null = True)
     taluka = models.CharField(max_length=120, unique=False, blank = True, null = True)
     district = models.CharField(max_length=120, unique=False, blank = True, null = True)
@@ -152,13 +162,14 @@ class employee(models.Model):
     department = models.ForeignKey(department_type, on_delete=models.CASCADE, blank = True, null = True)
     employee_type = models.ForeignKey(employee_type, on_delete=models.CASCADE, blank = True, null = True)
     grade_payment = models.ForeignKey(grade_payment, on_delete=models.CASCADE, blank = True, null = True)
+    grade_pay = models.ForeignKey(grade_pay, on_delete=models.CASCADE, blank = True, null = True)
+
     pay_scale = models.ForeignKey(pay_scale, on_delete=models.CASCADE, blank = True, null = True)
     designation = models.ForeignKey(designation, on_delete=models.CASCADE, blank = True, null = True)
     hra = models.BooleanField(default=False, blank = True, null = True)
     ta = models.BooleanField(default=False, blank = True, null = True)
     da = models.BooleanField(default=False, blank = True, null = True)
     physical_disable = models.BooleanField(default=False, blank = True, null = True)
-    grade_pay = models.ForeignKey(grade_pay, on_delete=models.CASCADE, blank = True, null = True)
     basic_salary = models.FloatField(blank = True, null = True)
     date_of_birth = models.DateField(auto_now_add=False, blank = True, null = True)
     date_of_joining = models.DateField(auto_now_add=False, blank = True, null = True)
@@ -176,12 +187,12 @@ class allowance(models.Model):
 
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=50)
-    percentage = models.IntegerField()
-    da_percentage = models.IntegerField()
-    amount = models.IntegerField()
-    is_fixed = models.BooleanField(default=False)
-    is_dcpc = models.BooleanField(default=False)
-    status = models.CharField(choices = status_choice, max_length=120)
+    percentage = models.IntegerField(blank = True, null = True)
+    da_percentage = models.IntegerField(blank = True, null = True)
+    amount = models.IntegerField(blank = True, null = True)
+    is_fixed = models.BooleanField(default=False, blank = True, null = True)
+    is_dcpc = models.BooleanField(default=False, blank = True, null = True)
+    status = models.CharField(choices = status_choice, max_length=120, blank = True, null = True)
 
     def __str__(self):
         return self.name
@@ -191,9 +202,9 @@ class deduction(models.Model):
 
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=50)
-    percentage = models.IntegerField()
-    da_percentage = models.IntegerField()
-    amount = models.IntegerField()
+    percentage = models.IntegerField(blank = True, null = True)
+    da_percentage = models.IntegerField(blank = True, null = True)
+    amount = models.IntegerField(blank = True, null = True)
     is_fixed = models.BooleanField(default=False)
     is_dcpc = models.BooleanField(default=False)
     status = models.CharField(choices = status_choice, max_length=120)

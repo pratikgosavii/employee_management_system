@@ -4,9 +4,16 @@
 
 {% block title %}Create Product{% endblock title %}
 
-{% block breadcrumbs %}
+{% block head %}
 
-{% endblock breadcrumbs %}
+<style>
+
+    .hi{
+        display : None;
+    }
+</style>
+
+{% endblock head %}
 
 {% block content %}
 <div class="row">
@@ -43,12 +50,12 @@
 
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group" id="targetDivamount">
                                 <label for="name" class="control-label mb-1">Amount</label>
                                 {{ form.amount }}
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group" id="targetDiv" style="display: none;">
                                 <label for="name" class="control-label mb-1">Percentage</label>
                                 {{ form.percentage }}
 
@@ -103,6 +110,28 @@
             var result = textone * texttwo;
             $('#total_pck').val(result.toFixed(2));
         });
+
+
+
+        const toggleCheckbox = document.getElementById('id_is_fixed');
+
+        const targetDiv = document.getElementById('targetDiv');
+        const targetDivamount = document.getElementById('targetDivamount');
+
+        // Add event listener to the checkbox
+        toggleCheckbox.addEventListener('click', function() {
+          if (toggleCheckbox.checked) {
+            targetDiv.style.display = 'block'; // Show the div
+            targetDivamount.style.display = 'none'; // Show the div
+          } else {
+            targetDiv.style.display = 'none';  // Hide the div
+            targetDivamount.style.display = 'block'; // Show the div
+
+          }
+        });
+
+
+
         </script>
 
     {% endblock js %}

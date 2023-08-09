@@ -1,165 +1,219 @@
-{% extends 'base/base.html' %}
-
-
-
-{% block title %}Create Product{% endblock title %}
-
-{% block head %}
+{% extends 'base/base.html' %} {% block title %}Create Product{% endblock title%} {% block head %}
 
 <style>
+  .form-group {
+    display: flex;
+  }
 
-    .form-group {
-        display: flex;
-       
-    }
 
-    label{
-        margin : 0px 10px;
-    }
-  
+  label {
+    margin: 0px 10px;
+    font-weight: 400 !important;
+  }
+
+  .textareacus{
+    height: 117px !important;
+  }
+
+  .cusra{
+    height: 20px !important;
+    width: 23px; !important;
+  }
+
 
 </style>
 
-{% endblock head %}
-
-{% block content %}
+{% endblock head %} {% block content %}
 <div class="row">
-    <div class="col-lg-12">
-        <div class="card">
-            <div class="card-header">
-                <strong class="card-title">Add Employee</strong>
-            </div>
-            <div class="card-body">
-                <!-- Credit Card -->
-                <div id="pay-invoice">
-                    <div class="card-body">
-                        <form action="#" method="post" >
-                            {% csrf_token %}
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header">
+        <strong class="card-title">Add Employee</strong>
+      </div>
+      <div class="card-body">
+        <!-- Credit Card -->
+        <div id="pay-invoice">
+          <div class="card-body">
+            <form action="#" method="post">
+              {% csrf_token %}
 
-                           
-                        
-                            <div class="form-group">
-                                <label for="name" class="control-label mb-1">Name</label>
-                                {{ form.name }}
+                <div class="form-group" style="gap: 33px">
+                    <div>
+                        <label for="name" class="control-label mb-1">Name</label>
+                        {{ form.name }}
+                    </div>
 
-                                <label for="name" class="control-label mb-1">Middle Name</label>
-                                {{ form.middle_name }}
+                    <div>
+                        <label for="name" class="control-label mb-1"
+                            >Middle Name</label
+                        >
+                        {{ form.middle_name }}
+                    </div>
 
-                                <label for="name" class="control-label mb-1">Last Name</label>
-                                {{ form.last_name }}
-
-                            </div>
-
-                            <div class="form-group">
-                                <label for="name" class="control-label mb-1">Address</label>
-                                {{ form.address }}
-
-                                <label for="name" class="control-label mb-1">Designation</label>
-                                {{ form.designation }}
-                            </div>
-
-                            <div class="form-group">
-                                <label for="name" class="control-label mb-1">City</label>
-                                {{ form.city }}
-                                <label for="name" class="control-label mb-1">Taluka</label>
-                                {{ form.taluka }}
-                                <label for="name" class="control-label mb-1">District</label>
-                                {{ form.district }}
-                                <label for="name" class="control-label mb-1">State</label>
-                                {{ form.state }}
-                                <label for="name" class="control-label mb-1">Country</label>
-                                {{ form.country }}
-                                <label for="name" class="control-label mb-1">Pincode</label>
-                                {{ form.pin_code }}
-                            </div>
-
-                            <div class="form-group">
-                                <label for="name" class="control-label mb-1">Adhar Card</label>
-                                {{ form.adhar_card }}
-                                <label for="name" class="control-label mb-1">Pan Card</label>
-                                {{ form.pan_card }}
-                                <label for="name" class="control-label mb-1">Biometric No</label>
-                                {{ form.biometric_no }}
-                                <label for="name" class="control-label mb-1">NPS/DCPS</label>
-                                {{ form.nps_dcps }}
-                            </div>
-
-                            <div class="form-group">
-                                <label for="name" class="control-label mb-1">Department</label>
-                                {{ form.department }}
-                                <label for="name" class="control-label mb-1">Employee Type</label>
-                                {{ form.employee_type }}
-                                <label for="name" class="control-label mb-1">Grade Pay</label>
-                                {{ form.grade_pay }}
-                                <label for="name" class="control-label mb-1">Pay Scale</label>
-                                {{ form.pay_scale }}
-                            </div>
-
-                            <div class="form-group">
-                                <label for="name" class="control-label mb-1">HRA</label>
-                                {{ form.hra }}
-                                <label for="name" class="control-label mb-1">TA</label>
-                                {{ form.ta }}
-                                <label for="name" class="control-label mb-1">DA</label>
-                                {{ form.da }}
-                                <label for="name" class="control-label mb-1">Physical Disable</label>
-                                {{ form.physical_disable }}
-                            </div>
-
-                            <div class="form-group">
-                                <label for="name" class="control-label mb-1">Grade Pay</label>
-                                {{ form.grade_pay }}
-                                <label for="name" class="control-label mb-1">Basic Salary</label>
-                                {{ form.basic_salary }}
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="name" class="control-label mb-1">Date of Birth</label>
-                                {{ form.date_of_birth }}
-
-                                <label for="name" class="control-label mb-1">Date of Joining</label>
-                                {{ form.date_of_joining }}
-
-                                <label for="name" class="control-label mb-1">Date of Retiremen</label>
-                                {{ form.date_of_retirement }}
-                            </div>
-
-                            <div class="form-group">
-                                <label for="name" class="control-label mb-1">Bank Acc</label>
-                                {{ form.bank_ac_no }}
-                                <label for="name" class="control-label mb-1">Permanent Address</label>
-                                {{ form.permanent_address }}
-                            </div>
-
-
-                            <div>
-                                <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
-                                    <span id="payment-button-amount">Add Employee</span>
-                                </button>
-                            </div>
-                        </form>
+                    <div>
+                        <label for="name" class="control-label mb-1">Last Name</label>
+                        {{ form.last_name }}
                     </div>
                 </div>
 
-            </div>
-        </div> <!-- .card -->
+                <div class="form-group" style="gap: 33px">
+                    <div>
+                        <label for="name" class="control-label mb-1">Address</label>
+                        {{ form.address }}
+                    </div>
+                    <div>
+                        <label for="name" class="control-label mb-1">Pincode</label>
+                        {{ form.pin_code }}
+                    </div>
+                   
+                </div>
 
-    </div><!--/.col-->
+                <div class="form-group" style="gap: 33px">
+                    <div>
+                        <label for="name" class="control-label mb-1">City</label>
+                        {{ form.city }}
+                    </div>
+                    <div>
+                        <label for="name" class="control-label mb-1">Taluka</label>
+                        {{ form.taluka }}
+                    </div>
+                    <div>
+                        <label for="name" class="control-label mb-1">District</label>
+                        {{ form.district }}
+                    </div>
+                    <div>
+                        <label for="name" class="control-label mb-1">State</label>
+                        {{ form.state }}
+                    </div>
+                    <div>
+                        <label for="name" class="control-label mb-1">Country</label>
+                        {{ form.country }}
+                    </div>
+                
+                </div>
+
+                <div class="form-group" style="gap: 33px">
+                    <div>
+                        <label for="name" class="control-label mb-1">Adhar Card</label>
+                        {{ form.adhar_card }}
+                    </div>
+                    <div>
+                        <label for="name" class="control-label mb-1">Pan Card</label>
+                        {{ form.pan_card }}
+                    </div>
+                    <div>
+                        <label for="name" class="control-label mb-1">Basic Salary</label>
+                    {{ form.basic_salary }}
+                    </div>
+                  
+                </div>
+
+                <div class="form-group" style="gap: 33px; margin-bottom: 25px !important;">
+                    <div>
+                        <label for="name" class="control-label mb-1">NPS/DCPS</label>
+                        {{ form.nps_dcps }}
+                    </div>
+                    <div>
+                        <label for="name" class="control-label mb-1">Department</label>
+                        {{ form.department }}
+                    </div>
+                    <div>
+                        <label for="name" class="control-label mb-1">Employee Type</label>
+                        {{ form.employee_type }}
+                    </div>
+                    <div>
+                        <label for="name" class="control-label mb-1">Designation</label>
+                        {{ form.designation }}
+                    </div> 
+                    <div>
+                        <label for="name" class="control-label mb-1">Grade Payment</label>
+                        {{ form.grade_payment }}
+                    </div>
+                    <div>
+                        <label for="name" class="control-label mb-1">Grade Pay</label>
+                        {{ form.grade_pay }}
+                    </div>
+                    <div>
+                        <label for="name" class="control-label mb-1">Pay Scale</label>
+                        {{ form.pay_scale }}
+                    </div>
+                </div>
+
+                <div class="form-group" style="gap: 12px; margin-bottom: 25px !important;">
+                    <label for="name" class="control-label mb-1">HRA</label>
+                    {{ form.hra }}
+                    <label for="name" class="control-label mb-1">TA</label>
+                    {{ form.ta }}
+                    <label for="name" class="control-label mb-1">DA</label>
+                    {{ form.da }}
+                    <label for="name" class="control-label mb-1">Physical Disable</label>
+                    {{ form.physical_disable }}
+                    
+                </div>
+
+                <div class="form-group" style="gap: 33px; margin-bottom: 25px !important;">
+                    <div>
+                        <label for="name" class="control-label mb-1"
+                        >Date of Birth</label
+                        >
+                        {{ form.date_of_birth }}
+                    </div>
+                    <div>
+                        <label for="name" class="control-label mb-1"
+                        >Date of Joining</label
+                        >
+                        {{ form.date_of_joining }}
+                    </div>
+                    <div>
+                        <label for="name" class="control-label mb-1"
+                        >Date of Retiremen</label
+                        >
+                        {{ form.date_of_retirement }}
+                    </div>
+
+                      <div>
+                        <label for="name" class="control-label mb-1">Bank Acc</label>
+                        {{ form.bank_ac_no }}
+                    </div>
+                    <div>
+                        <label for="name" class="control-label mb-1"
+                        >Permanent Address</label
+                        >
+                        {{ form.permanent_address }}
+                    </div>
+                </div>
+                </div>
+
+              
+                <button
+                  id="payment-button"
+                  type="submit"
+                  class="btn btn-lg btn-info btn-block"
+                >
+                  <span id="payment-button-amount">Add Employee</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- .card -->
+  </div>
+  <!--/.col-->
 </div>
 
-    {% block js %}
+{% block js %}
 
-        <script>
+<script>
+  $(".cal").keyup(function () {
+    var textone;
+    var texttwo;
+    textone = parseFloat($("#bag_size").val());
+    texttwo = parseFloat($("#total_bag").val());
+    var result = textone * texttwo;
+    $("#total_pck").val(result.toFixed(2));
+  });
+</script>
 
-            $('.cal').keyup(function(){
-                var textone;
-                var texttwo;
-            textone = parseFloat($('#bag_size').val());
-            texttwo = parseFloat($('#total_bag').val());
-            var result = textone * texttwo;
-            $('#total_pck').val(result.toFixed(2));
-        });
-        </script>
-
-    {% endblock js %}
-{% endblock content %}
+{% endblock js %} {% endblock content %}

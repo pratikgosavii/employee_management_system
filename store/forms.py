@@ -6,12 +6,22 @@ from django.forms.widgets import DateInput
 
 
 class employee_Form(forms.ModelForm):
+
+    address = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control textareacus'}))
+    hra = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-control cusra'}))   
+    ta = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-control cusra'}))   
+    da = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-control cusra'}))   
+    physical_disable = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-control cusra'}))   
+    
     class Meta:
         model = employee
         fields = '__all__'
         widgets = {
           
           
+            'courtesy_titles': forms.Select(attrs={
+                'class': 'form-control', 'id': 'name'
+            }),
             'name': forms.TextInput(attrs={
                 'class': 'form-control', 'id': 'name'
             }),
@@ -19,9 +29,6 @@ class employee_Form(forms.ModelForm):
                 'class': 'form-control', 'id': 'name'
             }),
             'last_name': forms.TextInput(attrs={
-                'class': 'form-control', 'id': 'name'
-            }),
-            'address': forms.TextInput(attrs={
                 'class': 'form-control', 'id': 'name'
             }),
             'city': forms.TextInput(attrs={
@@ -68,15 +75,16 @@ class employee_Form(forms.ModelForm):
             'grade_payment': forms.Select(attrs={
                 'class': 'form-control', 'id': 'name'
             }),
+            'grade_pay': forms.Select(attrs={
+                'class': 'form-control', 'id': 'name'
+            }),
             'pay_scale': forms.Select(attrs={
                 'class': 'form-control', 'id': 'name'
             }),
             'designation': forms.Select(attrs={
                 'class': 'form-control', 'id': 'name'
             }),
-            'grade_pay': forms.Select(attrs={
-                'class': 'form-control', 'id': 'name'
-            }),
+          
             'basic_salary': forms.NumberInput(attrs={
                 'class': 'form-control', 'id': 'name'
             }),
@@ -99,14 +107,7 @@ class employee_Form(forms.ModelForm):
             
         }
 
-        def __init__(self, *args, **kwargs):
-            super(employee_Form, self).__init__(*args, **kwargs)
-            # Optional: You can add extra attributes to the fields here.
-            self.fields['hra'].widget.attrs.update({'class': 'form-control'})
-            self.fields['ta'].widget.attrs.update({'class': 'form-control'})
-            self.fields['da'].widget.attrs.update({'class': 'form-control'})
-            self.fields['physical_disable'].widget.attrs.update({'class': 'form-control'})
-           
+        
 
 
 
@@ -339,10 +340,10 @@ class allowance_Form(forms.ModelForm):
                 'class': 'form-control', 'id': 'name'
             }),
             'amount': forms.NumberInput(attrs={
-                'class': 'form-control', 'id': 'name'
+                'class': 'form-control', 'id': 'amount'
             }),
             'percentage': forms.NumberInput(attrs={
-                'class': 'form-control', 'id': 'name'
+                'class': 'form-control', 'id': 'percentage'
             }),
             'da_percentage': forms.NumberInput(attrs={
                 'class': 'form-control', 'id': 'name'
@@ -358,7 +359,7 @@ class allowance_Form(forms.ModelForm):
         def __init__(self, *args, **kwargs):
             super(allowance_Form, self).__init__(*args, **kwargs)
             # Optional: You can add extra attributes to the fields here.
-            self.fields['is_fixed'].widget.attrs.update({'class': 'form-control'})
+            self.fields['is_fixed'].widget.attrs.update({'class': 'form-control', "id" : "toggleCheckbox"})
             self.fields['da_percentage'].widget.attrs.update({'class': 'form-control'})
            
 
