@@ -203,6 +203,9 @@
   <!--/.col-->
 </div>
 
+{% endblock content %}
+
+
 {% block js %}
 
 <script>
@@ -214,6 +217,29 @@
     var result = textone * texttwo;
     $("#total_pck").val(result.toFixed(2));
   });
+
+
+
+  id_date_of_birth.addEventListener('change', function() {
+    const date_of_birth = id_date_of_birth.value;
+
+    $.ajax({                       // initialize an AJAX request
+      type: "POST",
+      url: '{% url "retiredmentdate" %}',
+      data: {
+          'date_of_birth': date_of_birth,       // add the country id to the POST parameters
+          'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+      },
+      success: function (data) {   // `data` is from `get_topics_ajax` view function
+        console.log(data.date)
+        
+        document.getElementById("id_date_of_retirement").value = data.date;
+      }
+  });
+    
+  });
+
+
 </script>
 
-{% endblock js %} {% endblock content %}
+{% endblock js %}

@@ -131,7 +131,7 @@ class leaves(models.Model):
         return self.employee.name
     
 
-
+from django.utils import timezone
 
 class employee_salary(models.Model):
 
@@ -143,4 +143,8 @@ class employee_salary(models.Model):
     allowance_amount = models.FloatField(blank = True, null = True)
     loan_amount = models.FloatField(blank = True, null = True)
     miscellaneous_deduction_amount = models.FloatField(blank = True, null = True)
-    total_salary = models.FloatField(blank = True, null = True)
+    total_salary = models.FloatField(default=timezone.now, blank = True, null = True) 
+
+    def __str__(self):
+
+        return self.employee.name

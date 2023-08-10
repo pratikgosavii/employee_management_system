@@ -592,14 +592,38 @@ def list_emp_classes(request):
 
 
 
-
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
+import calendar
 
 @login_required(login_url='login')
 def add_employee(request):
     
     if request.method == 'POST':
 
-        forms = employee_Form(request.POST)
+        date_of_birth = request.POST.get("date_of_birth")
+        date_of_birth = date_of_birth.split("-")
+        print('----------------')
+        print(date_of_birth)
+        print('----------------')
+
+        date_of_birth = datetime(int(date_of_birth[0]), int(date_of_birth[1]), int(date_of_birth[2]))
+        future_date = date_of_birth + relativedelta(years=58)
+
+        # Getting the last day of the month for the future date
+        last_day = calendar.monthrange(future_date.year, future_date.month)[1]
+        last_day_of_month = future_date.replace(day=last_day)
+        print('----------------')
+
+        print(last_day_of_month)
+        print('----------------')
+
+        last_day_of_month.strftime("%Y-%m-%d")
+        updated_request = request.POST.copy()
+        updated_request.update({'date_of_retirement': last_day_of_month})
+
+
+        forms = employee_Form(updated_request)
 
         if forms.is_valid():
             forms.save()
@@ -670,6 +694,42 @@ def list_employee(request):
 
 
     return render(request, 'store/list_employee.html', context)
+
+import json
+
+@login_required(login_url='login')
+def retiredmentdate(request):
+    
+     
+    date_of_birth = request.POST.get("date_of_birth")
+    date_of_birth = date_of_birth.split("-")
+    print('----------------')
+    print(date_of_birth)
+    print('----------------')
+
+    date_of_birth = datetime(int(date_of_birth[0]), int(date_of_birth[1]), int(date_of_birth[2]))
+    future_date = date_of_birth + relativedelta(years=58)
+
+    # Getting the last day of the month for the future date
+    last_day = calendar.monthrange(future_date.year, future_date.month)[1]
+    last_day_of_month = future_date.replace(day=last_day)
+    print('----------------')
+
+    print(last_day_of_month)
+    print('----------------')
+
+    last_day_of_month = last_day_of_month.strftime("%Y-%m-%d")
+
+
+    
+    some_data_to_dump = {
+        'date': last_day_of_month,
+    }
+
+
+    return JsonResponse(some_data_to_dump) 
+
+
 
 
 

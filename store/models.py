@@ -143,7 +143,7 @@ class loan(models.Model):
 class employee(models.Model):
     
     courtesy_titles = models.CharField(choices = courtesy_titles, max_length=120, blank = True, null = True)
-    name = models.CharField(max_length=120, unique=False, blank = True, null = True)
+    name = models.CharField(max_length=120, unique=False)
     middle_name = models.CharField(max_length=120, unique=False, blank = True, null = True)
     last_name = models.CharField(max_length=120, unique=False, blank = True, null = True)
     address = models.TextField(max_length=120, unique=False, blank = True, null = True)

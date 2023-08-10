@@ -7,11 +7,16 @@ from django.forms.widgets import DateInput
 
 class employee_Form(forms.ModelForm):
 
-    address = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control textareacus'}))
-    hra = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-control cusra'}))   
-    ta = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-control cusra'}))   
-    da = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-control cusra'}))   
-    physical_disable = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-control cusra'}))   
+    address = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control textareacus'}),
+    required=False)
+    hra = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-control cusra'}),
+    required=False)   
+    ta = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-control cusra'}),
+    required=False)   
+    da = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-control cusra'}),
+    required=False)   
+    physical_disable = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-control cusra'}),
+    required=False)   
     
     class Meta:
         model = employee

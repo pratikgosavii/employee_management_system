@@ -218,6 +218,10 @@ def add_employee_deduction(request):
 
             return redirect('manage_salary', employee_id = employee_id)
         else:
+            print('------------------------')
+            print('------------------------')
+            print('------------------------')
+            print('------------------------')
             print(forms.errors)
             return redirect('list_employee_deduction')
     
@@ -262,7 +266,7 @@ def delete_employee_deduction(request, employee_deduction_id):
 def list_employee_deduction(request):
     
      
-    data = employee_deduction.objects.all().order_by('name')
+    data = employee_deduction.objects.all()
 
     context = {
             'data': data
@@ -722,12 +726,35 @@ def list_leaves(request):
 
 from .filters import *
 import datetime
+from django.db.models import Count, Sum
+from django.db.models import Sum, F
+from django.db.models.functions import ExtractMonth, ExtractYear
+from django.db.models import Sum, Q
 
 @login_required(login_url='login')
 def list_employee_salary(request):
     
+    wewewe = datetime.now()
+    monthw = wewewe.month
+    yearw = wewewe.year
      
-    queryset_data = employee.objects.all()
+
+    queryset_data = employee.objects.annotate(
+        total_allowance=Sum('employee_allo__allowance__amount'),
+        total_deduction=Sum('employee_deduction__deduction__amount'),
+        total_loan=Sum('employee_loan__emi'),
+        total_miscellaneous=Sum(
+        'employee_miscellaneous_deduction__miscellaneous__amount',
+        filter=Q(
+            employee_miscellaneous_deduction__date__month=monthw,
+            employee_miscellaneous_deduction__date__year=yearw,
+        )
+        )
+    )
+
+    for i in queryset_data:
+        print('--------------')
+        print(i.total_allowance)
 
     builty_filters =  employee_filter(request.GET, queryset=queryset_data)
 
@@ -752,6 +779,21 @@ def list_employee_salary(request):
         'year': year,
         }
 
+    
+    for a in context['data']:
+        total_allowance = a.total_allowance or 0
+        total_deduction = a.total_deduction or 0
+        basic_salary = a.basic_salary or 0
+        total_loan = a.total_loan or 0
+        total_miscellaneous = a.total_miscellaneous or 0
+        a.total_amount = basic_salary + total_allowance - total_deduction - total_loan - total_miscellaneous
+        salary = employee_salary.objects.filter(employee=a, salary_date__month=month, salary_date__year=year).first()
+        a.salary_done = bool(salary)
+
+    print(month)
+    print(year)
+
+
 
     return render(request, 'transactions/employee_salary.html', context)
 
@@ -760,10 +802,14 @@ from django.db.models import Sum
 
 from datetime import datetime
 
+
+
 @login_required(login_url='login')
 def generate_employee_salary(request, employee_id, month, year):
     
-    date = datetime(int(year), int(month), 1, tzinfo=ist)
+    date = datetime(int(year), int(month), 1)
+
+  
 
     employee_instancee = employee.objects.get(id = employee_id)
 
@@ -771,9 +817,29 @@ def generate_employee_salary(request, employee_id, month, year):
 
     allowance_amount = employee_allowance.objects.filter(employee = employee_instancee).aggregate(total_allowance=Sum('allowance__amount'))['total_allowance']
     loan_amount = employee_loan.objects.filter(employee = employee_instancee).aggregate(total_emi=Sum('emi'))['total_emi']
-    miscellaneous_deduction_amount = employee_miscellaneous_deduction.objects.filter(date = date, employee = employee_instancee).aggregate(total_mis_deu=Sum('miscellaneous__amount'))['total_mis_deu']
+    miscellaneous_deduction_amount = employee_miscellaneous_deduction.objects.filter(date__month = date.month, date__year = date.year, employee = employee_instancee).aggregate(total_mis_deu=Sum('miscellaneous__amount'))['total_mis_deu']
     deduction_amount = employee_deduction.objects.filter(employee = employee_instancee).aggregate(total_dedu=Sum('deduction__amount'))['total_dedu']
     
+
+    print('--------------')
+    print('--------------')
+    print('--------------')
+    print('--------------')
+
+    print(employee_instancee.name)
+    print(allowance_amount)
+
+    print('--------------')
+
+    print('--------------')
+
+    print('--------------')
+
+    print('--------------')
+
+    print('--------------')
+
+
     if allowance_amount == None:
         allowance_amount = 0
     if loan_amount == None:
@@ -785,20 +851,25 @@ def generate_employee_salary(request, employee_id, month, year):
 
     total_salary = employe_basic_salary + allowance_amount - loan_amount - deduction_amount - miscellaneous_deduction_amount
     
+    print('--------------------')
+    print('--------------------')
+    print('--------------------')
+    print('--------------------')
+    print(date)
+    print('--------------------')
+    print('--------------------')
+    print('--------------------')
+    print('--------------------')
+    print('--------------------')
+
+    
     employee_salary.objects.create(employee_id = employee_id, salary_date = date, deduction_amount = deduction_amount, allowance_amount = allowance_amount, loan_amount = loan_amount, miscellaneous_deduction_amount = miscellaneous_deduction_amount, total_salary = total_salary)
 
-    queryset_data = employee.objects.all()
 
-    builty_filters =  employee_filter(request.GET, queryset=queryset_data)
+    return redirect('employee_salary')
 
-    context = {
-        'employee_salary_filter' : builty_filters,
-        'data': builty_filters.qs,
-        'month' : month,
-        'year' : year,
-        }
 
-    return render(request, 'transactions/employee_salary.html', context)
+
 
 @login_required(login_url='login')
 def employe_salary_cutof(request, employee_id, month, year):

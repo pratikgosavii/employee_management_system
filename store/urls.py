@@ -57,6 +57,7 @@ urlpatterns = [
     path('update-employee/<employee_id>', update_employee, name='update_employee'),
     path('delete-employee/<employee_id>', delete_employee, name='delete_employee'),
     path('list-employee/', list_employee, name='list_employee'),
+    path('get-employee-retiredmentdate', retiredmentdate, name='retiredmentdate'),
 
     path('add-allowance/', add_allowance, name='add_allowance'),
     path('update-allowance/<allowance_id>', update_allowance, name='update_allowance'),

@@ -39,9 +39,6 @@ from django.forms.widgets import DateTimeInput
 
 class employee_deduction_Form(forms.ModelForm):
 
-    year = forms.IntegerField(label='Select Year', widget=forms.NumberInput(attrs={'class': 'year-input', 'id' : 'id_year'}))
-    month = forms.ChoiceField(choices=[(i, i) for i in range(1, 13)], label='Select Month', widget=forms.Select(attrs={'class': 'month-select', 'id' : 'id_month'}))
-
 
     
     class Meta:
