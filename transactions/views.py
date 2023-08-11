@@ -981,36 +981,40 @@ def generate_employee_salary_multiple(request):
     year = request.POST.get('year')
     month = request.POST.get('month')
     employee_id = request.POST.getlist('employee_id[]')
+
+    for i in employee_id:
+
+        print(i)
     
-    date = datetime(year,month, 1, tzinfo=ist)
+    date = datetime(int(year), int(month), 5, tzinfo=ist)
+
+    print('salary date')
+
+    print(date)
+
+    print('dadasasasasas')
 
     for i in employee_id:
 
 
         employee_instancee = employee.objects.get(id = i)
 
-        employe_basic_salary = employee_instancee.basic_salary
+        employe_basic_salary = employee_instancee.basic_salary or 0
 
-        allowance_amount = employee_allowance.objects.filter(employee = employee_instancee).aggregate(Sum('amount'))
-        loan_amount = employee_loan.objects.filter(employee = employee_instancee).aggregate(Sum('emi'))
-        miscellaneous_deduction_amount = employee_miscellaneous_deduction.objects.filter(date = date, employee = employee_instancee).aggregate(Sum('amount'))
-        deduction_amount = employee_deduction.objects.filter(employee = employee_instancee).aggregate(Sum('amount'))
+        allowance_amount = employee_allowance.objects.filter(employee = employee_instancee).aggregate(Sum('allowance__amount'))['allowance__amount__sum'] or 0
+        print(allowance_amount)
+        loan_amount = employee_loan.objects.filter(employee = employee_instancee).aggregate(Sum('emi'))['emi__sum'] or 0
+        print(loan_amount)
+        miscellaneous_deduction_amount = employee_miscellaneous_deduction.objects.filter(date = date, employee = employee_instancee).aggregate(Sum('miscellaneous__amount'))['miscellaneous__amount__sum'] or 0
+        print(miscellaneous_deduction_amount)
+        deduction_amount = employee_deduction.objects.filter(employee = employee_instancee).aggregate(Sum('deduction__amount'))['deduction__amount__sum'] or 0
+        print(deduction_amount)
 
         total_salary = employe_basic_salary + allowance_amount - loan_amount - deduction_amount - miscellaneous_deduction_amount
         
         employee_salary.objects.create(employee_id = i, salary_date = date, deduction_amount = deduction_amount, allowance_amount = allowance_amount, loan_amount = loan_amount, miscellaneous_deduction_amount = miscellaneous_deduction_amount, total_salary = total_salary)
 
-    queryset_data = employee.objects.all()
-
-    builty_filters =  employee_filter(request.GET, queryset=queryset_data)
-
-    context = {
-        'employee_salary_filter' : employee_salary_filter(),
-        'data': builty_filters.qs
-        }
-
-
-    return render(request, 'transactions/employee_salary.html', context)
+    return JsonResponse({'status' : 'done'})
 
 
 from io import BytesIO

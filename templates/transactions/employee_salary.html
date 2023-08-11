@@ -123,7 +123,7 @@
                             {% else %}
 
                             <tr>
-                                <td class="serial"> <input type="checkbox" id="{{ i.employee.employee.id }}" name="checkboxes" value="value1"> {{ forloop.counter }}</td>
+                                <td class="serial"> <input type="checkbox" id="{{ i.employee.id }}" name="checkboxes" value="value1"> {{ forloop.counter }}</td>
                                 <td>{{ i.employee.name }}</td>
                                 <td>{{ i.employee.department }}</td>
                                 <td>{{ i.employee.designation }}</td>
@@ -200,22 +200,20 @@
             }
         });
 
-        console.log('working')
+        console.log(checkedIDs)
 
         
-        const employeeID = $(this).val();  // get the selected subject ID from the HTML dropdown list 
         $.ajax({                       // initialize an AJAX request
             type: "POST",
             url: '{% url "generate_employee_salary_multiple" %}',
             data: {
                 'employee_id': [...checkedIDs],       // add the country id to the POST parameters
-                'month': month,       // add the country id to the POST parameters
-                'year': year,       // add the country id to the POST parameters
+                'month': {{ month }},       // add the country id to the POST parameters
+                'year': {{ year }},       // add the country id to the POST parameters
                 'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
             },
             success: function (data) {   // `data` is from `get_topics_ajax` view function
-                console.log(data.value)
-                $("#old_basic").val(data.value); // replace the contents of the topic input with the data that came from the server
+                console.log(data.status)
             }
         });
 
