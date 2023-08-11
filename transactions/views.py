@@ -743,10 +743,7 @@ def list_employee_salary(request):
     if date:
 
         date = date.split("-")
-        print('----------------')
-        print(date)
-        print('----------------')
-
+       
         date = datetime(int(date[0]), int(date[1]), int(date[2]))
 
         month = date.month
@@ -758,50 +755,56 @@ def list_employee_salary(request):
         month = current_date.month
         year = current_date.year
 
+    department_type_id= request.GET.get('department_id')
 
-    queryset_data = employee.objects.annotate(
-        total_allowance=Sum('employee_allo__allowance__amount'),
-        total_deduction=Sum('employee_deduction__deduction__amount'),
-        total_loan=Sum('employee_loan__emi'),
-        total_miscellaneous=Sum(
-        'employee_miscellaneous_deduction__miscellaneous__amount',
+    employees = employee.objects.filter(department__id = department_type_id)
+
+    # Calculate total allowance and total deduction for each employee
+    employee_data = []
+    for emp in employees:
+        total_allowance = emp.employee_allo.aggregate(total=Sum('allowance__amount'))['total'] or 0
+        total_deduction = emp.employee_dedu.aggregate(total=Sum('deduction__amount'))['total'] or 0
+
+        total_loan=emp.employee_loan_re.aggregate(total=Sum('emi'))['total'] or 0
+        total_miscellaneous=emp.employee_misc.aggregate(total=Sum('miscellaneous__amount',
         filter=Q(
-            employee_miscellaneous_deduction__date__month=month,
-            employee_miscellaneous_deduction__date__year=year,
+            date__month=month,
+            date__year=year,
+        ))
         )
-        )
-    )
-
-    print(str(queryset_data.query))
-
-    for i in queryset_data:
-        print('--------------')
-        print(i.total_allowance)
-
-    builty_filters =  employee_filter(request.GET, queryset=queryset_data)
+        
+        employee_data.append({
+            'employee': emp,
+            'total_allowance': total_allowance,
+            'total_deduction': total_deduction,
+            'total_loan': total_loan,
+            'total_miscellaneous': total_miscellaneous,
+        })
 
 
 
     context = {
         'employee_salary_filter' : employee_salary_filter(),
-        'data': builty_filters.qs,
+        'data': employee_data,
         'month': month,
         'year': year,
         }
 
-    
+       
     for a in context['data']:
-        total_allowance = a.total_allowance or 0
-        total_deduction = a.total_deduction or 0
-        basic_salary = a.basic_salary or 0
-        total_loan = a.total_loan or 0
-        total_miscellaneous = a.total_miscellaneous or 0
-        a.total_amount = basic_salary + total_allowance - total_deduction - total_loan - total_miscellaneous
-        salary = employee_salary.objects.filter(employee=a, salary_date__month=month, salary_date__year=year).first()
-        a.salary_done = bool(salary)
-
-    print(month)
-    print(year)
+        total_allowance = a.get(total_allowance, 0)
+        total_deduction = a.get(total_deduction, 0)
+        basic_salary = a['employee'].basic_salary or 0
+        total_loan = a.get(total_loan, 0)
+        total_miscellaneous = a.get('total_miscellaneous', {}).get('total', 0) or 0
+        print(basic_salary)
+        print(total_allowance)
+        print(total_deduction)
+        print(total_loan)
+        print(total_miscellaneous)
+        a['total_amount'] = basic_salary + total_allowance - total_deduction - total_loan - total_miscellaneous
+        salary = employee_salary.objects.filter(employee=a['employee'], salary_date__month=month, salary_date__year=year).first()
+        a['salary_done'] = bool(salary)
 
 
 

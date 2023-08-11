@@ -89,13 +89,13 @@
                             {% if i.salary_done %}
 
                             <tr style="background: #ffe5b5;">
-                                <td class="serial"> <input type="checkbox" id="{{ i.id }}" name="checkboxes" value="value1" disabled> {{ forloop.counter }}</td>
-                                <td>{{ i.name }}</td>
-                                <td>{{ i.department }}</td>
-                                <td>{{ i.designation }}</td>
+                                <td class="serial"> <input type="checkbox" id="{{ i.employee.id }}" name="checkboxes" value="value1" disabled> {{ forloop.counter }}</td>
+                                <td>{{ i.employee.name }}</td>
+                                <td>{{ i.employee.department }}</td>
+                                <td>{{ i.employee.designation }}</td>
                                 <td>20</td>
                                 <td>3</td>
-                                <td>{{ i.basic_salary }}</td>
+                                <td>{{ i.employee.basic_salary }}</td>
                                 <td>{{ i.total_allowance }}</td>
                                 <td>{{ i.total_deduction }}</td>
                                 <td>{{ i.total_loan }}</td>
@@ -107,12 +107,12 @@
 
                                 <td style="display: flex;
                                 gap: 10px;">  
-                                    <a href="{% url 'employe_salary_cutof' i.id month year %}"> <button id="payment-button"  style="background-color: green; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
+                                    <a href="{% url 'employe_salary_cutof' i.employee.id month year %}"> <button id="payment-button"  style="background-color: green; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
                                          <span id="payment-button-amount">Details</span>
                                      </button>  </a>
 
 
-                                    <a href="{% url 'generate_employee_salary' i.id month year %}"> <button id="payment-button"  style="background-color: green; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
+                                    <a href="{% url 'generate_employee_salary' i.employee.id month year %}"> <button id="payment-button"  style="background-color: green; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
                                          <span id="payment-button-amount">Completed</span>
                                      </button>  </a>
 
@@ -123,14 +123,14 @@
                             {% else %}
 
                             <tr>
-                                <td class="serial"> <input type="checkbox" id="{{ i.id }}" name="checkboxes" value="value1"> {{ forloop.counter }}</td>
+                                <td class="serial"> <input type="checkbox" id="{{ i.employee.id }}" name="checkboxes" value="value1"> {{ forloop.counter }}</td>
                                 <td>{{ i.name }}</td>
                                 <td>{{ i.department }}</td>
                                 <td>{{ i.designation }}</td>
                                 <td>20</td>
                                 <td>3</td>
                                 <td>{{ i.basic_salary }}</td>
-                                <td>{{ i.total_allowance }}</td>
+                                <td>{{ i.total_allowance  }}</td>
                                 <td>{{ i.total_deduction }}</td>
                                 <td>{{ i.total_loan }}</td>
                                 <td>{{ i.total_miscellaneous }}</td>
@@ -141,13 +141,13 @@
 
                                 <td style="display: flex;
                                 gap: 10px;">  
-                                    <a href="{% url 'employe_salary_cutof' i.id month year %}"> <button id="payment-button"  style="background-color: green; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
+                                    <a href="{% url 'employe_salary_cutof' i.employee.id month year %}"> <button id="payment-button"  style="background-color: green; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
                                          <span id="payment-button-amount">Details</span>
                                      </button>  </a>
 
 
 
-                                    <a href="{% url 'generate_employee_salary' i.id month year %}?{{ request.GET.urlencode }}"> <button id="payment-button"  style="background-color: green; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
+                                    <a href="{% url 'generate_employee_salary' i.employee.id month year %}?{{ request.GET.urlencode }}"> <button id="payment-button"  style="background-color: green; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
                                          <span id="payment-button-amount">Generate Salary</span>
                                      </button>  </a>
 

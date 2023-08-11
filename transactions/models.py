@@ -41,7 +41,7 @@ class employee_deduction(models.Model):
 
 class employee_loan(models.Model):
 
-    employee = models.ForeignKey(employee, on_delete=models.CASCADE)
+    employee = models.ForeignKey(employee, on_delete=models.CASCADE, related_name = 'employee_loan_re')
     loan = models.ForeignKey(loan, on_delete=models.CASCADE)
     total_loan_amount = models.BigIntegerField()
     loan_percentage = models.BigIntegerField()
@@ -58,7 +58,7 @@ class employee_loan(models.Model):
 
 class employee_miscellaneous_deduction(models.Model):
 
-    employee = models.ForeignKey(employee, on_delete=models.CASCADE)
+    employee = models.ForeignKey(employee, on_delete=models.CASCADE, related_name = 'employee_misc')
     miscellaneous = models.ForeignKey(miscellaneous_deduction, on_delete=models.CASCADE)
     description = models.CharField(max_length=120, unique=False)
     status = models.CharField(choices = status_choice, max_length=120)
