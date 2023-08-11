@@ -213,7 +213,9 @@
                 'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
             },
             success: function (data) {   // `data` is from `get_topics_ajax` view function
-                console.log(data.status)
+                if(data.status == 'done'){
+                    window.location.reload();
+                }
             }
         });
 
