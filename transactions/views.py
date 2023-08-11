@@ -757,13 +757,13 @@ def list_employee_salary(request):
 
     department_type_id= request.GET.get('department_id')
 
-    employees = employee.objects.filter(department__id = department_type_id)
+    employees = employee.objects.all()
 
     # Calculate total allowance and total deduction for each employee
     employee_data = []
     for emp in employees:
-        total_allowance = emp.employee_allo.aggregate(total=Sum('allowance__amount'))['total'] or 0
-        total_deduction = emp.employee_dedu.aggregate(total=Sum('deduction__amount'))['total'] or 0
+        total_allowance = emp.employee_allo.aggregate(total=Sum('allowance__amount'))['total']
+        total_deduction = emp.employee_dedu.aggregate(total=Sum('deduction__amount'))['total']
 
         total_loan=emp.employee_loan_re.aggregate(total=Sum('emi'))['total'] or 0
         total_miscellaneous=emp.employee_misc.aggregate(total=Sum('miscellaneous__amount',
@@ -771,7 +771,7 @@ def list_employee_salary(request):
             date__month=month,
             date__year=year,
         ))
-        )
+        )['total'] or 0
         
         employee_data.append({
             'employee': emp,
@@ -780,7 +780,6 @@ def list_employee_salary(request):
             'total_loan': total_loan,
             'total_miscellaneous': total_miscellaneous,
         })
-
 
 
     context = {
@@ -796,17 +795,19 @@ def list_employee_salary(request):
         total_deduction = a.get(total_deduction, 0)
         basic_salary = a['employee'].basic_salary or 0
         total_loan = a.get(total_loan, 0)
-        total_miscellaneous = a.get('total_miscellaneous', {}).get('total', 0) or 0
+        print(total_miscellaneous)
+
+        total_miscellaneous = a.get('total_miscellaneous', {})
         print(basic_salary)
         print(total_allowance)
         print(total_deduction)
         print(total_loan)
-        print(total_miscellaneous)
         a['total_amount'] = basic_salary + total_allowance - total_deduction - total_loan - total_miscellaneous
         salary = employee_salary.objects.filter(employee=a['employee'], salary_date__month=month, salary_date__year=year).first()
         a['salary_done'] = bool(salary)
 
 
+    print(context['data'])
 
     return render(request, 'transactions/employee_salary.html', context)
 

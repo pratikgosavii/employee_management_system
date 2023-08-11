@@ -90,7 +90,7 @@
 
                             <tr style="background: #ffe5b5;">
                                 <td class="serial"> <input type="checkbox" id="{{ i.employee.id }}" name="checkboxes" value="value1" disabled> {{ forloop.counter }}</td>
-                                <td>{{ i.employee.name }}</td>
+                                <td>{{ i.employee }}</td>
                                 <td>{{ i.employee.department }}</td>
                                 <td>{{ i.employee.designation }}</td>
                                 <td>20</td>
@@ -123,10 +123,10 @@
                             {% else %}
 
                             <tr>
-                                <td class="serial"> <input type="checkbox" id="{{ i.employee.id }}" name="checkboxes" value="value1"> {{ forloop.counter }}</td>
-                                <td>{{ i.name }}</td>
-                                <td>{{ i.department }}</td>
-                                <td>{{ i.designation }}</td>
+                                <td class="serial"> <input type="checkbox" id="{{ i.employee.employee.id }}" name="checkboxes" value="value1"> {{ forloop.counter }}</td>
+                                <td>{{ i.employee.name }}</td>
+                                <td>{{ i.employee.department }}</td>
+                                <td>{{ i.employee.designation }}</td>
                                 <td>20</td>
                                 <td>3</td>
                                 <td>{{ i.basic_salary }}</td>
