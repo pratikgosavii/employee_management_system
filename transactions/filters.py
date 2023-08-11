@@ -49,7 +49,7 @@ class employee_salary_filter(django_filters.FilterSet):
             })
     )
    
-    salary_date = DateFilter(field_name="DC_date", lookup_expr='gte', widget=forms.DateInput(
+    salary_date = DateFilter(field_name="salary_date", lookup_expr='gte', widget=forms.DateInput(
             attrs={
                 'id': 'datepicker1212',
                 'type': 'date',

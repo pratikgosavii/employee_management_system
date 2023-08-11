@@ -58,9 +58,16 @@
 
                 <div class="form-group" style="gap: 33px">
                     <div>
-                        <label for="name" class="control-label mb-1">Address</label>
+                        <label for="name" class="control-label mb-1">Current Address</label>
                         {{ form.address }}
                     </div>
+                    <div>
+                      <input type="checkbox" id="copyAddressCheckbox"> Same
+                      <label for="name" class="control-label mb-1"
+                      >Permanent Address</label
+                      >
+                      {{ form.permanent_address }}
+                  </div>
                     <div>
                         <label for="name" class="control-label mb-1">Pincode</label>
                         {{ form.pin_code }}
@@ -105,6 +112,11 @@
                         <label for="name" class="control-label mb-1">Basic Salary</label>
                     {{ form.basic_salary }}
                     </div>
+
+                    <div>
+                      <label for="name" class="control-label mb-1">Bank Acc</label>
+                      {{ form.bank_ac_no }}
+                  </div>
                   
                 </div>
 
@@ -166,21 +178,13 @@
                     </div>
                     <div>
                         <label for="name" class="control-label mb-1"
-                        >Date of Retiremen</label
+                        >Date of Retirement</label
                         >
                         {{ form.date_of_retirement }}
                     </div>
 
-                      <div>
-                        <label for="name" class="control-label mb-1">Bank Acc</label>
-                        {{ form.bank_ac_no }}
-                    </div>
-                    <div>
-                        <label for="name" class="control-label mb-1"
-                        >Permanent Address</label
-                        >
-                        {{ form.permanent_address }}
-                    </div>
+                     
+                   
                 </div>
                 </div>
 
@@ -239,6 +243,23 @@
     
   });
 
+
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const currentAddressInput = document.getElementById('id_address');
+    const permanentAddressInput = document.getElementById('id_permanent_address');
+    const copyAddressCheckbox = document.getElementById('copyAddressCheckbox');
+    
+    copyAddressCheckbox.addEventListener('change', function() {
+        if (copyAddressCheckbox.checked) {
+            permanentAddressInput.value = currentAddressInput.value;
+            permanentAddressInput.disabled = true;
+        } else {
+            permanentAddressInput.value = '';
+            permanentAddressInput.disabled = false;
+        }
+    });
+});
 
 </script>
 

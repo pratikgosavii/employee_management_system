@@ -145,7 +145,7 @@ class employee_department_transfer_Form(forms.ModelForm):
                 'class': 'form-control', 'id': 'employee'
             }),
             'old_deparment': forms.Select(attrs={
-                'class': 'form-control', 'id': 'old_deparment', 'readonly' : 'readonly'
+                'class': 'form-control', 'id': 'old_deparment', 'disabled': 'disabled'
             }),
             'new_deparment': forms.Select(attrs={
                 'class': 'form-control', 'id': 'deduction'

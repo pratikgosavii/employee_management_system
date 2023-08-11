@@ -432,18 +432,20 @@ def add_employee_transfer_department(request):
     
     if request.method == "POST":
         
-        forms = employee_increament_Form(request.POST)
+        forms = employee_department_transfer_Form(request.POST)
 
         if forms.is_valid():
 
             forms.save()
 
-            employee = request.POST.get("employee")
-            department_type = request.POST.get("new_deparment")
+            employee_id = request.POST.get("employee")
+            department_type_id = request.POST.get("new_deparment")
 
-            employee_instance = employee.objects.get(id = employee)
+            employee_instance = employee.objects.get(id = int(employee_id))
 
-            employee_instance.department = department_type
+            department_type_instance = department_type.objects.get(id = department_type_id)
+
+            employee_instance.department = department_type_instance
 
             employee_instance.save()
 
@@ -734,32 +736,18 @@ from django.db.models import Sum, Q
 @login_required(login_url='login')
 def list_employee_salary(request):
     
-    wewewe = datetime.now()
-    monthw = wewewe.month
-    yearw = wewewe.year
-     
+    date = request.GET.get('salary_date')
 
-    queryset_data = employee.objects.annotate(
-        total_allowance=Sum('employee_allo__allowance__amount'),
-        total_deduction=Sum('employee_deduction__deduction__amount'),
-        total_loan=Sum('employee_loan__emi'),
-        total_miscellaneous=Sum(
-        'employee_miscellaneous_deduction__miscellaneous__amount',
-        filter=Q(
-            employee_miscellaneous_deduction__date__month=monthw,
-            employee_miscellaneous_deduction__date__year=yearw,
-        )
-        )
-    )
-
-    for i in queryset_data:
-        print('--------------')
-        print(i.total_allowance)
-
-    builty_filters =  employee_filter(request.GET, queryset=queryset_data)
-
-    date = request.POST.get('date')
+    
+    print(date)
     if date:
+
+        date = date.split("-")
+        print('----------------')
+        print(date)
+        print('----------------')
+
+        date = datetime(int(date[0]), int(date[1]), int(date[2]))
 
         month = date.month
         year = date.year
@@ -769,6 +757,28 @@ def list_employee_salary(request):
         current_date = datetime.now()
         month = current_date.month
         year = current_date.year
+
+
+    queryset_data = employee.objects.annotate(
+        total_allowance=Sum('employee_allo__allowance__amount'),
+        total_deduction=Sum('employee_deduction__deduction__amount'),
+        total_loan=Sum('employee_loan__emi'),
+        total_miscellaneous=Sum(
+        'employee_miscellaneous_deduction__miscellaneous__amount',
+        filter=Q(
+            employee_miscellaneous_deduction__date__month=month,
+            employee_miscellaneous_deduction__date__year=year,
+        )
+        )
+    )
+
+    print(str(queryset_data.query))
+
+    for i in queryset_data:
+        print('--------------')
+        print(i.total_allowance)
+
+    builty_filters =  employee_filter(request.GET, queryset=queryset_data)
 
 
 
@@ -848,6 +858,8 @@ def generate_employee_salary(request, employee_id, month, year):
         miscellaneous_deduction_amount = 0
     if deduction_amount == None:
         deduction_amount = 0
+    if employe_basic_salary == None:
+        employe_basic_salary = 0
 
     total_salary = employe_basic_salary + allowance_amount - loan_amount - deduction_amount - miscellaneous_deduction_amount
     
@@ -865,8 +877,12 @@ def generate_employee_salary(request, employee_id, month, year):
     
     employee_salary.objects.create(employee_id = employee_id, salary_date = date, deduction_amount = deduction_amount, allowance_amount = allowance_amount, loan_amount = loan_amount, miscellaneous_deduction_amount = miscellaneous_deduction_amount, total_salary = total_salary)
 
+    url = reverse('employee_salary')
+    url += '?' + request.GET.urlencode()
 
-    return redirect('employee_salary')
+    print(url)
+
+    return redirect(url)
 
 
 
@@ -942,6 +958,17 @@ def employe_salary_cutof(request, employee_id, month, year):
 
 @login_required(login_url='login')
 def generate_employee_salary_multiple(request):
+
+    print('------------')
+    print('------------')
+    print('------------')
+    print('------------')
+    print('------------')
+    print('------------')
+    print('------------')
+    print('------------')
+    print('------------')
+    print('------------')
 
     year = request.POST.get('year')
     month = request.POST.get('month')

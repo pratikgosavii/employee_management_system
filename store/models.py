@@ -154,7 +154,7 @@ class employee(models.Model):
     country = models.CharField(max_length=120, unique=False, blank = True, null = True)
     pin_code = models.IntegerField(blank = True, null = True)
 
-    adhar_card = models.CharField(max_length=120, unique=True, blank = True, null = True)
+    adhar_card = models.IntegerField(max_length=12, unique=True, blank = True, null = True)
     pan_card = models.CharField(max_length=120, unique=True, blank = True, null = True)
     biometric_no = models.CharField(max_length=120, unique=True, blank = True, null = True)
     nps_dcps = models.CharField(choices = nps_dcps_choice, max_length=120, blank = True, null = True)
@@ -176,7 +176,7 @@ class employee(models.Model):
     date_of_retirement = models.DateField(auto_now_add=False, default = datetime.now(), blank = True, null = True)
 
     bank_ac_no = models.IntegerField(blank = True, null = True)
-    permanent_address = models.CharField(max_length=120, unique=True, blank = True, null = True)
+    permanent_address = models.TextField(max_length=120, unique=True, blank = True, null = True)
 
     def __str__(self):
         return self.name
@@ -190,8 +190,8 @@ class allowance(models.Model):
     percentage = models.IntegerField(blank = True, null = True)
     da_percentage = models.IntegerField(blank = True, null = True)
     amount = models.IntegerField(blank = True, null = True)
-    is_fixed = models.BooleanField(default=False, blank = True, null = True)
-    is_dcpc = models.BooleanField(default=False, blank = True, null = True)
+    is_fixed = models.BooleanField(default=True)
+    is_dcpc = models.BooleanField(default=False)
     status = models.CharField(choices = status_choice, max_length=120, blank = True, null = True)
 
     def __str__(self):
@@ -205,7 +205,7 @@ class deduction(models.Model):
     percentage = models.IntegerField(blank = True, null = True)
     da_percentage = models.IntegerField(blank = True, null = True)
     amount = models.IntegerField(blank = True, null = True)
-    is_fixed = models.BooleanField(default=False)
+    is_fixed = models.BooleanField(default=True)
     is_dcpc = models.BooleanField(default=False)
     status = models.CharField(choices = status_choice, max_length=120)
 

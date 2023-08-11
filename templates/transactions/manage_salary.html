@@ -91,10 +91,10 @@
                 <!-- Credit Card -->
                 <div id="pay-invoice">
                     <div class="card-body">
-                        <form action="#" method="post" >
+                        <form action="#" method="post" id="readOnlyContainer">
                             {% csrf_token %}
 
-                           
+                            <div id="readOnlyContainer">
                         
                             <div class="form-group">
                                 <label for="name" class="control-label mb-1">Name</label>
@@ -126,6 +126,7 @@
                                 {{ form.basic_salary }}
                                 
                             </div>
+                          </div>
 
 <hr>
 
@@ -508,6 +509,11 @@
           </div>
 
           <div class="form-group">
+            <label for="name" class="control-label mb-1">Date</label>
+            {{ form_employee_miscellaneous_deduction.date }}
+          </div>
+
+          <div class="form-group">
             <label for="name" class="control-label mb-1">Status</label>
             {{ form_employee_miscellaneous_deduction.status }}
           </div>
@@ -574,6 +580,20 @@
         event.stopPropagation();
       });
     });
+
+    const readOnlyContainer = document.getElementById('readOnlyContainer');
+    const inputs = readOnlyContainer.querySelectorAll('input');
+    const selects = readOnlyContainer.querySelectorAll('select');
+            
+    selects.forEach(function(select) {
+        select.disabled = true;
+    }); 
+    
+    inputs.forEach(function(input) {
+        input.readOnly = true;
+    });
+
+
   });
 
 

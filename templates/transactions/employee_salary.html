@@ -33,11 +33,7 @@
 <div class="row">
     <div class="col-xl-12">
 
-
-      
-    <form method="get" action="" style="padding:15px;">
-
-      {% csrf_token %}
+<form method="get">
 
       <div class="form-group" style="display: flex;
         gap: 14px;">
@@ -57,6 +53,7 @@
       
         <button class="btn btn-primary" type="submit" > Submit </button>
       </div>
+
     </form>
 
         <div class="card">
@@ -68,7 +65,7 @@
                     <table class="table ">
                         <thead>
                             <tr>
-                                <th class="serial">#</th>
+                                <th class="serial"># <input type="checkbox" id="selectAllBtn" name="asadss" value="value1"></th>
                                 <th>Employee</th>
                                 <th>Department</th>
                                 <th>Designation</th>
@@ -92,7 +89,7 @@
                             {% if i.salary_done %}
 
                             <tr style="background: #ffe5b5;">
-                                <td class="serial"> <input type="checkbox" id="{{ i.id }}" name="checkboxes" value="value1"> {{ forloop.counter }}</td>
+                                <td class="serial"> <input type="checkbox" id="{{ i.id }}" name="checkboxes" value="value1" disabled> {{ forloop.counter }}</td>
                                 <td>{{ i.name }}</td>
                                 <td>{{ i.department }}</td>
                                 <td>{{ i.designation }}</td>
@@ -150,7 +147,7 @@
 
 
 
-                                    <a href="{% url 'generate_employee_salary' i.id month year %}"> <button id="payment-button"  style="background-color: green; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
+                                    <a href="{% url 'generate_employee_salary' i.id month year %}?{{ request.GET.urlencode }}"> <button id="payment-button"  style="background-color: green; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
                                          <span id="payment-button-amount">Generate Salary</span>
                                      </button>  </a>
 
@@ -173,7 +170,14 @@
             </div>
             
         </div> <!-- /.card -->
-            <button class="btn btn-success" onclick="getCheckedCheckboxIDs()">Generate Salary</button>
+        
+      
+    <form method="post">
+
+        {% csrf_token %}
+            <button class="btn btn-success" onclick="getCheckedCheckboxIDs(event)">Generate Salary</button>
+</form>
+
     </div>  <!-- /.col-lg-8 -->
 
     
@@ -184,7 +188,9 @@
 
 <script>
 
-    function getCheckedCheckboxIDs() {
+    function getCheckedCheckboxIDs(event) {
+        event.preventDefault();
+
         const checkboxes = document.getElementsByName("checkboxes");
         const checkedIDs = [];
 
@@ -194,13 +200,15 @@
             }
         });
 
+        console.log('working')
+
         
         const employeeID = $(this).val();  // get the selected subject ID from the HTML dropdown list 
         $.ajax({                       // initialize an AJAX request
             type: "POST",
             url: '{% url "generate_employee_salary_multiple" %}',
             data: {
-                'employee_id': checkedIDs,       // add the country id to the POST parameters
+                'employee_id': [...checkedIDs],       // add the country id to the POST parameters
                 'month': month,       // add the country id to the POST parameters
                 'year': year,       // add the country id to the POST parameters
                 'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
@@ -214,8 +222,46 @@
 
 
         console.log("Checked IDs:", checkedIDs);
+
     }
 
+
+    function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split('&');
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split('=');
+            if (decodeURIComponent(pair[0]) === variable) {
+                return decodeURIComponent(pair[1]);
+            }
+        }
+        return null;
+    }
+    
+    // Get the 'name' parameter from the URL and set the input field value
+    var salary_dateValue = getQueryVariable('salary_date');
+    var departmentValue = getQueryVariable('department');
+    var salary_dateInput = document.getElementById('datepicker1212');
+    var departmentInput = document.getElementById('department');
+    if (salary_dateValue) {
+        salary_dateInput.value = salary_dateValue;
+    }
+    if (departmentValue) {
+        departmentInput.value = departmentValue;
+    }
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const selectAllBtn = document.getElementById('selectAllBtn');
+        const checkboxes = document.querySelectorAll('input[name="checkboxes"]:not([disabled])');
+        
+        selectAllBtn.addEventListener('change', function() {
+            checkboxes.forEach(function(checkbox) {
+                checkbox.checked = selectAllBtn.checked;
+            });
+        });
+    });
+    
 
 </script>
 

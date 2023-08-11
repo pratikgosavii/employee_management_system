@@ -28,7 +28,7 @@ class employee_allowance(models.Model):
 
 class employee_deduction(models.Model):
 
-    employee = models.ForeignKey(employee, on_delete=models.CASCADE)
+    employee = models.ForeignKey(employee, on_delete=models.CASCADE, related_name = 'employee_dedu')
     deduction = models.ForeignKey(deduction, on_delete=models.CASCADE)
     description = models.CharField(max_length=120, unique=False)
     status = models.CharField(choices = status_choice, max_length=120)

@@ -9,6 +9,8 @@ class employee_Form(forms.ModelForm):
 
     address = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control textareacus'}),
     required=False)
+    permanent_address = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control textareacus'}),
+    required=False)
     hra = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-control cusra'}),
     required=False)   
     ta = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-control cusra'}),
@@ -57,7 +59,7 @@ class employee_Form(forms.ModelForm):
 
 
 
-            'adhar_card': forms.TextInput(attrs={
+            'adhar_card': forms.NumberInput(attrs={
                 'class': 'form-control', 'id': 'name'
             }),
             'pan_card': forms.TextInput(attrs={
@@ -103,9 +105,7 @@ class employee_Form(forms.ModelForm):
             'bank_ac_no': forms.NumberInput(attrs={
                 'class': 'form-control', 'id': 'name'
             }),
-            'permanent_address': forms.TextInput(attrs={
-                'class': 'form-control', 'id': 'name'
-            }),
+          
 
 
        
@@ -364,8 +364,9 @@ class allowance_Form(forms.ModelForm):
         def __init__(self, *args, **kwargs):
             super(allowance_Form, self).__init__(*args, **kwargs)
             # Optional: You can add extra attributes to the fields here.
-            self.fields['is_fixed'].widget.attrs.update({'class': 'form-control', "id" : "toggleCheckbox"})
-            self.fields['da_percentage'].widget.attrs.update({'class': 'form-control'})
+            self.fields['is_fixed'].widget.attrs.update({"id" : "toggleCheckbox"})
+            self.fields['da_percentage'].widget.attrs.update({"id" : "scscds"})
+            self.fields['is_dcpc'].widget.attrs.update({"id" : "togglesdsdcdsdCheckbox"})
            
 
 class deduction_Form(forms.ModelForm):
@@ -401,6 +402,7 @@ class deduction_Form(forms.ModelForm):
         def __init__(self, *args, **kwargs):
             super(deduction_Form, self).__init__(*args, **kwargs)
             # Optional: You can add extra attributes to the fields here.
-            self.fields['is_fixed'].widget.attrs.update({'class': 'form-control'})
-            self.fields['da_percentage'].widget.attrs.update({'class': 'form-control'})
+            self.fields['is_fixed'].widget.attrs.update({"id" : "toggleCheckbox"})
+            self.fields['da_percentage'].widget.attrs.update({"id" : "scscds"})
+            self.fields['is_dcpc'].widget.attrs.update({"id" : "togglesdsdcdsdCheckbox"})
            
