@@ -180,15 +180,34 @@
     document.addEventListener("DOMContentLoaded", function () {
         const menuIcons = document.querySelectorAll(".menu-icon");
         const menuOptions = document.querySelectorAll(".menu-options");
+        let openMenu = null;
       
         // Show/hide menu options when the menu icon is clicked
         menuIcons.forEach(function (menuIcon) {
           menuIcon.addEventListener("click", function (event) {
-            event.stopPropagation();
-            const menuOptions = menuIcon.nextElementSibling;
-            menuOptions.style.display = menuOptions.style.display === "block" ? "none" : "block";
+              event.stopPropagation();
+              
+              if (openMenu) {
+                  openMenu.style.display = "none";
+                  const previousParentTd = openMenu.closest(".menu-cell");
+                  previousParentTd.style.zIndex = "initial"; // Revert z-index of previous menu's parent
+              }
+  
+              const menuOptions = menuIcon.nextElementSibling;
+              const parentTd = menuIcon.closest(".menu-cell");
+              
+              if (menuOptions.style.display === "block") {
+                  menuOptions.style.display = "none";
+                  parentTd.style.zIndex = "initial"; // Revert z-index when menu is closed
+                  openMenu = null;
+              } else {
+                  menuOptions.style.display = "block";
+                  parentTd.style.zIndex = "999"; // Change z-index when menu is opened
+                  openMenu = menuOptions;
+              }
           });
-        });
+      });
+  
       
         // Hide menu options when the user clicks somewhere else on the page
         document.addEventListener("click", function () {
