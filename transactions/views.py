@@ -765,9 +765,20 @@ def list_employee_salary(request):
         month = current_date.month
         year = current_date.year
 
-    department_type_id= request.GET.get('department_id')
+    department_type_id= request.GET.get('department')
+    print('---------------------')
+    print('---------------------')
+    print('---------------------')
+    print('---------------------')
+    print(department_type_id)
+    if department_type_id:
 
-    employees = employee.objects.all()
+        employees = employee.objects.filter(department__id = department_type_id)
+
+    else:
+
+        employees = employee.objects.all()
+
 
     # Calculate total allowance and total deduction for each employee
     employee_data = []
