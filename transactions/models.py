@@ -62,7 +62,7 @@ class employee_miscellaneous_deduction(models.Model):
     miscellaneous = models.ForeignKey(miscellaneous_deduction, on_delete=models.CASCADE)
     description = models.CharField(max_length=120, unique=False)
     status = models.CharField(choices = status_choice, max_length=120)
-    date = models.DateTimeField(auto_now=True)
+    date = models.DateTimeField(auto_now=False)
 
 
     def __str__(self):

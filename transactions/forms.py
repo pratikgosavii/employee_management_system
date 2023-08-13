@@ -127,6 +127,7 @@ class employee_miscellaneous_deduction_Form(forms.ModelForm):
                 'class': 'form-control', 'id': 'status'
             }),
 
+            'date': DateInput(attrs={ 'class': 'form-control', 'type': 'date'}, format = '%Y-%m-%d'),
            
             
         }

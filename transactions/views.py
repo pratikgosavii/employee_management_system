@@ -178,9 +178,10 @@ def update_employee_allowance(request, employee_allowance_id):
 @login_required(login_url='login')
 def delete_employee_allowance(request, employee_allowance_id):
     
-    employee_allowance.objects.get(id=employee_allowance_id).delete()
-
-    return HttpResponseRedirect(reverse('list_employee_allowance_delete'))
+    employee_instance = employee_allowance.objects.get(id=employee_allowance_id)
+    employee_id = employee_instance.employee.id
+    employee_instance.delete()
+    return redirect('manage_salary',  employee_id=employee_id)
 
 
 @login_required(login_url='login')
@@ -257,9 +258,12 @@ def update_employee_deduction(request, employee_deduction_id):
 @login_required(login_url='login')
 def delete_employee_deduction(request, employee_deduction_id):
     
-    employee_deduction.objects.get(id=employee_deduction_id).delete()
+    employee_instance =  employee_deduction.objects.get(id=employee_deduction_id)
 
-    return HttpResponseRedirect(reverse('list_employee_deduction_delete'))
+    employee_id = employee_instance.employee.id
+    employee_instance.delete()
+
+    return redirect('manage_salary',  employee_id=employee_id)
 
 
 @login_required(login_url='login')
@@ -331,9 +335,12 @@ def update_employee_loan(request, employee_loan_id):
 @login_required(login_url='login')
 def delete_employee_loan(request, employee_loan_id):
     
-    employee_loan.objects.get(id=employee_loan_id).delete()
+    employee_instance = employee_loan.objects.get(id=employee_loan_id)
 
-    return HttpResponseRedirect(reverse('list_employee_loan_delete'))
+    employee_id = employee_instance.employee.id
+    employee_instance.delete()
+
+    return redirect('manage_salary',  employee_id=employee_id)
 
 
 @login_required(login_url='login')
@@ -405,9 +412,13 @@ def update_employee_miscellaneous_deduction(request, employee_miscellaneous_dedu
 @login_required(login_url='login')
 def delete_employee_miscellaneous_deduction(request, employee_miscellaneous_deduction_id):
     
-    employee_miscellaneous_deduction.objects.get(id=employee_miscellaneous_deduction_id).delete()
+    employee_instance = employee_miscellaneous_deduction.objects.get(id=employee_miscellaneous_deduction_id)
+    
+    employee_id = employee_instance.employee.id
+    employee_instance.delete()
 
-    return HttpResponseRedirect(reverse('list_employee_miscellaneous_deduction_delete'))
+
+    return redirect('manage_salary',  employee_id=employee_id)
 
 
 @login_required(login_url='login')
