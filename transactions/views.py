@@ -1159,3 +1159,101 @@ def get_old_basic_ajax(request):
 
 
     return JsonResponse((some_data_to_dump), safe = False) 
+
+
+
+@login_required(login_url='login')
+def monthly_salary_report(request):
+
+    date = request.GET.get('salary_date')
+
+    
+    if date:
+
+        date = date.split("-")
+       
+        date = datetime(int(date[0]), int(date[1]), int(date[2]))
+
+        month = date.month
+        year = date.year
+
+    else:
+
+        current_date = datetime.now()
+        month = current_date.month
+        year = current_date.year
+
+    department_type_id= request.GET.get('department')
+    print('---------------------')
+    print('---------------------')
+    print('---------------------')
+    print('---------------------')
+    print(department_type_id)
+    if department_type_id:
+
+        employees = employee.objects.filter(department__id = department_type_id)
+
+    else:
+
+        employees = employee.objects.all()
+
+
+    # Calculate total allowance and total deduction for each employee
+    employee_data = []
+    for emp in employees:
+        allowance_instance = emp.employee_allo.all()
+        dearness_allowance = allowance_instance.filter(allowance__name = 'Dearness Allowance').value('allowance__amount')
+        total_allowance = allowance_instance.aggregate(total=Sum('allowance__amount'))['total']
+        total_deduction = emp.aggregate(total=Sum('deduction__amount'))['total']
+
+        total_loan=emp.employee_loan_re.aggregate(total=Sum('emi'))['total'] or 0
+        total_miscellaneous=emp.employee_misc.aggregate(total=Sum('miscellaneous__amount',
+        filter=Q(
+            date__month=month,
+            date__year=year,
+        ))
+        )['total'] or 0
+        
+        employee_data.append({
+            'employee': emp,
+            'total_allowance': total_allowance,
+            'total_deduction': total_deduction,
+            'total_loan': total_loan,
+            'total_miscellaneous': total_miscellaneous,
+        })
+
+
+    context = {
+        'employee_salary_filter' : employee_salary_filter(),
+        'data': employee_data,
+        'month': month,
+        'year': year,
+        }
+
+       
+    for a in context['data']:
+        print(a)
+        total_allowance = a['total_allowance'] or 0
+        total_deduction = a['total_deduction'] or 0
+        basic_salary = a['employee'].basic_salary or 0
+        total_loan = a['total_loan'] or 0
+        print(total_miscellaneous)
+
+        total_miscellaneous = a.get('total_miscellaneous', {})
+        print('basic_salary')
+        print(basic_salary)
+        print('total_allowance')
+        print(total_allowance)
+        print('total_deduction')
+        print(total_deduction)
+        print('total_loan')
+        print(total_loan)
+        a['total_amount'] = basic_salary + total_allowance - total_deduction - total_loan - total_miscellaneous
+        salary = employee_salary.objects.filter(employee=a['employee'], salary_date__month=month, salary_date__year=year).first()
+        a['salary_done'] = bool(salary)
+
+
+    print(context['data'])
+
+
+    return render(request, 'report/monthly_salary_report.html', context)

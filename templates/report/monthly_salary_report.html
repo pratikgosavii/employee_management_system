@@ -1,0 +1,188 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Product List{% endblock title %}
+
+
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <div class="breadcrumbs-inner">
+        <div class="row m-0">
+            <div class="col-sm-4">
+                <div class="page-header float-left">
+                    <div class="page-title">
+                        <h1>Dashboard</h1>
+                    </div>
+                </div>
+            </div>
+            {% comment %} <div class="col-sm-8">
+                <div class="page-header float-right">
+                    <div class="page-title">
+                        <ol class="breadcrumb text-right">
+                            <li><a href="#">Dashboard</a></li>
+                            <li><a href="#">Product</a></li>
+                            <li class="active">List</li>
+                        </ol>
+                    </div>
+                </div>
+            </div> {% endcomment %}
+        </div>
+    </div>
+</div>
+{% endblock breadcrumbs %}
+
+{% block content %}
+<div class="row">
+    <div class="col-xl-12">
+
+<form method="get">
+
+      <div class="form-group" style="display: flex;
+        gap: 14px;">
+
+        <label for="name" class="control-label mb-1" style="margin-left : 0px;">Date</label>
+                {{ employee_salary_filter.form.salary_date }}
+                    
+                
+        <label for="name" class="control-label mb-1" style="margin-left : 0px;">Department Type </label>
+          {{ employee_salary_filter.form.department }}
+              
+          
+       
+
+        <br>
+
+      
+        <button class="btn btn-primary" type="submit" > Submit </button>
+      </div>
+
+    </form>
+
+    
+    <div class="card">
+        <div class="card-body">
+            <h4 class="box-title">Employees List</h4>
+        </div>
+        <div class="card-body--">
+            <div class="table-stats order-table ov-h">
+                <table class="table ">
+                    <thead>
+                        <tr>
+                            <th class="serial"># <input type="checkbox" id="selectAllBtn" name="asadss" value="value1"></th>
+                            <th>Employee</th>
+                            <th>Department</th>
+                            <th>Designation</th>
+                            <th>Working days</th>
+                            <th>Absent days</th>
+                            <th>Basic Salary</th>
+                            <th>Total Allowances</th>
+                            <th>Total Deduction</th>
+                            <th>Total Loan Emi</th>
+                            <th>Total Miscellaneous</th>
+                            <th>In Hand Salary</th>
+                            <th>Actions</th>
+
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if data %}
+                        {% for i in data %}
+
+                        {% if i.salary_done %}
+
+                        <tr style="background: #ffe5b5;">
+                            <td class="serial"> <input type="checkbox" id="{{ i.employee.id }}" name="checkboxes" value="value1" disabled> {{ forloop.counter }}</td>
+                            <td>{{ i.employee }}</td>
+                            <td>{{ i.employee.department }}</td>
+                            <td>{{ i.employee.designation }}</td>
+                            <td>20</td>
+                            <td>3</td>
+                            <td>{{ i.employee.basic_salary }}</td>
+                            <td>{{ i.total_allowance }}</td>
+                            <td>{{ i.total_deduction }}</td>
+                            <td>{{ i.total_loan }}</td>
+                            <td>{{ i.total_miscellaneous }}</td>
+                            <td>{{ i.total_amount }}</td>
+                           
+                          
+
+
+                            <td style="display: flex;
+                            gap: 10px;">  
+                                <a href="{% url 'employe_salary_cutof' i.employee.id month year %}"> <button id="payment-button"  style="background-color: green; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
+                                     <span id="payment-button-amount">Details</span>
+                                 </button>  </a>
+
+
+                                <a href="{% url 'generate_employee_salary' i.employee.id month year %}"> <button id="payment-button"  style="background-color: green; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
+                                     <span id="payment-button-amount">Completed</span>
+                                 </button>  </a>
+
+                             </td>
+                           
+                        </tr>
+
+                        {% else %}
+
+                        <tr>
+                            <td class="serial"> <input type="checkbox" id="{{ i.employee.id }}" name="checkboxes" value="value1"> {{ forloop.counter }}</td>
+                            <td>{{ i.employee.name }}</td>
+                            <td>{{ i.employee.department }}</td>
+                            <td>{{ i.employee.designation }}</td>
+                            <td>20</td>
+                            <td>3</td>
+                            <td>{{ i.employee.basic_salary }}</td>
+                            <td>{{ i.total_allowance  }}</td>
+                            <td>{{ i.total_deduction }}</td>
+                            <td>{{ i.total_loan }}</td>
+                            <td>{{ i.total_miscellaneous }}</td>
+                            <td>{{ i.total_amount }}</td>
+                           
+                          
+
+
+                            <td style="display: flex;
+                            gap: 10px;">  
+                                <a href="{% url 'employe_salary_cutof' i.employee.id month year %}"> <button id="payment-button"  style="background-color: green; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
+                                     <span id="payment-button-amount">Details</span>
+                                 </button>  </a>
+
+
+
+                                <a href="{% url 'generate_employee_salary' i.employee.id month year %}?{{ request.GET.urlencode }}"> <button id="payment-button"  style="background-color: green; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
+                                     <span id="payment-button-amount">Generate Salary</span>
+                                 </button>  </a>
+
+                             </td>
+                           
+                        </tr>
+
+                        {% endif %}
+
+                        {% endfor %}
+                        {% else %}
+                            <tr><td>No Product Data</td></tr>
+                        {% endif %}
+
+
+                    </tbody>
+
+                </table>
+            </div> <!-- /.table-stats -->
+        </div>
+
+    </div>  <!-- /.col-lg-8 -->
+</div>
+
+    
+</div>
+{% endblock content %}
+
+{% block js %}
+
+<script>
+</script>
+
+
+{% endblock js %}

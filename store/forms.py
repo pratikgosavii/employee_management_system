@@ -60,7 +60,7 @@ class employee_Form(forms.ModelForm):
 
 
             'adhar_card': forms.NumberInput(attrs={
-                'class': 'form-control', 'id': 'name'
+                'class': 'form-control', 'id': 'adhar'
             }),
             'pan_card': forms.TextInput(attrs={
                 'class': 'form-control', 'id': 'name'

@@ -56,6 +56,8 @@ urlpatterns = [
 
     path('get_old_department_ajaxy/', get_old_department_ajax, name='get_old_department_ajax'),
     path('get_old_basic_ajax/', get_old_basic_ajax, name='get_old_basic_ajax'),
+
+    path('montly-salary-report/', monthly_salary_report, name='monthly_salary_report'),
     
 
 

@@ -261,6 +261,17 @@
     });
 });
 
+
+const inputField = document.getElementById('adhar');
+
+    inputField.addEventListener('input', function () {
+      const inputValue = inputField.value.trim();
+
+      if (inputValue.length > 12) {
+        inputField.value = inputValue.slice(0, 12);
+      }
+    });
+
 </script>
 
 {% endblock js %}
