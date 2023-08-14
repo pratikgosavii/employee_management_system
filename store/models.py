@@ -176,7 +176,7 @@ class employee(models.Model):
     date_of_retirement = models.DateField(auto_now_add=False, default = datetime.now())
 
     bank_ac_no = models.IntegerField(blank = True, null = True)
-    permanent_address = models.TextField(max_length=120, unique=True, blank = True, null = True)
+    permanent_address = models.TextField(max_length=120, unique=False, blank = True, null = True)
 
     def __str__(self):
         return self.name
