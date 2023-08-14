@@ -58,6 +58,7 @@ urlpatterns = [
     path('get_old_basic_ajax/', get_old_basic_ajax, name='get_old_basic_ajax'),
 
     path('montly-salary-report/', monthly_salary_report, name='monthly_salary_report'),
+    path('download-montly-salary-report-csv/', download_monthly_salary_report_csv, name='download_monthly_salary_report_csv'),
     
 
 

@@ -1202,10 +1202,20 @@ def monthly_salary_report(request):
     employee_data = []
     for emp in employees:
         allowance_instance = emp.employee_allo.all()
-        dearness_allowance = allowance_instance.filter(allowance__name = 'Dearness Allowance').value('allowance__amount')
-        total_allowance = allowance_instance.aggregate(total=Sum('allowance__amount'))['total']
-        total_deduction = emp.aggregate(total=Sum('deduction__amount'))['total']
+        dearness_allowance = allowance_instance.filter(allowance__name = 'Dearness Allowance').aggregate(Sum('allowance__amount'))['allowance__amount__sum'] or 0
+        house_rent_allowance = allowance_instance.filter(allowance__name = 'House Rent').aggregate(Sum('allowance__amount'))['allowance__amount__sum'] or 0
+        travel_allowance = allowance_instance.filter(allowance__name = 'Travel').aggregate(Sum('allowance__amount'))['allowance__amount__sum'] or 0
+        washing_clothes_allowance = allowance_instance.filter(allowance__name = 'Washing Clothes').aggregate(Sum('allowance__amount'))['allowance__amount__sum'] or 0
+        print('------')
+        print('------')
+        print('------')
+        print('------')
+        print('------')
 
+        print(dearness_allowance)
+        total_allowance = allowance_instance.aggregate(total=Sum('allowance__amount'))['total'] or 0
+        total_deduction = emp.employee_dedu.aggregate(total=Sum('deduction__amount'))['total'] or 0
+ 
         total_loan=emp.employee_loan_re.aggregate(total=Sum('emi'))['total'] or 0
         total_miscellaneous=emp.employee_misc.aggregate(total=Sum('miscellaneous__amount',
         filter=Q(
@@ -1217,6 +1227,10 @@ def monthly_salary_report(request):
         employee_data.append({
             'employee': emp,
             'total_allowance': total_allowance,
+            'dearness_allowance': dearness_allowance,
+            'house_rent_allowance': house_rent_allowance,
+            'travel_allowance': travel_allowance,
+            'washing_clothes_allowance': washing_clothes_allowance,
             'total_deduction': total_deduction,
             'total_loan': total_loan,
             'total_miscellaneous': total_miscellaneous,
@@ -1257,3 +1271,107 @@ def monthly_salary_report(request):
 
 
     return render(request, 'report/monthly_salary_report.html', context)
+
+
+
+def download_monthly_salary_report_csv(request):
+
+
+    date = request.GET.get('salary_date')
+
+    
+    if date:
+
+        date = date.split("-")
+       
+        date = datetime(int(date[0]), int(date[1]), int(date[2]))
+
+        month = date.month
+        year = date.year
+
+    else:
+
+        current_date = datetime.now()
+        month = current_date.month
+        year = current_date.year
+
+    department_type_id= request.GET.get('department')
+    print('---------------------')
+    print('---------------------')
+    print('---------------------')
+    print('---------------------')
+    print(department_type_id)
+    if department_type_id:
+
+        employees = employee.objects.filter(department__id = department_type_id)
+
+    else:
+
+        employees = employee.objects.all()
+
+
+    # Calculate total allowance and total deduction for each employee
+    csv_data = []
+    employee_data = []
+
+
+    employee_data.append('Name')
+    employee_data.append('Department')
+    employee_data.append('Designation')
+    employee_data.append('Working days')
+    employee_data.append('Absent days')
+    employee_data.append('Basic Salary')
+    employee_data.append('Dearness Allowance')
+    employee_data.append('House Rent')
+    employee_data.append('Travel')
+    employee_data.append('Washing Clothes')
+    employee_data.append('Total Allowances')
+    csv_data.append(employee_data)
+    employee_data = []
+
+    for emp in employees:
+        allowance_instance = emp.employee_allo.all()
+        dearness_allowance = allowance_instance.filter(allowance__name = 'Dearness Allowance').aggregate(Sum('allowance__amount'))['allowance__amount__sum'] or 0
+        house_rent_allowance = allowance_instance.filter(allowance__name = 'House Rent').aggregate(Sum('allowance__amount'))['allowance__amount__sum'] or 0
+        travel_allowance = allowance_instance.filter(allowance__name = 'Travel').aggregate(Sum('allowance__amount'))['allowance__amount__sum'] or 0
+        washing_clothes_allowance = allowance_instance.filter(allowance__name = 'Washing Clothes').aggregate(Sum('allowance__amount'))['allowance__amount__sum'] or 0
+        print('------')
+        print('------')
+        print('------')
+        print('------')
+        print('------')
+
+        print(dearness_allowance)
+        total_allowance = allowance_instance.aggregate(total=Sum('allowance__amount'))['total'] or 0
+        total_deduction = emp.employee_dedu.aggregate(total=Sum('deduction__amount'))['total'] or 0
+ 
+        total_loan=emp.employee_loan_re.aggregate(total=Sum('emi'))['total'] or 0
+        total_miscellaneous=emp.employee_misc.aggregate(total=Sum('miscellaneous__amount',
+        filter=Q(
+            date__month=month,
+            date__year=year,
+        ))
+        )['total'] or 0
+        
+        employee_data.append(str(emp.name) + ' ' + str(emp.middle_name) + ' ' + str(emp.last_name))
+        employee_data.append(emp.department)
+        employee_data.append(emp.designation)
+        employee_data.append(20)
+        employee_data.append(30)
+        employee_data.append(emp.basic_salary)
+        employee_data.append(dearness_allowance)
+        employee_data.append(house_rent_allowance)
+        employee_data.append(travel_allowance)
+        employee_data.append(washing_clothes_allowance)
+        employee_data.append(total_allowance)
+        csv_data.append(employee_data)
+        employee_data = []
+       
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="data.csv"'
+
+    csv_writer = csv.writer(response)
+    for row in csv_data:
+        csv_writer.writerow(row)
+
+    return response
