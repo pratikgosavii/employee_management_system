@@ -103,6 +103,7 @@
                     <div>
                         <label for="name" class="control-label mb-1">Adhar Card</label>
                         {{ form.adhar_card }}
+                        <div id="inputWarning" style="color: red; display: none;">Input must be exactly 11 digits.</div>
                     </div>
                     <div>
                         <label for="name" class="control-label mb-1">Pan Card</label>
@@ -263,13 +264,23 @@
 
 
 const inputField = document.getElementById('adhar');
+const submitButton = document.getElementById('payment-button-amount');
 
     inputField.addEventListener('input', function () {
-      const inputValue = inputField.value.trim();
+        var maxLength = 12;
+        var warningElement = document.getElementById("inputWarning");
 
-      if (inputValue.length > 12) {
-        inputField.value = inputValue.slice(0, 12);
+        if (inputField.value.length > maxLength) {
+          inputField.value = inputField.value.slice(0, maxLength);
       }
+        
+         if (inputField.value.length < maxLength) {
+            warningElement.style.display = "block";
+            submitButton.disabled = true;
+        } else {
+            warningElement.style.display = "none";
+            submitButton.disabled = false;
+        }
     });
 
 </script>

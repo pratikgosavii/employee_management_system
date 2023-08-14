@@ -125,8 +125,9 @@
                             <tr>
                                 <th class="serial">#</th>
                                 <th>Name</th>
-                                <th>Middle Name</th>
-                                <th>Last Name</th> 
+                                <th>Department</th>
+                                <th>Designation</th>
+                                <th>Basic Salary</th>
                                 <th>Actions</th>
                                 
                             </tr>
@@ -136,9 +137,10 @@
                             {% for i in data %}
                             <tr>
                                 <td class="serial">{{ forloop.counter }}</td>
-                                <td>{{ i.name }}</td>
-                                <td>{{ i.middle_name }}</td>
-                                <td>{{ i.last_name }}</td>
+                                <td>{{ i.name }} {{ i.middle_name }} {{ i.last_name }}</td>
+                                <td>{{ i.department }}</td>
+                                <td>{{ i.designation }}</td>
+                                <td>{{ i.basic_salary }}</td>
                                 <td class="menu-cell">
                                     <div class="menu">
                                       <div class="menu-icon">
