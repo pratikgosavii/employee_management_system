@@ -59,6 +59,12 @@ urlpatterns = [
 
     path('montly-salary-report/', monthly_salary_report, name='monthly_salary_report'),
     path('download-montly-salary-report-csv/', download_monthly_salary_report_csv, name='download_monthly_salary_report_csv'),
+
+    path('bank-report/', bank_report, name='bank_report'),
+    path('download-bank-report-csv/', download_bank_report_csv, name='download_bank_report_csv'),
+
+    path('dcps-report/', dcps_report, name='dcps_report'),
+    path('download-dcps-report-csv/', download_dcps_report_csv, name='download_dcps_report_csv'),
     
 
 

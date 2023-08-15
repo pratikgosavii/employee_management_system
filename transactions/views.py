@@ -1206,13 +1206,16 @@ def monthly_salary_report(request):
         house_rent_allowance = allowance_instance.filter(allowance__name = 'House Rent').aggregate(Sum('allowance__amount'))['allowance__amount__sum'] or 0
         travel_allowance = allowance_instance.filter(allowance__name = 'Travel').aggregate(Sum('allowance__amount'))['allowance__amount__sum'] or 0
         washing_clothes_allowance = allowance_instance.filter(allowance__name = 'Washing Clothes').aggregate(Sum('allowance__amount'))['allowance__amount__sum'] or 0
-        print('------')
-        print('------')
-        print('------')
-        print('------')
-        print('------')
+        
+        deduction_instance = emp.employee_dedu.all()
+        group_insurance = deduction_instance.filter(deduction__name = 'Group Insurance').aggregate(Sum('deduction__amount'))['deduction__amount__sum'] or 0
+        bussiness_tax = deduction_instance.filter(deduction__name = 'Bussiness Tax').aggregate(Sum('deduction__amount'))['deduction__amount__sum'] or 0
+        NPS_employee_contribution = deduction_instance.filter(deduction__name = 'NPS Employee Contribution 10%').aggregate(Sum('deduction__amount'))['deduction__amount__sum'] or 0
+        GPF_deduction = deduction_instance.filter(deduction__name = 'GPF').aggregate(Sum('deduction__amount'))['deduction__amount__sum'] or 0
+        life_insurance = deduction_instance.filter(deduction__name = 'Life Insurance').aggregate(Sum('deduction__amount'))['deduction__amount__sum'] or 0
+        accidental_insurance = deduction_instance.filter(deduction__name = 'Accidental Insurance').aggregate(Sum('deduction__amount'))['deduction__amount__sum'] or 0
+        np_employee_credit_union_deduction = deduction_instance.filter(deduction__name = 'N. P Employee Credit Union Deduction').aggregate(Sum('deduction__amount'))['deduction__amount__sum'] or 0
 
-        print(dearness_allowance)
         total_allowance = allowance_instance.aggregate(total=Sum('allowance__amount'))['total'] or 0
         total_deduction = emp.employee_dedu.aggregate(total=Sum('deduction__amount'))['total'] or 0
  
@@ -1223,18 +1226,35 @@ def monthly_salary_report(request):
             date__year=year,
         ))
         )['total'] or 0
-        
-        employee_data.append({
-            'employee': emp,
-            'total_allowance': total_allowance,
-            'dearness_allowance': dearness_allowance,
-            'house_rent_allowance': house_rent_allowance,
-            'travel_allowance': travel_allowance,
-            'washing_clothes_allowance': washing_clothes_allowance,
-            'total_deduction': total_deduction,
-            'total_loan': total_loan,
-            'total_miscellaneous': total_miscellaneous,
-        })
+
+
+        total_amount = emp.basic_salary + total_allowance - total_deduction - total_loan - total_miscellaneous
+        salary = employee_salary.objects.filter(employee=emp, salary_date__month=month, salary_date__year=year).first()
+        a = bool(salary)
+        if a:
+
+
+            
+            employee_data.append({
+                'employee': emp,
+                'total_allowance': total_allowance,
+                'dearness_allowance': dearness_allowance,
+                'house_rent_allowance': house_rent_allowance,
+                'travel_allowance': travel_allowance,
+                'washing_clothes_allowance': washing_clothes_allowance,
+                'group_insurance': group_insurance,
+                'bussiness_tax': bussiness_tax,
+                'NPS_employee_contribution': NPS_employee_contribution,
+                'GPF_deduction': GPF_deduction,
+                'life_insurance': life_insurance,
+                'accidental_insurance': accidental_insurance,
+                'np_employee_credit_union_deduction': np_employee_credit_union_deduction,
+                'travel_allowance': travel_allowance,
+                'total_deduction': total_deduction,
+                'total_loan': total_loan,
+                'total_miscellaneous': total_miscellaneous,
+                'total_amount': total_amount,
+            })
 
 
     context = {
@@ -1244,27 +1264,6 @@ def monthly_salary_report(request):
         'year': year,
         }
 
-       
-    for a in context['data']:
-        print(a)
-        total_allowance = a['total_allowance'] or 0
-        total_deduction = a['total_deduction'] or 0
-        basic_salary = a['employee'].basic_salary or 0
-        total_loan = a['total_loan'] or 0
-        print(total_miscellaneous)
-
-        total_miscellaneous = a.get('total_miscellaneous', {})
-        print('basic_salary')
-        print(basic_salary)
-        print('total_allowance')
-        print(total_allowance)
-        print('total_deduction')
-        print(total_deduction)
-        print('total_loan')
-        print(total_loan)
-        a['total_amount'] = basic_salary + total_allowance - total_deduction - total_loan - total_miscellaneous
-        salary = employee_salary.objects.filter(employee=a['employee'], salary_date__month=month, salary_date__year=year).first()
-        a['salary_done'] = bool(salary)
 
 
     print(context['data'])
@@ -1326,6 +1325,15 @@ def download_monthly_salary_report_csv(request):
     employee_data.append('Travel')
     employee_data.append('Washing Clothes')
     employee_data.append('Total Allowances')
+    employee_data.append('Group Insurance')
+    employee_data.append('Bussiness Tax')
+    employee_data.append('NPS Employee Contribution 10%')
+    employee_data.append('GPF')
+    employee_data.append('Life Insurance')
+    employee_data.append('Accidental Insurance')
+    employee_data.append('N. P Employee Credit Union Deduction')
+    employee_data.append('Total Deduction')
+    employee_data.append('In Hand')
     csv_data.append(employee_data)
     employee_data = []
 
@@ -1335,13 +1343,16 @@ def download_monthly_salary_report_csv(request):
         house_rent_allowance = allowance_instance.filter(allowance__name = 'House Rent').aggregate(Sum('allowance__amount'))['allowance__amount__sum'] or 0
         travel_allowance = allowance_instance.filter(allowance__name = 'Travel').aggregate(Sum('allowance__amount'))['allowance__amount__sum'] or 0
         washing_clothes_allowance = allowance_instance.filter(allowance__name = 'Washing Clothes').aggregate(Sum('allowance__amount'))['allowance__amount__sum'] or 0
-        print('------')
-        print('------')
-        print('------')
-        print('------')
-        print('------')
+       
+        deduction_instance = emp.employee_dedu.all()
+        group_insurance = deduction_instance.filter(deduction__name = 'Group Insurance').aggregate(Sum('deduction__amount'))['deduction__amount__sum'] or 0
+        bussiness_tax = deduction_instance.filter(deduction__name = 'Bussiness Tax').aggregate(Sum('deduction__amount'))['deduction__amount__sum'] or 0
+        NPS_employee_contribution = deduction_instance.filter(deduction__name = 'NPS Employee Contribution').aggregate(Sum('deduction__amount'))['deduction__amount__sum'] or 0
+        GPF_deduction = deduction_instance.filter(deduction__name = 'GPF').aggregate(Sum('deduction__amount'))['deduction__amount__sum'] or 0
+        life_insurance = deduction_instance.filter(deduction__name = 'Life Insurance').aggregate(Sum('deduction__amount'))['deduction__amount__sum'] or 0
+        accidental_insurance = deduction_instance.filter(deduction__name = 'Accidental Insurance').aggregate(Sum('deduction__amount'))['deduction__amount__sum'] or 0
+        np_employee_credit_union_deduction = deduction_instance.filter(deduction__name = 'N. P Employee Credit Union Deduction').aggregate(Sum('deduction__amount'))['deduction__amount__sum'] or 0
 
-        print(dearness_allowance)
         total_allowance = allowance_instance.aggregate(total=Sum('allowance__amount'))['total'] or 0
         total_deduction = emp.employee_dedu.aggregate(total=Sum('deduction__amount'))['total'] or 0
  
@@ -1352,18 +1363,328 @@ def download_monthly_salary_report_csv(request):
             date__year=year,
         ))
         )['total'] or 0
+
+
         
+
+        in_hand= emp.basic_salary + total_allowance - total_deduction - total_loan - total_miscellaneous
+        salary = employee_salary.objects.filter(employee=emp, salary_date__month=month, salary_date__year=year).first()
+        a = bool(salary)
+
+        if a:
+            
+            employee_data.append(str(emp.name) + ' ' + str(emp.middle_name) + ' ' + str(emp.last_name))
+            employee_data.append(emp.department)
+            employee_data.append(emp.designation)
+            employee_data.append(20)
+            employee_data.append(30)
+            employee_data.append(emp.basic_salary)
+            employee_data.append(dearness_allowance)
+            employee_data.append(house_rent_allowance)
+            employee_data.append(travel_allowance)
+            employee_data.append(washing_clothes_allowance)
+            employee_data.append(total_allowance)
+            employee_data.append(group_insurance)
+            employee_data.append(bussiness_tax)
+            employee_data.append(NPS_employee_contribution)
+            employee_data.append(GPF_deduction)
+            employee_data.append(life_insurance)
+            employee_data.append(accidental_insurance)
+            employee_data.append(np_employee_credit_union_deduction)
+            employee_data.append(total_deduction)
+            employee_data.append(in_hand)
+            csv_data.append(employee_data)
+            employee_data = []
+       
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="data.csv"'
+
+    csv_writer = csv.writer(response)
+    for row in csv_data:
+        csv_writer.writerow(row)
+
+    return response
+
+@login_required(login_url='login')
+def bank_report(request):
+
+    date = request.GET.get('salary_date')
+
+    
+    if date:
+
+        date = date.split("-")
+       
+        date = datetime(int(date[0]), int(date[1]), int(date[2]))
+
+        month = date.month
+        year = date.year
+
+    else:
+
+        current_date = datetime.now()
+        month = current_date.month
+        year = current_date.year
+
+    department_type_id= request.GET.get('department')
+    print('---------------------')
+    print('---------------------')
+    print('---------------------')
+    print('---------------------')
+    print(department_type_id)
+    if department_type_id:
+
+        employees = employee.objects.filter(department__id = department_type_id)
+
+    else:
+
+        employees = employee.objects.all()
+
+
+    # Calculate total allowance and total deduction for each employee
+    employee_data = []
+    for emp in employees:
+       
+        total_allowance = emp.employee_allo.aggregate(total=Sum('allowance__amount'))['total'] or 0
+        total_deduction = emp.employee_dedu.aggregate(total=Sum('deduction__amount'))['total'] or 0
+ 
+        total_loan=emp.employee_loan_re.aggregate(total=Sum('emi'))['total'] or 0
+        total_miscellaneous=emp.employee_misc.aggregate(total=Sum('miscellaneous__amount',
+        filter=Q(
+            date__month=month,
+            date__year=year,
+        ))
+        )['total'] or 0
+
+
+        
+        total_amount = emp.basic_salary + total_allowance - total_deduction - total_loan - total_miscellaneous
+        salary = employee_salary.objects.filter(employee=emp, salary_date__month=month, salary_date__year=year).first()
+        a = bool(salary)
+        if a:
+
+            employee_data.append({
+                'employee': emp,
+                'total_amount': total_amount,
+            })
+
+
+    context = {
+        'employee_salary_filter' : employee_salary_filter(),
+        'data': employee_data,
+        'month': month,
+        'year': year,
+        }
+
+
+
+
+    return render(request, 'report/bank_report.html', context)
+
+
+
+def download_bank_report_csv(request):
+
+
+    date = request.GET.get('salary_date')
+
+    
+    if date:
+
+        date = date.split("-")
+       
+        date = datetime(int(date[0]), int(date[1]), int(date[2]))
+
+        month = date.month
+        year = date.year
+
+    else:
+
+        current_date = datetime.now()
+        month = current_date.month
+        year = current_date.year
+
+    department_type_id= request.GET.get('department')
+    print('---------------------')
+    print('---------------------')
+    print('---------------------')
+    print('---------------------')
+    print(department_type_id)
+    if department_type_id:
+
+        employees = employee.objects.filter(department__id = department_type_id)
+
+    else:
+
+        employees = employee.objects.all()
+
+
+    # Calculate total allowance and total deduction for each employee
+    csv_data = []
+    employee_data = []
+
+
+    employee_data.append('Name')
+    employee_data.append('Department')
+    employee_data.append('Bank Account')
+    employee_data.append('In Hand')
+    csv_data.append(employee_data)
+    employee_data = []
+
+    for emp in employees:
+        total_allowance = emp.employee_allo.aggregate(total=Sum('allowance__amount'))['total'] or 0
+        total_deduction = emp.employee_dedu.aggregate(total=Sum('deduction__amount'))['total'] or 0
+ 
+        total_loan=emp.employee_loan_re.aggregate(total=Sum('emi'))['total'] or 0
+        total_miscellaneous=emp.employee_misc.aggregate(total=Sum('miscellaneous__amount',
+        filter=Q(
+            date__month=month,
+            date__year=year,
+        ))
+        )['total'] or 0
+
+
+        
+        total_amount = emp.basic_salary + total_allowance - total_deduction - total_loan - total_miscellaneous
+        salary = employee_salary.objects.filter(employee=emp, salary_date__month=month, salary_date__year=year).first()
+        a = bool(salary)
+        if a:
+
+            employee_data.append(str(emp.name) + ' ' + str(emp.middle_name) + ' ' + str(emp.last_name))
+            employee_data.append(emp.department)
+            employee_data.append(emp.bank_ac_no)
+            employee_data.append(total_amount)
+            csv_data.append(employee_data)
+            employee_data = []
+       
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="data.csv"'
+
+    csv_writer = csv.writer(response)
+    for row in csv_data:
+        csv_writer.writerow(row)
+
+    return response
+
+@login_required(login_url='login')
+def dcps_report(request):
+
+    date = request.GET.get('salary_date')
+
+    
+    if date:
+
+        date = date.split("-")
+       
+        date = datetime(int(date[0]), int(date[1]), int(date[2]))
+
+        month = date.month
+        year = date.year
+
+    else:
+
+        current_date = datetime.now()
+        month = current_date.month
+        year = current_date.year
+
+    department_type_id= request.GET.get('department')
+    print('---------------------')
+    print('---------------------')
+    print('---------------------')
+    print('---------------------')
+    print(department_type_id)
+    if department_type_id:
+
+        print('----------fdfdfdfdf-----------')
+        print('---------------------')
+        total_dcps = employee.objects.filter(department__id = department_type_id, employee_salary__salary_date__month=month, employee_salary__salary_date__year=year).annotate(total_dcp=Sum('dcps'))
+
+    else:
+
+            
+        print('---------------------')
+        print('---------------------')
+
+        total_dcps = employee.objects.filter(employee_salary__salary_date__month=month, employee_salary__salary_date__year=year).annotate(total_dcp=Sum('dcps'))
+
+
+
+    print('---------------------')
+    print('---------------------')
+
+    # Calculate total allowance and total deduction for each employee
+       
+
+
+
+       
+
+    context = {
+        'employee_salary_filter' : employee_salary_filter(),
+        'data': total_dcps,
+        'month': month,
+        'year': year,
+        }
+
+
+
+
+    return render(request, 'report/dcps_report.html', context)
+
+
+
+def download_dcps_report_csv(request):
+
+
+    date = request.GET.get('salary_date')
+
+    
+    if date:
+
+        date = date.split("-")
+       
+        date = datetime(int(date[0]), int(date[1]), int(date[2]))
+
+        month = date.month
+        year = date.year
+
+    else:
+
+        current_date = datetime.now()
+        month = current_date.month
+        year = current_date.year
+
+    department_type_id= request.GET.get('department')
+    print('---------------------')
+    print('---------------------')
+    print('---------------------')
+    print('---------------------')
+    print(department_type_id)
+    if department_type_id:
+
+        total_dcps = employee.objects.filter(department__id = department_type_id, employee_salary__salary_date__month=month, employee_salary__salary_date__year=year).aggregate(total=Sum('dcps'))['total'] or 0
+
+    else:
+
+        total_dcps = employee.objects.filter(employee_salary__salary_date__month=month, employee_salary__salary_date__year=year).aggregate(total=Sum('dcps'))['total'] or 0
+
+
+    # Calculate total allowance and total deduction for each employee
+    csv_data = []
+    employee_data = []
+
+
+    employee_data.append('Name')
+    employee_data.append('Department')
+    employee_data.append('DCPS Account')
+    csv_data.append(employee_data)
+    employee_data = []
+
+    for emp in total_dcps:
+
         employee_data.append(str(emp.name) + ' ' + str(emp.middle_name) + ' ' + str(emp.last_name))
         employee_data.append(emp.department)
-        employee_data.append(emp.designation)
-        employee_data.append(20)
-        employee_data.append(30)
-        employee_data.append(emp.basic_salary)
-        employee_data.append(dearness_allowance)
-        employee_data.append(house_rent_allowance)
-        employee_data.append(travel_allowance)
-        employee_data.append(washing_clothes_allowance)
-        employee_data.append(total_allowance)
+        employee_data.append(emp.total_dcps)
         csv_data.append(employee_data)
         employee_data = []
        

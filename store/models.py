@@ -159,6 +159,8 @@ class employee(models.Model):
     biometric_no = models.CharField(max_length=120, unique=True, blank = True, null = True)
     nps_dcps = models.CharField(choices = nps_dcps_choice, max_length=120, blank = True, null = True)
 
+    dcps = models.IntegerField(blank = True, null = True)
+
     department = models.ForeignKey(department_type, on_delete=models.CASCADE, blank = True, null = True)
     employee_type = models.ForeignKey(employee_type, on_delete=models.CASCADE, blank = True, null = True)
     grade_payment = models.ForeignKey(grade_payment, on_delete=models.CASCADE, blank = True, null = True)

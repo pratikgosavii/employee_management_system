@@ -68,30 +68,11 @@
                 <table class="table ">
                     <thead>
                         <tr>
-                            <th class="serial"># </th>
+                            <th class="serial"># <input type="checkbox" id="selectAllBtn" name="asadss" value="value1"></th>
                             <th>Employee</th>
                             <th>Department</th>
-                            <th>Designation</th>
-                            <th>Working days</th>
-                            <th>Absent days</th>
-                            <th>Basic Salary</th>
-                            <th>Dearness Allowance</th>
-                            <th>House Rent</th>
-                            <th>Travel</th>
-                            <th>Washing Clothes</th>
-                            <th>Total Allowances</th>
-                            <th>Bussiness Tax</th>
-                            <th>Group Insurance</th>
-                            <th>NPS Employee Contribution 10%</th>
-                            <th>GPF</th>
-                            <th>Life Insurance</th>
-                            <th>Accidental Insurance</th>
-                            <th>N. P Employee Credit Union Deduction</th>
-                            <th>Total Deduction</th>
-                            <th>Total Loan Emi</th>
-                            <th>Total Miscellaneous</th>
+                            <th>Bank Account</th>
                             <th>In Hand Salary</th>
-
                             
                         </tr>
                     </thead>
@@ -99,27 +80,17 @@
                         {% if data %}
                         {% for i in data %}
 
-
                         <tr>
                             <td class="serial"> {{ forloop.counter }}</td>
-                            <td>{{ i.employee }}</td>
+                            <td>{{ i.employee.name }} {{ i.employee.middle_name }} {{ i.employee.last_name }}</td>
                             <td>{{ i.employee.department }}</td>
-                            <td>{{ i.employee.designation }}</td>
-                            <td>20</td>
-                            <td>3</td>
-                            <td>{{ i.employee.basic_salary }}</td>
-                            <td>{{ i.dearness_allowance }}</td>
-                            <td>{{ i.house_rent_allowance }}</td>
-                            <td>{{ i.washing_clothes_allowance }}</td>
-                            <td>{{ i.travel_allowance }}</td>
-                            <td>{{ i.total_allowance }}</td>
-                            <td>{{ i.total_deduction }}</td>
-                            <td>{{ i.total_loan }}</td>
-                            <td>{{ i.total_miscellaneous }}</td>
+                            <td>{{ i.employee.bank_ac_no }}</td>
                             <td>{{ i.total_amount }}</td>
+                           
                            
                         </tr>
 
+                       
 
                         {% endfor %}
                         {% else %}
@@ -133,7 +104,7 @@
             </div> <!-- /.table-stats -->
         </div>
        
-        <a href="{% url 'download_monthly_salary_report_csv' %}"> <button id="payment-button"  style="background-color: green; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
+        <a href="{% url 'download_bank_report_csv' %}"> <button id="payment-button"  style="background-color: green; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
             <span id="payment-button-amount">CSV Download</span>
         </button>  </a>
         

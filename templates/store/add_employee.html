@@ -100,6 +100,21 @@
                 </div>
 
                 <div class="form-group" style="gap: 33px">
+
+                  <div>
+                    <label for="name" class="control-label mb-1">DCPS Percentage</label>
+                    <input type="number" name="pin_code" class="form-control" id="dcps_percentage">
+                  </div>
+                
+                  <div>
+                      <label for="name" class="control-label mb-1">DCPS</label>
+                      {{ form.dcps }}
+                      <div id="inputWarning" style="color: red; display: none;">Input must be exactly 11 digits.</div>
+                  </div>
+
+                </div>
+
+                <div class="form-group" style="gap: 33px">
                     <div>
                         <label for="name" class="control-label mb-1">Adhar Card</label>
                         {{ form.adhar_card }}
@@ -282,6 +297,21 @@ const submitButton = document.getElementById('payment-button-amount');
             submitButton.disabled = false;
         }
     });
+
+    const basicSalaryInput = document.getElementById('basic_salary');
+    const dscpPercentageInput = document.getElementById('dcps_percentage');
+    const dscpInput = document.getElementById('dcps');
+
+    basicSalaryInput.addEventListener('input', updateDSCP);
+    dscpPercentageInput.addEventListener('input', updateDSCP);
+
+    function updateDSCP() {
+        const basicSalary = parseFloat(basicSalaryInput.value) || 0;
+        const dscpPercentage = parseFloat(dscpPercentageInput.value) || 0;
+
+        const calculatedDSCP = (basicSalary * dscpPercentage / 100).toFixed(2);
+        dscpInput.value = calculatedDSCP;
+    }
 
 </script>
 

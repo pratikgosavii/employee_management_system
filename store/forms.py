@@ -73,6 +73,10 @@ class employee_Form(forms.ModelForm):
             }),
         
 
+            'dcps': forms.NumberInput(attrs={
+                'class': 'form-control', 'id': 'dcps', 'readonly' : 'readonly'
+            }),
+
             'department': forms.Select(attrs={
                 'class': 'form-control', 'id': 'name'
             }),
@@ -93,7 +97,7 @@ class employee_Form(forms.ModelForm):
             }),
           
             'basic_salary': forms.NumberInput(attrs={
-                'class': 'form-control', 'id': 'name'
+                'class': 'form-control', 'id': 'basic_salary'
             }),
            
             
