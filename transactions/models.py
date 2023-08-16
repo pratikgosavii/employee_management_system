@@ -138,7 +138,7 @@ class employee_salary(models.Model):
 
     employee = models.ForeignKey(employee, on_delete=models.CASCADE)
     is_salary_generated = models.BooleanField(blank = True, null = True)
-    salary_date = models.DateField(blank = True, null = True)
+    salary_date = models.DateField()
     deduction_amount = models.FloatField(blank = True, null = True)
     allowance_amount = models.FloatField(blank = True, null = True)
     loan_amount = models.FloatField(blank = True, null = True)

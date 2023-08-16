@@ -102,7 +102,7 @@
             </div> <!-- /.table-stats -->
         </div>
        
-        <a href="{% url 'download_bank_report_csv' %}"> <button id="payment-button"  style="background-color: green; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
+        <a href="{% url 'download_bank_report_csv' %}?{{ request.GET.urlencode }}"> <button id="payment-button"  style="background-color: green; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
             <span id="payment-button-amount">CSV Download</span>
         </button>  </a>
         

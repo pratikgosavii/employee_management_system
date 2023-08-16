@@ -36,7 +36,7 @@ class employee_salary_filter(django_filters.FilterSet):
         widget=forms.Select(
             attrs={
                 'class' : 'form-control',
-                'id' : 'emplloyee'
+                'id' : 'employee'
             })
     )
    

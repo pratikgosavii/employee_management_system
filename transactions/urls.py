@@ -65,6 +65,12 @@ urlpatterns = [
 
     path('dcps-report/', dcps_report, name='dcps_report'),
     path('download-dcps-report-csv/', download_dcps_report_csv, name='download_dcps_report_csv'),
+
+    path('dept-wise-report/', dept_wise_report, name='dept_wise_report'),
+    path('download-dcps-report-csv/', download_dcps_report_csv, name='download_dcps_report_csv'),
+    
+    path('ym-emp-report/', ym_emp_report, name='ym_emp_report'),
+    path('download-ym-emp-report-csv/', download_ym_emp_report_csv, name='download_ym_emp_report_csv'),
     
 
 

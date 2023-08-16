@@ -40,12 +40,15 @@
       <div class="form-group" style="display: flex;
         gap: 14px;">
 
-        <label for="name" class="control-label mb-1" style="margin-left : 0px;">Date</label>
-                {{ employee_salary_filter.form.salary_date }}
-                    
+        <label for="name" class="control-label mb-1" style="margin-left : 0px;">Select year</label>
+                <select id="year" class="form-control" name="year"></select>       
                 
         <label for="name" class="control-label mb-1" style="margin-left : 0px;">Department Type </label>
           {{ employee_salary_filter.form.department }}
+              
+                
+        <label for="name" class="control-label mb-1" style="margin-left : 0px;">Employee  </label>
+          {{ employee_salary_filter.form.employee }}
               
           
        
@@ -72,7 +75,7 @@
                             <th>Employee</th>
                             <th>Department</th>
                             <th>Designation</th>
-                            <th>Working days</th>
+                            <th>Month/ Days</th>
                             <th>Absent days</th>
                             <th>Basic Salary</th>
                             <th>Dearness Allowance</th>
@@ -80,18 +83,8 @@
                             <th>Travel</th>
                             <th>Washing Clothes</th>
                             <th>Total Allowances</th>
-                            <th>Bussiness Tax</th>
-                            <th>Group Insurance</th>
-                            <th>NPS Employee Contribution 10%</th>
-                            <th>GPF</th>
-                            <th>GPF Loan</th>
-                            <th>Life Insurance</th>
-                            <th>Accidental Insurance</th>
-                            <th>N. P Employee Credit Union Deduction</th>
-                            <th>Total Deduction</th>
-                            <th>Total Loan Emi</th>
-                            <th>Total Miscellaneous</th>
-                            <th>In Hand Salary</th>
+                            <th>Total DCPS</th>
+                          
 
                             
                         </tr>
@@ -103,36 +96,25 @@
 
                         <tr>
                             <td class="serial"> {{ forloop.counter }}</td>
-                            <td>{{ i.name }} {{ i.middle_name }} {{ i.last_name }}</td>
-                            <td>{{ i.employee.department }}</td>
-                            <td>{{ i.employee.designation }}</td>
-                            <td>20</td>
+                            <td>{{ i.employee.employee.name }} {{ i.employee.employee.middle_name }} {{ i.employee.employeelast_name }}</td>
+                            <td>{{ i.employee.employee.department }}</td>
+                            <td>{{ i.employee.employee.designation }}</td>
+                            <td>{{ i.employee.salary_date|date:"M" }} / {{ i.employee.salary_date|date:"t" }}</td>
                             <td>3</td>
-                            <td>{{ i.employee.basic_salary }}</td>
+                            <td>{{ i.basic_salary }}</td>
                             <td>{{ i.dearness_allowance }}</td>
                             <td>{{ i.house_rent_allowance }}</td>
                             <td>{{ i.travel_allowance }}</td>
                             <td>{{ i.washing_clothes_allowance }}</td>
                             <td>{{ i.total_allowance }}</td>
-                            <td>{{ i.bussiness_tax }}</td>
-                            <td>{{ i.group_insurance }}</td>
-                            <td>{{ i.NPS_employee_contribution }}</td>
-                            <td>{{ i.GPF_deduction }}</td>
-                            <td>{{ i.GPF_loan_deduction }}</td>
-                            <td>{{ i.life_insurance }}</td>
-                            <td>{{ i.accidental_insurance }}</td>
-                            <td>{{ i.np_employee_credit_union_deduction }}</td>
-                            <td>{{ i.total_deduction }}</td>
-                            <td>{{ i.total_loan }}</td>
-                            <td>{{ i.total_miscellaneous }}</td>
-                            <td>{{ i.total_amount }}</td>
+                            <td>{{ i.total_dcps }}</td>
                            
                         </tr>
 
 
                         {% endfor %}
                         {% else %}
-                            <tr><td>No Product Data</td></tr>
+                            <tr><td>Did You Select Employee?</td></tr>
                         {% endif %}
 
 
@@ -142,7 +124,7 @@
             </div> <!-- /.table-stats -->
         </div>
        
-        <a href="{% url 'download_monthly_salary_report_csv' %}?{{ request.GET.urlencode }}"> <button id="payment-button"  style="background-color: green; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
+        <a href="{% url 'download_ym_emp_report_csv' %}?{{ request.GET.urlencode }}"> <button id="payment-button"  style="background-color: green; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
             <span id="payment-button-amount">CSV Download</span>
         </button>  </a>
         
@@ -157,6 +139,17 @@
 {% block js %}
 
 <script>
+
+    const yearSelect = document.getElementById("year");
+    const currentYear = new Date().getFullYear();
+
+    for (let year = currentYear; year >= 2000; year--) {
+        const option = document.createElement("option");
+        option.value = year;
+        option.textContent = year;
+        yearSelect.appendChild(option);
+    }
+
 
     
     
@@ -176,17 +169,22 @@
      // Get the 'name' parameter from the URL and set the input field value
      var salary_dateValue = getQueryVariable('salary_date');
      var departmentValue = getQueryVariable('department');
+     var employeeValue = getQueryVariable('employee');
      var salary_dateInput = document.getElementById('datepicker1212');
      var departmentInput = document.getElementById('department');
+     var employeeInput = document.getElementById('employee');
      if (salary_dateValue) {
          salary_dateInput.value = salary_dateValue;
      }
      if (departmentValue) {
          departmentInput.value = departmentValue;
      }
+     if (employeeValue) {
+         employeeInput.value = employeeValue;
+     }
 
 
-     
+
 </script>
 
 
