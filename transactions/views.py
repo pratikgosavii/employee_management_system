@@ -712,6 +712,21 @@ def post_leaves(request):
 
         return render(request, 'transactions/add_leaves.html', context)
 
+
+def show_total_leaves(request):
+
+    employee_id = request.POST.get('employee_id')
+
+    data = employee_total_leaves.objects.get(employee__id = employee_id)
+
+    data_to_send = {
+
+        'medical_leaves' : data.medical_leaves,
+        'earned_leaves' : data.earned_leaves
+    }
+
+    return JsonResponse(data_to_send)
+
 @login_required(login_url='login')
 def update_leaves(request, leaves_id):
 

@@ -18,7 +18,7 @@
             <div class="card-body">
                 <!-- Credit Card -->
                 <div id="pay-invoice">
-                    <div class="card-body">
+                    <div class="card-body col-8">
                         <form action="#" method="post" >
                             {% csrf_token %}
 
@@ -68,6 +68,17 @@
                             </div>
                         </form>
                     </div>
+
+                    <div class="card-body col-3">
+
+                        <p style="color: black;"> Total Medical Leaves <span style="margin-left: 27px; font-weight: 800; color: black;" id="medical_leaves">  </span></p>
+                        <p style="color: black;"> Total Earned Leaves <span style="margin-left: 27px; font-weight: 800; color: black;" id="earned_leaves">  </span></p>
+
+                        <hr>
+
+                        <p style="color: black;"> Total Leaves <span style="margin-left: 27px; font-weight: 800; color: black;" id="total_leaves">  </span></p>
+
+                    </div>
                 </div>
 
             </div>
@@ -75,6 +86,9 @@
 
     </div><!--/.col-->
 </div>
+
+{% endblock content %}
+
 
     {% block js %}
 
@@ -88,7 +102,37 @@
             var result = textone * texttwo;
             $('#total_pck').val(result.toFixed(2));
         });
+
+
+        $("#employee").change(function () {
+            const employeeID = $(this).val();  // get the selected subject ID from the HTML dropdown list 
+            $.ajax({                       // initialize an AJAX request
+                type: "POST",
+                url: '{% url "show_total_leaves" %}',
+                data: {
+                    'employee_id': employeeID,       // add the country id to the POST parameters
+                    'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+                },
+                success: function (data) {   // `data` is from `get_topics_ajax` view function
+                    console.log(data)
+                    console.log(data.earned_leaves)
+                    console.log(data)
+
+                    let medical_leaves = data.medical_leaves
+                    let earned_leaves = data.earned_leaves
+                    let total_leaves = medical_leaves + earned_leaves
+
+                    document.getElementById("medical_leaves").innerHTML = medical_leaves 
+                    document.getElementById("earned_leaves").innerHTML = earned_leaves
+                    document.getElementById("total_leaves").innerHTML = total_leaves
+
+
+
+                }
+            });
+        });
+
+
         </script>
 
     {% endblock js %}
-{% endblock content %}

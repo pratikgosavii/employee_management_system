@@ -134,6 +134,24 @@ class leaves(models.Model):
         return self.employee.name
     
 
+class employee_total_leaves(models.Model):
+
+    employee = models.ForeignKey(employee, on_delete=models.CASCADE)
+    earned_leaves =  models.IntegerField()
+    medical_leaves =  models.IntegerField()
+
+    def __str__(self):
+
+        return self.employee.name
+    
+
+class month_working_days(models.Model):
+
+    date =  models.DateField(auto_now_add=False, default = datetime.now(), blank = True, null = True)
+    working_days =  models.IntegerField()
+
+    
+
 from django.utils import timezone
 
 class employee_salary(models.Model):

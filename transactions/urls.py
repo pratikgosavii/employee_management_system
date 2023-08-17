@@ -43,6 +43,7 @@ urlpatterns = [
     path('list-vacancy/', list_vacancy, name='list_vacancy'),
 
     path('add-leaves/', post_leaves, name='add_leaves'),
+    path('show_total_leaves/', show_total_leaves, name='show_total_leaves'),
     path('update-leaves/<leaves_id>', update_leaves, name='update_leaves'),
     path('delete-leaves/<leaves_id>', delete_leaves, name='delete_leaves'),
     path('list-leaves/', list_leaves, name='list_leaves'),
