@@ -19,6 +19,7 @@ class employee_allowance(models.Model):
     allowance = models.ForeignKey(allowance , on_delete=models.CASCADE)
     description = models.CharField(max_length=120, unique=False)
     status = models.CharField(choices = status_choice, max_length=120)
+    amount = models.IntegerField()
 
 
     def __str__(self):
@@ -32,6 +33,7 @@ class employee_deduction(models.Model):
     deduction = models.ForeignKey(deduction, on_delete=models.CASCADE)
     description = models.CharField(max_length=120, unique=False)
     status = models.CharField(choices = status_choice, max_length=120)
+    amount = models.IntegerField()
 
    
     def __str__(self):
@@ -49,6 +51,7 @@ class employee_loan(models.Model):
     emi = models.BigIntegerField()
     description = models.CharField(max_length=120, unique=False)
     status = models.CharField(choices = status_choice, max_length=120)
+    amount = models.IntegerField(null = True, blank = True)
 
 
     def __str__(self):

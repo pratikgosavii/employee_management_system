@@ -244,8 +244,7 @@
 
     <tr>
         <td> {{ forloop.counter }} </td>
-        <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.name }}" readonly> </td>
-        <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.loan }}" readonly> </td>
+        <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.loan.name }}" readonly> </td>
         <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.total_loan_amount }}" readonly> </td>
         <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.loan_percentage }}" readonly> </td>
         <td> <input type="text" placeholder="Allowance Name" class="form-control" value="{{ i.loan_year }}" readonly> </td>

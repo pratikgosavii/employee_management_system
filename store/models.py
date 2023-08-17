@@ -12,8 +12,8 @@ ist = pytz.timezone('Asia/Kolkata')
 
 
 status_choice =(
-    ("1", "Active"),
-    ("2", "Inactive"),
+    ("Active", "Active"),
+    ("Inactive", "Inactive"),
    
 )
 
