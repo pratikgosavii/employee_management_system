@@ -596,6 +596,8 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import calendar
 
+from transactions.models import *
+
 @login_required(login_url='login')
 def add_employee(request):
     
@@ -626,7 +628,9 @@ def add_employee(request):
         forms = employee_Form(updated_request)
 
         if forms.is_valid():
-            forms.save()
+            employee_instance = forms.save()
+
+            employee_total_leaves.objects.create(employee = employee_instance)
             return redirect('list_employee')
         else:
             print(forms.errors)

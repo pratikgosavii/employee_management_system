@@ -138,13 +138,13 @@ def add_employee_allowance(request):
         updated_request = request.POST.copy()
 
 
-        if allowance_instance.allowance.percentage:
+        if allowance_instance.percentage:
 
-            amount = employee_instance.basic_salary * allowance_instance.allowance.percentage / 100
+            amount = employee_instance.basic_salary * allowance_instance.percentage / 100
 
         else:
 
-            amount = allowance_instance.allowance.amount
+            amount = allowance_instance.amount
     
 
         updated_request.update({'employee': employee_instance, 'amount' : amount})
@@ -227,13 +227,13 @@ def add_employee_deduction(request):
         updated_request = request.POST.copy()
         updated_request.update({'employee': employee_instance})
 
-        if deduction_instance.allowance.percentage:
+        if deduction_instance.percentage:
 
-            amount = employee_instance.basic_salary * deduction_instance.allowance.percentage / 100
+            amount = employee_instance.basic_salary * deduction_instance.percentage / 100
 
         else:
 
-            amount = deduction_instance.allowance.amount
+            amount = deduction_instance.amount
     
 
         updated_request.update({'employee': employee_instance, 'amount' : amount})
@@ -690,6 +690,30 @@ def post_leaves(request):
     if request.method == 'POST':
 
         forms = leaves_Form(request.POST)
+
+        employee_id = request.POST.get("employee")
+        leave_type = request.POST.get("leave_type")
+
+        try:
+            leaves_instance = employee_total_leaves.objects.get(employee__id = employee_id)
+        except employee_total_leaves.DoesNotExist:
+            # Handle case where employee_total_leaves instance does not exist
+            # ...
+
+            pass
+
+        # Deduct one leave from the specific leave type
+        if leave_type == "medical_leave":
+            leaves_instance.medical_leaves -= 1
+        elif leave_type == "earned_leave":
+            leaves_instance.earned_leaves -= 1
+        elif leave_type == "paternity_leave":
+            leaves_instance.paternity_leave -= 1
+        elif leave_type == "marriage_leave":
+            leaves_instance.marriage_leave -= 1
+
+       
+        leaves_instance.save()
 
         if forms.is_valid():
             forms.save()
@@ -1456,6 +1480,193 @@ def download_monthly_salary_report_csv(request):
         csv_writer.writerow(row)
 
     return response
+
+
+
+
+
+
+from django.http import HttpResponse
+from reportlab.lib.pagesizes import letter
+from reportlab.lib import colors
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+from reportlab.lib.units import inch
+
+
+
+
+def download_monthly_salary_report_pdf(request):
+
+
+    date = request.GET.get('salary_date')
+
+    
+    if date:
+
+        date = date.split("-")
+       
+        date = datetime(int(date[0]), int(date[1]), int(date[2]))
+
+        month = date.month
+        year = date.year
+
+    else:
+
+        current_date = datetime.now()
+        month = current_date.month
+        year = current_date.year
+
+    department_type_id= request.GET.get('department')
+    print('---------------------')
+    print('---------------------')
+    print('---------------------')
+    print('---------------------')
+    print(department_type_id)
+    if department_type_id:
+
+        employees = employee.objects.filter(department__id = department_type_id)
+
+    else:
+
+        employees = employee.objects.all()
+
+
+    # Calculate total allowance and total deduction for each employee
+    csv_data = []
+    employee_data = []
+    story = []
+
+
+    employee_data.append('Name')
+    employee_data.append('Department')
+    employee_data.append('Designation')
+    employee_data.append('Working days')
+    employee_data.append('Absent days')
+    employee_data.append('Basic Salary')
+    employee_data.append('Dearness Allowance')
+    employee_data.append('House Rent')
+    employee_data.append('Travel')
+    employee_data.append('Washing Clothes')
+    employee_data.append('Total Allowances')
+    employee_data.append('Group Insurance')
+    employee_data.append('Bussiness Tax')
+    employee_data.append('NPS Employee Contribution 10%')
+    employee_data.append('GPF')
+    employee_data.append('GPF Loan')
+    employee_data.append('Life Insurance')
+    employee_data.append('Accidental Insurance')
+    employee_data.append('N. P Employee Credit Union Deduction')
+    employee_data.append('Total Deduction')
+    employee_data.append('In Hand')
+    csv_data.append(employee_data)
+    employee_data = []
+
+    for emp in employees:
+        allowance_instance = emp.employee_allo.all()
+        dearness_allowance = allowance_instance.filter(allowance__name = 'Dearness Allowance').aggregate(Sum('amount'))['amount__sum'] or 0
+        house_rent_allowance = allowance_instance.filter(allowance__name = 'House Rent').aggregate(Sum('amount'))['amount__sum'] or 0
+        travel_allowance = allowance_instance.filter(allowance__name = 'Travel').aggregate(Sum('amount'))['amount__sum'] or 0
+        washing_clothes_allowance = allowance_instance.filter(allowance__name = 'Washing Clothes').aggregate(Sum('amount'))['amount__sum'] or 0
+       
+        deduction_instance = emp.employee_dedu.all()
+        group_insurance = deduction_instance.filter(deduction__name = 'Group Insurance').aggregate(Sum('amount'))['amount__sum'] or 0
+        bussiness_tax = deduction_instance.filter(deduction__name = 'Bussiness Tax').aggregate(Sum('amount'))['amount__sum'] or 0
+        NPS_employee_contribution = deduction_instance.filter(deduction__name = 'NPS Employee Contribution').aggregate(Sum('amount'))['amount__sum'] or 0
+        GPF_deduction = deduction_instance.filter(deduction__name = 'GPF').aggregate(Sum('amount'))['amount__sum'] or 0
+        GPF_loan_deduction = deduction_instance.filter(deduction__name = 'GPF Loan').aggregate(Sum('amount'))['amount__sum'] or 0
+        life_insurance = deduction_instance.filter(deduction__name = 'Life Insurance').aggregate(Sum('amount'))['amount__sum'] or 0
+        accidental_insurance = deduction_instance.filter(deduction__name = 'Accidental Insurance').aggregate(Sum('amount'))['amount__sum'] or 0
+        np_employee_credit_union_deduction = deduction_instance.filter(deduction__name = 'N. P Employee Credit Union Deduction').aggregate(Sum('amount'))['amount__sum'] or 0
+
+        total_allowance = allowance_instance.aggregate(total=Sum('amount'))['total'] or 0
+        total_deduction = emp.employee_dedu.aggregate(total=Sum('amount'))['total'] or 0
+ 
+        total_loan=emp.employee_loan_re.aggregate(total=Sum('emi'))['total'] or 0
+        total_miscellaneous=emp.employee_misc.aggregate(total=Sum('miscellaneous__amount',
+        filter=Q(
+            date__month=month,
+            date__year=year,
+        ))
+        )['total'] or 0
+
+
+
+        in_hand= emp.basic_salary + total_allowance - total_deduction - total_loan - total_miscellaneous
+        salary = employee_salary.objects.filter(employee=emp, salary_date__month=month, salary_date__year=year).first()
+        a = bool(salary)
+
+        if a:
+            
+            employee_data.append(str(emp.name) + ' ' + str(emp.middle_name) + ' ' + str(emp.last_name))
+            employee_data.append(emp.department.name)
+            employee_data.append(emp.designation.name)
+            employee_data.append(str(20))
+            employee_data.append(str(20))
+            employee_data.append(str(emp.basic_salary))
+            employee_data.append(str(dearness_allowance))
+            employee_data.append(str(house_rent_allowance))
+            employee_data.append(str(travel_allowance))
+            employee_data.append(str(washing_clothes_allowance))
+            employee_data.append(str(total_allowance))
+            employee_data.append(str(group_insurance))
+            employee_data.append(str(bussiness_tax))
+            employee_data.append(str(NPS_employee_contribution))
+            employee_data.append(str(GPF_deduction))
+            employee_data.append(str(GPF_loan_deduction))
+            employee_data.append(str(life_insurance))
+            employee_data.append(str(accidental_insurance))
+            employee_data.append(str(np_employee_credit_union_deduction))
+            employee_data.append(str(total_deduction))
+            employee_data.append(str(in_hand))
+            csv_data.append(employee_data)
+            employee_data = []
+
+    
+    
+    data = csv_data
+    
+
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="data.pdf"'
+
+    doc = SimpleDocTemplate(response, pagesize=letter)
+
+    # Calculate initial column widths based on the data
+    col_widths = [max([len(str(row[i])) for row in data]) * 12 for i in range(len(data[0]))]
+
+    # Calculate total width of the table
+    total_table_width = sum(col_widths)
+
+    # Calculate scaling factor to fit within page width
+    page_width, page_height = letter
+    scaling_factor = page_width / total_table_width
+
+    # Apply scaling factor to column widths
+    scaled_col_widths = [int(width * scaling_factor) for width in col_widths]
+
+    # Create a table and set scaled column widths
+    table = Table(data, colWidths=scaled_col_widths)
+    table.setStyle(TableStyle([('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+                               ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                               ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                               ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                               ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                               ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+                               ('GRID', (0, 0), (-1, -1), 1, colors.black)]))
+
+    # Build the PDF document
+    doc.build([table])
+    
+    
+    return response
+
+    
+
+
+
+
+
 
 @login_required(login_url='login')
 def bank_report(request):

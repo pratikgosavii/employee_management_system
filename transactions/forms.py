@@ -248,6 +248,9 @@ class leaves_Form(forms.ModelForm):
             'employee': forms.Select(attrs={
                 'class': 'form-control', 'id': 'employee'
             }),
+            'leave_type': forms.Select(attrs={
+                'class': 'form-control', 'id': 'leave_type'
+            }),
             'total_days': forms.NumberInput(attrs={
                 'class': 'form-control', 'id': 'description'
             }),

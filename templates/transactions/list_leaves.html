@@ -59,7 +59,7 @@
                             {% for i in data %}
                             <tr>
                                 <td class="serial">{{ forloop.counter }}</td>
-                                <td>{{ i.name }} {{ i.middle_name }} {{ i.last_name }}</td>
+                                <td>{{ i.employee.name }} {{ i.employee.middle_name }} {{ i.employee.last_name }}</td>
                                 <td>{{ i.date_from }}</td>
                                 <td>{{ i.date_to }}</td>
                                 <td>{{ i.total_days }}</td>

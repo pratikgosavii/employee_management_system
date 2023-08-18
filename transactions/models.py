@@ -106,6 +106,11 @@ class vacancy(models.Model):
         return self.department.name
 
 
+
+
+
+
+
 class employee_increament(models.Model):
 
     department = models.ForeignKey(department_type, on_delete=models.CASCADE)
@@ -120,12 +125,22 @@ class employee_increament(models.Model):
 
         return self.department.name
 
+
+leave_choice =(
+    ("medical_leave", "Medical Leave"),
+    ("earned_leave", "Earned Leave"),
+    ("marriage_leave" , "Marriage Leave"),
+    ("paternity_leave", "Paternity Leave"),
+   
+)
+
 class leaves(models.Model):
 
     employee = models.ForeignKey(employee, on_delete=models.CASCADE)
     date_from =  models.DateField(auto_now_add=False, default = datetime.now(), blank = True, null = True)
     date_to =  models.DateField(auto_now_add=False, default = datetime.now(), blank = True, null = True)
     total_days =  models.IntegerField()
+    leave_type = models.CharField(choices = leave_choice, max_length=120)
     description = models.CharField(max_length=120, unique=False)
     status = models.CharField(choices = status_choice, max_length=120)
 
@@ -137,8 +152,10 @@ class leaves(models.Model):
 class employee_total_leaves(models.Model):
 
     employee = models.ForeignKey(employee, on_delete=models.CASCADE)
-    earned_leaves =  models.IntegerField()
-    medical_leaves =  models.IntegerField()
+    earned_leaves =  models.IntegerField(default=0)
+    medical_leaves =  models.IntegerField(default=0)
+    paternity_leave =  models.IntegerField(default=0)
+    marriage_leave =  models.IntegerField(default=0)
 
     def __str__(self):
 

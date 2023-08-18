@@ -13,6 +13,19 @@
         border-top: 4px solid rgba(0,0,0,.1);
     }
 
+    body{
+        font-size: 12px !important;
+    }
+
+    
+    td{
+        font-size: 12px !important;
+    }
+
+    tr{
+        font-size: 12px !important;
+    }
+
 </style>
 
 {% endblock head %}
@@ -113,7 +126,7 @@
 
             <div style="display: flex;">
 
-                <div class="col-4">
+                <div class="col-6">
                     <div class="card">
                         <div class="card-body">
                             <h4 class="box-title">Allowance Summary</h4>
@@ -161,7 +174,7 @@
 
                 </div>
 
-                <div class="col-4">
+                <div class="col-6">
 
                     <div class="card">
                         <div class="card-body">
@@ -209,56 +222,59 @@
                     </div>
                 </div>
                 
-                <div class="col-4">
-
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="box-title">Loan Summary</h4>
-                        </div>
-                        <div class="card-body--">
-                            <div class="table-stats order-table ov-h">
-                                <table class="table ">
-                                    <thead>
-                                        <tr>
-                                            <th class="serial">#</th>
-                                            <th>Deduction</th>
-                                            <th>Amount</th>
-
-                                            
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% if loan_data %}
-                                        {% for i in loan_data %}
-
-                                        <tr>
-                                            <td class="serial"> {{ forloop.counter }}</td>
-                                            <td>{{ i.loan.name }}</td>
-                                            <td>{{ i.emi }}</td>
-                                        
-                                        </tr>
-
-                                        {% endfor %}
-
-                                        <tr> <td>  Total </td> <td> </td> <td> {{ loan_amount_sum }} </td> </tr>
-
-
-                                        {% else %}
-                                            <tr><td>No Allowance Data</td></tr>
-                                        {% endif %}
-
-
-
-                                    </tbody>
-
-                                </table>
-                            </div> <!-- /.table-stats -->
-                        </div>
-                    </div>
-                </div>
+                
                 
             </div> <!-- /.card -->
-                <div class="col-4">
+            <div style="display: flex;">
+
+            <div class="col-6">
+
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="box-title">Loan Summary</h4>
+                    </div>
+                    <div class="card-body--">
+                        <div class="table-stats order-table ov-h">
+                            <table class="table ">
+                                <thead>
+                                    <tr>
+                                        <th class="serial">#</th>
+                                        <th>Deduction</th>
+                                        <th>Amount</th>
+
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if loan_data %}
+                                    {% for i in loan_data %}
+
+                                    <tr>
+                                        <td class="serial"> {{ forloop.counter }}</td>
+                                        <td>{{ i.loan.name }}</td>
+                                        <td>{{ i.emi }}</td>
+                                    
+                                    </tr>
+
+                                    {% endfor %}
+
+                                    <tr> <td>  Total </td> <td> </td> <td> {{ loan_amount_sum }} </td> </tr>
+
+
+                                    {% else %}
+                                        <tr><td>No Allowance Data</td></tr>
+                                    {% endif %}
+
+
+
+                                </tbody>
+
+                            </table>
+                        </div> <!-- /.table-stats -->
+                    </div>
+                </div>
+            </div>
+                <div class="col-6">
 
                     <div class="card">
                         <div class="card-body">
@@ -305,6 +321,7 @@
                         </div>
                     </div>
                 </div>
+                </div>
                 <div class="card">
 
                     <p style="text-align: right;
@@ -314,7 +331,7 @@
             
                 </div>
                 <a href="{% url 'generate_employee_salary_slip' data.id month year %}"> <button id="payment-button"  style="background-color: green; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
-                    <span id="payment-button-amount">Salary Slip</span>
+                    <span id="payment-button-amount">Print Salary Slip</span>
                 </button>  </a>
                 
             </div> <!-- /.card -->

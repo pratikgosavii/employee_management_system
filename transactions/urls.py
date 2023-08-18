@@ -60,6 +60,7 @@ urlpatterns = [
 
     path('montly-salary-report/', monthly_salary_report, name='monthly_salary_report'),
     path('download-montly-salary-report-csv/', download_monthly_salary_report_csv, name='download_monthly_salary_report_csv'),
+    path('download-montly-salary-report-pdf/', download_monthly_salary_report_pdf, name='download_monthly_salary_report_pdf'),
 
     path('bank-report/', bank_report, name='bank_report'),
     path('download-bank-report-csv/', download_bank_report_csv, name='download_bank_report_csv'),
