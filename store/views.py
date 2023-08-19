@@ -881,7 +881,7 @@ def delete_allowance(request, allowance_id):
     
     allowance.objects.get(id=allowance_id).delete()
 
-    return HttpResponseRedirect(reverse('list_allowance_delete'))
+    return HttpResponseRedirect(reverse('list_allowance'))
 
 
 @login_required(login_url='login')
@@ -960,7 +960,7 @@ def delete_deduction(request, deduction_id):
     
     deduction.objects.get(id=deduction_id).delete()
 
-    return HttpResponseRedirect(reverse('list_deduction_delete'))
+    return HttpResponseRedirect(reverse('list_deduction'))
 
 
 @login_required(login_url='login')

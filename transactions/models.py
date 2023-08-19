@@ -19,7 +19,7 @@ class employee_allowance(models.Model):
     allowance = models.ForeignKey(allowance , on_delete=models.CASCADE)
     description = models.CharField(max_length=120, unique=False)
     status = models.CharField(choices = status_choice, max_length=120)
-    amount = models.IntegerField()
+    amount = models.FloatField()
 
 
     def __str__(self):
@@ -33,7 +33,7 @@ class employee_deduction(models.Model):
     deduction = models.ForeignKey(deduction, on_delete=models.CASCADE)
     description = models.CharField(max_length=120, unique=False)
     status = models.CharField(choices = status_choice, max_length=120)
-    amount = models.IntegerField()
+    amount = models.FloatField()
 
    
     def __str__(self):
@@ -45,14 +45,15 @@ class employee_loan(models.Model):
 
     employee = models.ForeignKey(employee, on_delete=models.CASCADE, related_name = 'employee_loan_re')
     loan = models.ForeignKey(loan, on_delete=models.CASCADE)
-    total_loan_amount = models.BigIntegerField()
+    total_loan_amount = models.FloatField()
     loan_percentage = models.BigIntegerField()
     year = models.BigIntegerField()
     emi = models.BigIntegerField()
     description = models.CharField(max_length=120, unique=False)
     status = models.CharField(choices = status_choice, max_length=120)
-    amount = models.IntegerField(null = True, blank = True)
-
+    amount = models.FloatField(null = True, blank = True)
+    loan_from = models.DateField(auto_now_add=False, default = datetime.now(), blank = True, null = True)
+    loan_to = models.DateField(auto_now_add=False, default = datetime.now(), blank = True, null = True)
 
     def __str__(self):
 
@@ -170,6 +171,7 @@ class month_working_days(models.Model):
     
 
 from django.utils import timezone
+from django.db import models, IntegrityError
 
 class employee_salary(models.Model):
 
@@ -186,3 +188,21 @@ class employee_salary(models.Model):
     def __str__(self):
 
         return self.employee.name
+        
+    def save(self, *args, **kwargs):
+        # Check for uniqueness based on employee, salary month, salary year, and is_salary_generated
+        if employee_salary.objects.filter(
+            employee=self.employee,
+            salary_date__month=self.salary_date.month,
+            salary_date__year=self.salary_date.year,
+        ).exclude(pk=self.pk).exists():
+            raise IntegrityError("Duplicate entry for the same employee, month, and year.")
+        
+        super().save(*args, **kwargs)
+
+    
+    def __str__(self):
+        return self.employee.name
+
+
+

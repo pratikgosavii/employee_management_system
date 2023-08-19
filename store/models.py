@@ -191,7 +191,7 @@ class allowance(models.Model):
     description = models.CharField(max_length=50)
     percentage = models.IntegerField(blank = True, null = True)
     da_percentage = models.IntegerField(blank = True, null = True)
-    amount = models.IntegerField(blank = True, null = True)
+    amount = models.FloatField(blank = True, null = True)
     is_fixed = models.BooleanField(default=True)
     is_dcpc = models.BooleanField(default=False)
     status = models.CharField(choices = status_choice, max_length=120, blank = True, null = True)
@@ -206,7 +206,7 @@ class deduction(models.Model):
     description = models.CharField(max_length=50)
     percentage = models.IntegerField(blank = True, null = True)
     da_percentage = models.IntegerField(blank = True, null = True)
-    amount = models.IntegerField(blank = True, null = True)
+    amount = models.FloatField(blank = True, null = True)
     is_fixed = models.BooleanField(default=True)
     is_dcpc = models.BooleanField(default=False)
     status = models.CharField(choices = status_choice, max_length=120)
@@ -217,7 +217,7 @@ class deduction(models.Model):
 class miscellaneous_deduction(models.Model):
 
     name = models.CharField(max_length=50)
-    amount = models.IntegerField()
+    amount = models.FloatField()
     description = models.CharField(max_length=50)
     status = models.CharField(choices = status_choice, max_length=120)
 

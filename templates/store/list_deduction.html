@@ -72,6 +72,12 @@
                                         <span id="payment-button-amount">View</span>
                                     </button>  </a>
                                     
+                                    <a href="{% url 'delete_deduction' i.id %}" >
+                                        <button id="delete-link" style="background-color: red; border: none; padding: 10px; border-radius: 12px;" type="button" class="btn-info">
+                                            <span id="payment-button-amount">Delete</span>
+                                        </button>
+                                    </a>
+                                    
                                 </td>
                                
                                
@@ -90,3 +96,25 @@
     
 </div>
 {% endblock content %}
+
+{% block js %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<script>
+    if (typeof jQuery === "undefined") {
+        alert("jQuery is not loaded.");
+    }
+    $(document).ready(function() {
+        $("#delete-link").click(function(event) {
+            // Prevent the default link behavior
+           alert('ssdsdsd')
+        });
+    });
+    
+
+</script>
+
+
+{% endblock js %}

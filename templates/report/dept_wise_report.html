@@ -270,10 +270,14 @@
             </div> <!-- /.table-stats -->
         </div>
        
-        <a href="{% url 'download_dcps_report_csv' %}?{{ request.GET.urlencode }}"> <button id="payment-button"  style="background-color: green; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
+       <div style="display : flex; gap : 10px;">
+
+        <a href="{% url 'download_dcps_report_csv' %}?{{ request.GET.urlencode }}"> <button id="payment-button"  style="background-color: orange; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
             <span id="payment-button-amount">CSV Download</span>
         </button>  </a>
         
+      </div>
+
     </div> <!-- /.card -->
     </div>  <!-- /.col-lg-8 -->
 </div>
@@ -297,11 +301,18 @@ $('#department').select2({
   });
 
   
-  url = new URL(window.location.href);
 
-  department_options = url.searchParams.getAll("department");
-
-  $("#department").val(department_options).trigger('change');
+  
+  $(document).ready(function() {
+   
+    
+      url = new URL(window.location.href);
+    
+      department_options = url.searchParams.getAll("department");
+    
+      $("#department").val(department_options).trigger('change');
+  
+  });
 
 
     

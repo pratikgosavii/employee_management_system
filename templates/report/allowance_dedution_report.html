@@ -40,8 +40,12 @@
       <div class="form-group" style="display: flex;
         gap: 14px;">
 
-        <label for="name" class="control-label mb-1" style="margin-left : 0px;">Date</label>
-                {{ employee_salary_filter.form.salary_date }}
+        <label for="name" class="control-label mb-1" style="margin-left : 0px;">Date From</label>
+        <input type="date" name="date_from" id="datepicker1212" class="form-control date_css">
+                    
+                
+        <label for="name" class="control-label mb-1" style="margin-left : 0px;">Date To</label>
+        <input type="date" name="date_to" id="datepicker1212" class="form-control date_css">
                     
                 
         <label for="name" class="control-label mb-1" style="margin-left : 0px;">Department Type </label>
@@ -69,18 +73,14 @@
                     <thead>
                         <tr>
                             <th class="serial"># </th>
-                            <th>Employee</th>
                             <th>Department</th>
-                            <th>Designation</th>
-                            <th>Working days</th>
-                            <th>Absent days</th>
-                            <th>Basic Salary</th>
                             <th>Dearness Allowance</th>
                             <th>House Rent</th>
                             <th>Travel</th>
                             <th>Washing Clothes</th>
                             <th>Total Allowances</th>
                             <th>Bussiness Tax</th>
+                            <th>Income Tax</th>
                             <th>Group Insurance</th>
                             <th>NPS Employee Contribution 10%</th>
                             <th>GPF</th>
@@ -103,18 +103,15 @@
 
                         <tr>
                             <td class="serial"> {{ forloop.counter }}</td>
-                            <td>{{ i.name }} {{ i.middle_name }} {{ i.last_name }}</td>
-                            <td>{{ i.employee.department }}</td>
-                            <td>{{ i.employee.designation }}</td>
-                            <td>20</td>
-                            <td>3</td>
-                            <td>{{ i.employee.basic_salary }}</td>
+                            
+                            <td>{{ i.department }}</td>
                             <td>{{ i.dearness_allowance }}</td>
                             <td>{{ i.house_rent_allowance }}</td>
                             <td>{{ i.travel_allowance }}</td>
                             <td>{{ i.washing_clothes_allowance }}</td>
                             <td>{{ i.total_allowance }}</td>
                             <td>{{ i.bussiness_tax }}</td>
+                            <td>{{ i.income_tax }}</td>
                             <td>{{ i.group_insurance }}</td>
                             <td>{{ i.NPS_employee_contribution }}</td>
                             <td>{{ i.GPF_deduction }}</td>
@@ -141,16 +138,15 @@
                 </table>
             </div> <!-- /.table-stats -->
         </div>
-       
        <div style="display : flex; gap : 10px;">
 
-            <a href="{% url 'download_monthly_salary_report_csv' %}?{{ request.GET.urlencode }}"> <button id="payment-button"  style="background-color: orange; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
-                <span id="payment-button-amount">CSV Download</span>
-            </button>  </a>
+        <a href="{% url 'download_allowance_deduction_department_wise_report_csv' %}?{{ request.GET.urlencode }}"> <button id="payment-button"  style="background-color: orange; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
+            <span id="payment-button-amount">CSV Download</span>
+        </button>  </a>
 
-            <a href="{% url 'download_monthly_salary_report_pdf' %}?{{ request.GET.urlencode }}"> <button id="payment-button"  style="background-color: orange; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
-                <span id="payment-button-amount">PDF Download</span>
-            </button>  </a>
+        <a href="{% url 'download_allowance_deduction_report_csv' %}?{{ request.GET.urlencode }}"> <button id="payment-button"  style="background-color: orange; border: green; padding: 10px;border-radius: 12px;" type="submit" class="btn-info ">
+            <span id="payment-button-amount">PDF Download</span>
+        </button>  </a>
 
         </div>
         

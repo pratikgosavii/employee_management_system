@@ -98,34 +98,15 @@
                     </thead>
                     <tbody>
                         {% if data %}
-                        {% for i in data %}
+                        {% for i,z in department_sums.items %}
 
 
                         <tr>
                             <td class="serial"> {{ forloop.counter }}</td>
-                            <td>{{ i.name }} {{ i.middle_name }} {{ i.last_name }}</td>
-                            <td>{{ i.employee.department }}</td>
-                            <td>{{ i.employee.designation }}</td>
-                            <td>20</td>
-                            <td>3</td>
-                            <td>{{ i.employee.basic_salary }}</td>
-                            <td>{{ i.dearness_allowance }}</td>
-                            <td>{{ i.house_rent_allowance }}</td>
-                            <td>{{ i.travel_allowance }}</td>
-                            <td>{{ i.washing_clothes_allowance }}</td>
-                            <td>{{ i.total_allowance }}</td>
-                            <td>{{ i.bussiness_tax }}</td>
-                            <td>{{ i.group_insurance }}</td>
-                            <td>{{ i.NPS_employee_contribution }}</td>
-                            <td>{{ i.GPF_deduction }}</td>
-                            <td>{{ i.GPF_loan_deduction }}</td>
-                            <td>{{ i.life_insurance }}</td>
-                            <td>{{ i.accidental_insurance }}</td>
-                            <td>{{ i.np_employee_credit_union_deduction }}</td>
-                            <td>{{ i.total_deduction }}</td>
-                            <td>{{ i.total_loan }}</td>
-                            <td>{{ i.total_miscellaneous }}</td>
-                            <td>{{ i.total_amount }}</td>
+                            <td>{{ i }}</td>
+                            <td>{{ z.dearness_allowance }}</td>
+                            <td>{{ z.house_rent_allowance }}</td>
+                            
                            
                         </tr>
 

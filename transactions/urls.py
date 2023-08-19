@@ -74,6 +74,12 @@ urlpatterns = [
     path('ym-emp-report/', ym_emp_report, name='ym_emp_report'),
     path('download-ym-emp-report-csv/', download_ym_emp_report_csv, name='download_ym_emp_report_csv'),
     
+    path('allowance-deduction-report/', allowance_deduction_report, name='allowance_deduction_report'),
+    path('download-allowance-deduction-report-csv/', download_allowance_deduction_report_csv, name='download_allowance_deduction_report_csv'),
+    
+    path('allowance-deduction-department-wise-report/', allowance_deduction_department_wise_report, name='allowance_deduction_department_wise_report'),
+    path('download-allowance-deduction-department-wise-report-csv/', download_allowance_deduction_department_wise_report_csv, name='download_allowance_deduction_department_wise_report_csv'),
+    
 
 
 
